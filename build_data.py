@@ -46,7 +46,7 @@ OPP_COLOR_MAP = {
     'Non Compliant': '#c23830',
     'Low Expectations': '#b642f5',
     'too drunk to dunk': '#ff4fdf',
-    'Jim Ballers': '#6203fc',
+    'Jims Ballers': '#6203fc',
 }
 DEFAULT_OPP_COLOR = "#6C757D"
 
