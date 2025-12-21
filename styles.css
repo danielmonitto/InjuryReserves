@@ -7,9 +7,7 @@
   --accent:#3b82f6;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
 body{
   margin:0;
@@ -22,10 +20,12 @@ body{
 }
 
 .container{
-  max-width:1280px;
-  margin:0 auto;
+  width:80%;
+  max-width:80%;
+  margin:0 auto;   /* centers it */
   padding:18px;
 }
+
 
 .header{
   display:flex;
@@ -35,27 +35,25 @@ body{
   flex-wrap:wrap;
 }
 
-.brand{
-  min-width:260px;
-}
+.brand{ min-width:260px; }
 
 h1{
   margin:0;
   font-size:24px;
   letter-spacing:0.2px;
-  text-transform:lowercase;
+  
 }
 
 h2{
   margin:0 0 10px;
   font-size:18px;
-  text-transform:lowercase;
+  
 }
 
 h3{
   margin:14px 0 10px;
   font-size:14px;
-  text-transform:lowercase;
+  
   color:rgba(255,255,255,0.9);
 }
 
@@ -88,12 +86,10 @@ h3{
   padding:8px 10px;
   border-radius:12px;
   cursor:pointer;
-  text-transform:lowercase;
+  
 }
 
-.tabs button:hover{
-  border-color:rgba(255,255,255,0.18);
-}
+.tabs button:hover{ border-color:rgba(255,255,255,0.18); }
 
 .tabs button.active{
   border-color:rgba(59,130,246,0.65);
@@ -121,7 +117,7 @@ h3{
 .control label{
   color:var(--muted);
   font-size:12px;
-  text-transform:lowercase;
+  
 }
 
 .control select,
@@ -148,9 +144,7 @@ h3{
 }
 
 @media (max-width: 800px){
-  .cards{
-    grid-template-columns:1fr;
-  }
+  .cards{ grid-template-columns:1fr; }
 }
 
 .card{
@@ -163,7 +157,7 @@ h3{
 .card .title{
   font-size:13px;
   color:rgba(255,255,255,0.88);
-  text-transform:lowercase;
+  
 }
 
 .card .score{
@@ -174,18 +168,22 @@ h3{
 
 /* ===== TABLE ===== */
 
+/* wrapper fills width; only scrolls if truly needed */
 .table-wrap{
-  overflow:auto;
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
   border-radius:16px;
   border:1px solid rgba(255,255,255,0.10);
   background:#0b1220;
 }
 
+/* stretch to fit screen (no forced min-width) */
 table{
   border-collapse:separate;
   border-spacing:0;
   width:100%;
-  min-width:980px;
+  table-layout:auto;
 }
 
 thead th{
@@ -198,19 +196,19 @@ thead th{
   text-transform:uppercase;
   font-size:12px;
   z-index:2;
+  white-space:nowrap;
 }
 
 tbody td{
   padding:10px;
   border-bottom:1px solid rgba(255,255,255,0.06);
   text-align:center;
-  color:#000000; /* black text */
+  color:#000000;
   font-weight:650;
+  white-space:nowrap;
 }
 
-tbody tr:hover td{
-  filter:brightness(0.96);
-}
+tbody tr:hover td{ filter:brightness(0.96); }
 
 .note{
   color:var(--muted);
