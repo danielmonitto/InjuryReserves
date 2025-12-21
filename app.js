@@ -100,12 +100,68 @@ function splitTeam(rows){
   const pan = rows.filter(r => String(r.NAMES).includes("Injury Reserves"));
   return { team, pan };
 }
+const SUMMARY_COLS = ["NAMES","PTS","REB","AST","BLK","STL","TOV","FLS","FG%","3P%","FT%","TS%","GSC"];
 
-function buildTable(rows, preferDisplay=true){
+const SUMMARY_LABELS = {
+  "NAMES":"name",
+  "PTS":"pts",
+  "REB":"reb",
+  "AST":"ast",
+  "BLK":"blk",
+  "STL":"stl",
+  "TOV":"tov",
+  "FLS":"fls",
+  "FG%":"fg",
+  "3P%":"3p",
+  "FT%":"ft",
+  "TS%":"ts",
+  "GSC":"gsc"
+};
+
+function selectCols(rows, cols){
+  if(!rows || !rows.length) return [];
+  const available = new Set(Object.keys(rows[0]));
+  return cols.filter(c => available.has(c));
+}
+
+function appendTeamPanTables(content, rows){
+  const { team, pan } = splitTeam(rows);
+
+  // 1) main stats - players
+  if(team.length){
+    const summaryCols = selectCols(team, SUMMARY_COLS);
+    content.appendChild(buildTable(team, true, summaryCols, SUMMARY_LABELS));
+  }
+
+  // 2) main stats - injury reserves
+  if(pan.length){
+    content.appendChild(el("div", { style:"height:10px" }, []));
+    const summaryCols = selectCols(pan, SUMMARY_COLS);
+    content.appendChild(buildTable(pan, true, summaryCols, SUMMARY_LABELS));
+  }
+
+  // spacing before advanced
+  if(team.length || pan.length){
+    content.appendChild(el("div", { style:"height:16px" }, []));
+  }
+
+  // 3) advanced/full stats - players
+  if(team.length){
+    content.appendChild(buildTable(team, true));
+  }
+
+  // 4) advanced/full stats - injury reserves
+  if(pan.length){
+    content.appendChild(el("div", { style:"height:10px" }, []));
+    content.appendChild(buildTable(pan, true));
+  }
+}
+
+function buildTable(rows, preferDisplay=true, columnsOverride=null, labelMap=null){
   if(!rows || rows.length === 0) return el("div", { class:"note" }, ["no data"]);
 
-  const keys = Object.keys(rows[0]).filter(k => k !== "rowColor" && !k.endsWith("_display"));
-  const columns = keys;
+  const autoKeys = Object.keys(rows[0]).filter(k => k !== "rowColor" && !k.endsWith("_display"));
+  const columns = (Array.isArray(columnsOverride) && columnsOverride.length) ? columnsOverride : autoKeys;
 
   const toNumber = (x) => {
     if (x === null || x === undefined) return null;
@@ -120,30 +176,25 @@ function buildTable(rows, preferDisplay=true){
   };
 
   const formatCell = (k, r) => {
-    // prefer *_display when present
     const dispKey = `${k}_display`;
     if (preferDisplay && r[dispKey] !== undefined && r[dispKey] !== null && String(r[dispKey]).trim() !== "") {
       return r[dispKey];
     }
 
-    // percent columns like FG%, TS%, 2P%, 3P%, FT%
     if (k.includes("%")) {
       const n = toNumber(r[k]);
       if (n === null) return r[k];
-
-      // if stored as 0..1 -> show 0..100%
-      if (n >= 0 && n <= 1) return `${Math.round(n * 100)}%`;
-
-      // if stored as 0..100 -> show as %
-      if (n > 1 && n <= 100) return `${Math.round(n)}%`;
-
+      if (n >= 0 && n <= 1) return `${(n * 100).toFixed(2)}%`;
+      if (n > 1 && n <= 100) return `${Number(n).toFixed(2)}%`;
       return `${n}%`;
     }
 
     return r[k];
   };
 
-  const thead = el("thead", {}, [el("tr", {}, columns.map(k => el("th", {}, [k])))]);
+  const headerText = (k) => (labelMap && labelMap[k]) ? labelMap[k] : k;
+
+  const thead = el("thead", {}, [el("tr", {}, columns.map(k => el("th", {}, [headerText(k)])))]);
   const tbody = el("tbody", {}, rows.map(r=>{
     const bg = r.rowColor || "#A6C9EC";
     return el("tr", {}, columns.map(k=>{
@@ -154,8 +205,6 @@ function buildTable(rows, preferDisplay=true){
 
   return el("div", { class:"table-wrap" }, [el("table", {}, [thead, tbody])]);
 }
-
-
 
 async function renderGame(){
   const content = document.getElementById("content");
@@ -178,12 +227,7 @@ async function renderGame(){
   content.appendChild(cards);
   content.appendChild(el("h3", {}, ["player stats"]));
 
-  const { team, pan } = splitTeam(payload.players);
-  content.appendChild(buildTable(team, true));
-  if(pan.length){
-    content.appendChild(el("div", { style:"height:10px" }, []));
-    content.appendChild(buildTable(pan, true));
-  }
+  appendTeamPanTables(content, payload.players);
 }
 
 async function renderAggregate(kind){
@@ -201,12 +245,7 @@ async function renderAggregate(kind){
   }
   const rows = await loadJSON(path);
 
-  const { team, pan } = splitTeam(rows);
-  content.appendChild(buildTable(team, true));
-  if(pan.length){
-    content.appendChild(el("div", { style:"height:10px" }, []));
-    content.appendChild(buildTable(pan, true));
-  }
+  appendTeamPanTables(content, rows);
 }
 
 async function renderType(){
@@ -215,12 +254,7 @@ async function renderType(){
 
   content.appendChild(el("h2", {}, [`stats by game type (${state.gameType})`]));
   const rows = await loadJSON(`data/aggregates/by_type_${state.gameType}.json`);
-  const { team, pan } = splitTeam(rows);
-  content.appendChild(buildTable(team, true));
-  if(pan.length){
-    content.appendChild(el("div", { style:"height:10px" }, []));
-    content.appendChild(buildTable(pan, true));
-  }
+  appendTeamPanTables(content, rows);
 }
 
 async function renderVs(){
@@ -233,12 +267,7 @@ async function renderVs(){
 
   const payload = await loadJSON(`data/vs/vs_${state.season}_${state.vsOpponentSlug}.json`);
   const rows = payload.rows || [];
-  const { team, pan } = splitTeam(rows);
-  content.appendChild(buildTable(team, true));
-  if(pan.length){
-    content.appendChild(el("div", { style:"height:10px" }, []));
-    content.appendChild(buildTable(pan, true));
-  }
+  appendTeamPanTables(content, rows);
 }
 
 async function refresh(){
