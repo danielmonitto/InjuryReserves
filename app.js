@@ -107,18 +107,55 @@ function buildTable(rows, preferDisplay=true){
   const keys = Object.keys(rows[0]).filter(k => k !== "rowColor" && !k.endsWith("_display"));
   const columns = keys;
 
+  const toNumber = (x) => {
+    if (x === null || x === undefined) return null;
+    if (typeof x === "number") return x;
+    if (typeof x === "string") {
+      const t = x.trim();
+      if (t === "") return null;
+      const n = Number(t);
+      return Number.isFinite(n) ? n : null;
+    }
+    return null;
+  };
+
+  const formatCell = (k, r) => {
+    // prefer *_display when present
+    const dispKey = `${k}_display`;
+    if (preferDisplay && r[dispKey] !== undefined && r[dispKey] !== null && String(r[dispKey]).trim() !== "") {
+      return r[dispKey];
+    }
+
+    // percent columns like FG%, TS%, 2P%, 3P%, FT%
+    if (k.includes("%")) {
+      const n = toNumber(r[k]);
+      if (n === null) return r[k];
+
+      // if stored as 0..1 -> show 0..100%
+      if (n >= 0 && n <= 1) return `${Math.round(n * 100)}%`;
+
+      // if stored as 0..100 -> show as %
+      if (n > 1 && n <= 100) return `${Math.round(n)}%`;
+
+      return `${n}%`;
+    }
+
+    return r[k];
+  };
+
   const thead = el("thead", {}, [el("tr", {}, columns.map(k => el("th", {}, [k])))]);
   const tbody = el("tbody", {}, rows.map(r=>{
     const bg = r.rowColor || "#A6C9EC";
     return el("tr", {}, columns.map(k=>{
-      const dispKey = preferDisplay ? `${k}_display` : null;
-      const v = (dispKey && r[dispKey] !== undefined) ? r[dispKey] : r[k];
+      const v = formatCell(k, r);
       return el("td", { style:`background:${bg};` }, [String(v ?? "")]);
     }));
   }));
 
   return el("div", { class:"table-wrap" }, [el("table", {}, [thead, tbody])]);
 }
+
+
 
 async function renderGame(){
   const content = document.getElementById("content");

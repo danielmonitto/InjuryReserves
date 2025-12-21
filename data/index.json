@@ -94,7 +94,14 @@
     "Disciples": "#000000",
     "Konoha": "#fc9803",
     "Mickeylads": "#000000",
-    "Jim Ballers 2": "#6203fc"
+    "Jim Ballers 2": "#6203fc",
+    "Kawhi About It": "#b642f5",
+    "Uncle Brickers": "#1f2a8c",
+    "Monstars": "#c23830",
+    "Non Compliant": "#c23830",
+    "Low Expectations": "#b642f5",
+    "too drunk to dunk": "#ff4fdf",
+    "Jim Ballers": "#6203fc"
   },
   "defaultOppColor": "#6C757D",
   "rowColors": {
@@ -102,13 +109,11 @@
     "Joel Kingdom-Evans": "#99FF66",
     "Brooklyn Bulmer": "#5f99f5",
     "Adrian Monitto": "#be60f7",
-    "Daniel Monitto": "#fcd04c",
+    "Daniel Monitto": "#ebc026",
     "Jack Groves": "#FF99CC",
     "Zack Johnston": "#59dea2",
     "Lachlan Farley": "#59dea2",
     "James Norrish": "#fc9219",
-    "Injury Reserves": "#b50728",
-    "Jack": "#FF99CC",
-    "Joel Evans": "#99FF66"
+    "Injury Reserves": "#b50728"
   }
 }

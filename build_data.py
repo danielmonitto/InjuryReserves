@@ -16,7 +16,7 @@ COLOR_MAP = {
     'Joel Kingdom-Evans': '#99FF66',
     'Brooklyn Bulmer': '#5f99f5',
     'Adrian Monitto': '#be60f7',
-    'Daniel Monitto': '#fcd04c',
+    'Daniel Monitto': '#ebc026',
     'Jack Groves': '#FF99CC',
     'Zack Johnston': '#59dea2',
     'Lachlan Farley': '#59dea2',
@@ -76,25 +76,36 @@ def add_percentages(d: pd.DataFrame) -> pd.DataFrame:
 
 def format_fields(d: pd.DataFrame, kind: str) -> pd.DataFrame:
     d = d.copy()
+
     pct_cols = ['FG%','TS%','2P%','3P%','FT%']
+
+    # 1) create percent display strings (2 decimals)
     for c in pct_cols:
         if c in d.columns:
-            d[c+"_display"] = (d[c] * 100).round(2).map(lambda x: f"{x:.2f}%")
+            d[c + "_display"] = (d[c] * 100).round(2).map(lambda x: f"{x:.2f}%")
+
+    # 2) format ALL OTHER numeric columns
     for c in d.columns:
         if c in ['NAMES','OPP','SEASON','GAME','TYPE','rowColor']:
             continue
         if c.endswith("_display"):
             continue
+        if c in pct_cols:  # CRITICAL: never reformat percent columns
+            continue
+
         if pd.api.types.is_numeric_dtype(d[c]):
             if c == "GSC":
-                d[c+"_display"] = d[c].round(2).map(lambda x: f"{x:.2f}")
+                d[c + "_display"] = d[c].round(2).map(lambda x: f"{x:.2f}")
             else:
                 if kind == "avg":
-                    d[c+"_display"] = d[c].round(2).map(lambda x: f"{x:.2f}")
+                    d[c + "_display"] = d[c].round(2).map(lambda x: f"{x:.2f}")
                 elif kind == "game":
-                    d[c+"_display"] = d[c].fillna(0).map(lambda x: f"{int(x)}" if float(x).is_integer() else f"{x:.2f}")
+                    d[c + "_display"] = d[c].fillna(0).map(
+                        lambda x: f"{int(x)}" if float(x).is_integer() else f"{x:.2f}"
+                    )
                 else:
-                    d[c+"_display"] = d[c].fillna(0).map(lambda x: f"{int(round(x))}")
+                    d[c + "_display"] = d[c].fillna(0).map(lambda x: f"{int(round(x))}")
+
     return d
 
 def calc_averages(player_data: pd.DataFrame) -> pd.DataFrame:
