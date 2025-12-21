@@ -98,6 +98,8 @@ def format_fields(d: pd.DataFrame, kind: str) -> pd.DataFrame:
                 d[c + "_display"] = d[c].fillna(0).astype(int).map(lambda x: f"{x}")
             elif c == "GSC":
                 d[c + "_display"] = d[c].round(2).map(lambda x: f"{x:.2f}")
+            elif c == "Lowest GSC":
+                d[c + "_display"] = d[c].round(2).map(lambda x: f"{x:.2f}")
             else:
                 if kind == "avg":
                     d[c + "_display"] = d[c].round(2).map(lambda x: f"{x:.2f}")
@@ -130,13 +132,31 @@ def calc_totals(player_data: pd.DataFrame) -> pd.DataFrame:
 
 def calc_highs(player_data: pd.DataFrame) -> pd.DataFrame:
     cols = COLUMNS_SUM + ['GSC']
-    hi = player_data.groupby('NAMES')[cols].max().reset_index()
-    lo_gsc = player_data.groupby('NAMES')['GSC'].min().reset_index(name='Lowest GSC')
-    out = hi.merge(lo_gsc, on='NAMES', how='left')
-    out = add_percentages(out)
+
+    # career highs
+    highs = player_data.groupby('NAMES')[cols].max().reset_index()
+
+    # lowest gsc ever
+    lowest_gsc = (
+        player_data.groupby('NAMES')['GSC']
+        .min()
+        .reset_index(name='Lowest GSC')
+    )
+
+    # merge lowest gsc
+    out = highs.merge(lowest_gsc, on='NAMES', how='left')
+
+    # games played
     games = player_data.groupby('NAMES').size().reset_index(name='GP')
     out = out.merge(games, on='NAMES', how='left')
+
+    # row colours
     out['rowColor'] = out['NAMES'].map(lambda x: COLOR_MAP.get(x, '#A6C9EC'))
+
+    # move GP after name
+    gp = out.pop('GP')
+    out.insert(1, 'GP', gp)
+
     return format_fields(out, "highs")
 
 def write_json(path: Path, obj):
