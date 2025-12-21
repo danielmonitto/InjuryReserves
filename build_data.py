@@ -22,8 +22,6 @@ COLOR_MAP = {
     'Lachlan Farley': '#59dea2',
     'James Norrish': '#fc9219',
     'Injury Reserves': '#b50728',
-    'Jack': '#FF99CC',
-    'Joel Evans': '#99FF66',
 }
 
 OPP_COLOR_MAP = {
@@ -42,6 +40,13 @@ OPP_COLOR_MAP = {
     'Konoha': '#fc9803',
     'Mickeylads': '#000000',
     'Jim Ballers 2': '#6203fc',
+    'Kawhi About It': '#b642f5',
+    'Uncle Brickers': '#1f2a8c',
+    'Monstars': '#c23830',
+    'Non Compliant': '#c23830',
+    'Low Expectations': '#b642f5',
+    'too drunk to dunk': '#ff4fdf',
+    'Jim Ballers': '#6203fc',
 }
 DEFAULT_OPP_COLOR = "#6C757D"
 
