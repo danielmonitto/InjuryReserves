@@ -50,7 +50,7 @@
     "FLS_display": "2",
     "GSC_display": "24.30",
     "Lowest GSC_display": "11",
-    "Games Played_display": "10"
+    "GP_display": "10"
   },
   {
     "NAMES": "Ashton Moon",
@@ -103,7 +103,7 @@
     "FLS_display": "3",
     "GSC_display": "19.50",
     "Lowest GSC_display": "20",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Bailey Moon",
@@ -156,7 +156,7 @@
     "FLS_display": "4",
     "GSC_display": "5.70",
     "Lowest GSC_display": "6",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Brodie ",
@@ -209,7 +209,7 @@
     "FLS_display": "1",
     "GSC_display": "1.00",
     "Lowest GSC_display": "1",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Brooklyn Bulmer",
@@ -262,7 +262,7 @@
     "FLS_display": "4",
     "GSC_display": "11.00",
     "Lowest GSC_display": "-3",
-    "Games Played_display": "24"
+    "GP_display": "24"
   },
   {
     "NAMES": "Chris Juelg",
@@ -315,7 +315,7 @@
     "FLS_display": "2",
     "GSC_display": "4.20",
     "Lowest GSC_display": "4",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Daniel Monitto",
@@ -368,7 +368,7 @@
     "FLS_display": "5",
     "GSC_display": "25.00",
     "Lowest GSC_display": "1",
-    "Games Played_display": "28"
+    "GP_display": "28"
   },
   {
     "NAMES": "Drew Killender-Strachan",
@@ -421,7 +421,7 @@
     "FLS_display": "0",
     "GSC_display": "8.80",
     "Lowest GSC_display": "9",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Hayden Cromberge",
@@ -474,7 +474,7 @@
     "FLS_display": "3",
     "GSC_display": "24.50",
     "Lowest GSC_display": "2",
-    "Games Played_display": "22"
+    "GP_display": "22"
   },
   {
     "NAMES": "Injury Reserves",
@@ -527,7 +527,7 @@
     "FLS_display": "19",
     "GSC_display": "23.36",
     "Lowest GSC_display": "4",
-    "Games Played_display": "30"
+    "GP_display": "30"
   },
   {
     "NAMES": "Jack Groves",
@@ -580,7 +580,7 @@
     "FLS_display": "4",
     "GSC_display": "25.90",
     "Lowest GSC_display": "3",
-    "Games Played_display": "7"
+    "GP_display": "7"
   },
   {
     "NAMES": "James Aquilina",
@@ -633,7 +633,7 @@
     "FLS_display": "4",
     "GSC_display": "-2.30",
     "Lowest GSC_display": "-2",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "James Norrish",
@@ -686,7 +686,7 @@
     "FLS_display": "3",
     "GSC_display": "22.30",
     "Lowest GSC_display": "-3",
-    "Games Played_display": "13"
+    "GP_display": "13"
   },
   {
     "NAMES": "Joel Kingdom-Evans",
@@ -739,7 +739,7 @@
     "FLS_display": "4",
     "GSC_display": "8.30",
     "Lowest GSC_display": "-7",
-    "Games Played_display": "28"
+    "GP_display": "28"
   },
   {
     "NAMES": "Lachlan Farley",
@@ -792,7 +792,7 @@
     "FLS_display": "5",
     "GSC_display": "51.40",
     "Lowest GSC_display": "2",
-    "Games Played_display": "24"
+    "GP_display": "24"
   },
   {
     "NAMES": "Matthew Bayly",
@@ -845,7 +845,7 @@
     "FLS_display": "0",
     "GSC_display": "-0.10",
     "Lowest GSC_display": "0",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Patreek Sharma",
@@ -898,7 +898,7 @@
     "FLS_display": "4",
     "GSC_display": "0.80",
     "Lowest GSC_display": "1",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Zack Johnston",
@@ -951,6 +951,6 @@
     "FLS_display": "4",
     "GSC_display": "13.70",
     "Lowest GSC_display": "1",
-    "Games Played_display": "5"
+    "GP_display": "5"
   }
 ]

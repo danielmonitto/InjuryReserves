@@ -86,15 +86,17 @@ def format_fields(d: pd.DataFrame, kind: str) -> pd.DataFrame:
 
     # 2) format ALL OTHER numeric columns
     for c in d.columns:
-        if c in ['NAMES','OPP','SEASON','GAME','TYPE','rowColor']:
+        if c in ['NAMES', 'OPP', 'SEASON', 'GAME', 'TYPE', 'rowColor']:
             continue
         if c.endswith("_display"):
             continue
-        if c in pct_cols:  # CRITICAL: never reformat percent columns
+        if c in pct_cols:
             continue
 
         if pd.api.types.is_numeric_dtype(d[c]):
-            if c == "GSC":
+            if c == "GP":
+                d[c + "_display"] = d[c].fillna(0).astype(int).map(lambda x: f"{x}")
+            elif c == "GSC":
                 d[c + "_display"] = d[c].round(2).map(lambda x: f"{x:.2f}")
             else:
                 if kind == "avg":
@@ -111,7 +113,7 @@ def format_fields(d: pd.DataFrame, kind: str) -> pd.DataFrame:
 def calc_averages(player_data: pd.DataFrame) -> pd.DataFrame:
     g = player_data.groupby('NAMES')[COLUMNS_AVG].mean().reset_index()
     g = add_percentages(g)
-    games = player_data.groupby('NAMES').size().reset_index(name='Games Played')
+    games = player_data.groupby('NAMES').size().reset_index(name='GP')
     out = g.merge(games, on='NAMES', how='left')
     out['rowColor'] = out['NAMES'].map(lambda x: COLOR_MAP.get(x, '#A6C9EC'))
     return format_fields(out, "avg")
@@ -121,7 +123,7 @@ def calc_totals(player_data: pd.DataFrame) -> pd.DataFrame:
     totals = add_percentages(totals)
     gsc_avg = player_data.groupby('NAMES')['GSC'].mean().reset_index(name='GSC')
     totals = totals.merge(gsc_avg, on='NAMES', how='left')
-    games = player_data.groupby('NAMES').size().reset_index(name='Games Played')
+    games = player_data.groupby('NAMES').size().reset_index(name='GP')
     out = totals.merge(games, on='NAMES', how='left')
     out['rowColor'] = out['NAMES'].map(lambda x: COLOR_MAP.get(x, '#A6C9EC'))
     return format_fields(out, "tot")
@@ -132,7 +134,7 @@ def calc_highs(player_data: pd.DataFrame) -> pd.DataFrame:
     lo_gsc = player_data.groupby('NAMES')['GSC'].min().reset_index(name='Lowest GSC')
     out = hi.merge(lo_gsc, on='NAMES', how='left')
     out = add_percentages(out)
-    games = player_data.groupby('NAMES').size().reset_index(name='Games Played')
+    games = player_data.groupby('NAMES').size().reset_index(name='GP')
     out = out.merge(games, on='NAMES', how='left')
     out['rowColor'] = out['NAMES'].map(lambda x: COLOR_MAP.get(x, '#A6C9EC'))
     return format_fields(out, "highs")
@@ -166,7 +168,7 @@ def main():
     base_all = exclude_injury_opp(df[df['GAME'] > 0].copy())
     write_json(DATA_DIR / "aggregates" / "averages_all.json", calc_averages(base_all).to_dict(orient="records"))
     write_json(DATA_DIR / "aggregates" / "totals_all.json", calc_totals(base_all).to_dict(orient="records"))
-    write_json(DATA_DIR / "aggregates" / "highs_all.json", calc_highs(base_all).drop(columns=['Games Played'], errors='ignore').to_dict(orient="records"))
+    write_json(DATA_DIR / "aggregates" / "highs_all.json", calc_highs(base_all).drop(columns=['GP'], errors='ignore').to_dict(orient="records"))
 
     opp_names_all = set(df['OPP'].dropna().unique().tolist())
 
@@ -174,7 +176,7 @@ def main():
         s_df = exclude_injury_opp(df[(df['SEASON']==s) & (df['GAME'] > 0)].copy())
         write_json(DATA_DIR / "aggregates" / f"averages_by_season_{s}.json", calc_averages(s_df).to_dict(orient="records"))
         write_json(DATA_DIR / "aggregates" / f"totals_by_season_{s}.json", calc_totals(s_df).to_dict(orient="records"))
-        write_json(DATA_DIR / "aggregates" / f"highs_by_season_{s}.json", calc_highs(s_df).drop(columns=['Games Played'], errors='ignore').to_dict(orient="records"))
+        write_json(DATA_DIR / "aggregates" / f"highs_by_season_{s}.json", calc_highs(s_df).drop(columns=['GP'], errors='ignore').to_dict(orient="records"))
 
         s_all = exclude_injury_opp(df[df['SEASON']==s].copy())
         for opp in season_teams[str(s)]:

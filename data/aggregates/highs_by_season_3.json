@@ -50,7 +50,7 @@
     "FLS_display": "3",
     "GSC_display": "19.50",
     "Lowest GSC_display": "20",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Bailey Moon",
@@ -103,7 +103,7 @@
     "FLS_display": "4",
     "GSC_display": "5.70",
     "Lowest GSC_display": "6",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Brooklyn Bulmer",
@@ -156,7 +156,7 @@
     "FLS_display": "4",
     "GSC_display": "11.00",
     "Lowest GSC_display": "0",
-    "Games Played_display": "4"
+    "GP_display": "4"
   },
   {
     "NAMES": "Chris Juelg",
@@ -209,7 +209,7 @@
     "FLS_display": "2",
     "GSC_display": "4.20",
     "Lowest GSC_display": "4",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Daniel Monitto",
@@ -262,7 +262,7 @@
     "FLS_display": "2",
     "GSC_display": "22.40",
     "Lowest GSC_display": "11",
-    "Games Played_display": "6"
+    "GP_display": "6"
   },
   {
     "NAMES": "Drew Killender-Strachan",
@@ -315,7 +315,7 @@
     "FLS_display": "0",
     "GSC_display": "8.80",
     "Lowest GSC_display": "9",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Injury Reserves",
@@ -368,7 +368,7 @@
     "FLS_display": "14",
     "GSC_display": "23.36",
     "Lowest GSC_display": "5",
-    "Games Played_display": "7"
+    "GP_display": "7"
   },
   {
     "NAMES": "Jack Groves",
@@ -421,7 +421,7 @@
     "FLS_display": "4",
     "GSC_display": "25.90",
     "Lowest GSC_display": "3",
-    "Games Played_display": "7"
+    "GP_display": "7"
   },
   {
     "NAMES": "James Aquilina",
@@ -474,7 +474,7 @@
     "FLS_display": "4",
     "GSC_display": "-2.30",
     "Lowest GSC_display": "-2",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Joel Kingdom-Evans",
@@ -527,7 +527,7 @@
     "FLS_display": "1",
     "GSC_display": "8.30",
     "Lowest GSC_display": "-7",
-    "Games Played_display": "6"
+    "GP_display": "6"
   },
   {
     "NAMES": "Lachlan Farley",
@@ -580,7 +580,7 @@
     "FLS_display": "3",
     "GSC_display": "51.40",
     "Lowest GSC_display": "10",
-    "Games Played_display": "7"
+    "GP_display": "7"
   },
   {
     "NAMES": "Patreek Sharma",
@@ -633,6 +633,6 @@
     "FLS_display": "4",
     "GSC_display": "0.80",
     "Lowest GSC_display": "1",
-    "Games Played_display": "1"
+    "GP_display": "1"
   }
 ]

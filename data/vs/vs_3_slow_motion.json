@@ -27,7 +27,7 @@
       "2P%": 0.0,
       "3P%": 0.2,
       "FT%": 0.0,
-      "Games Played": 1,
+      "GP": 1,
       "rowColor": "#5f99f5",
       "FG%_display": "20.00%",
       "TS%_display": "30.00%",
@@ -52,7 +52,7 @@
       "TOV_display": "1.00",
       "FLS_display": "0.00",
       "GSC_display": "2.00",
-      "Games Played_display": "1.00"
+      "GP_display": "1"
     },
     {
       "NAMES": "Daniel Monitto",
@@ -79,7 +79,7 @@
       "2P%": 0.45454545454545453,
       "3P%": 0.18181818181818182,
       "FT%": 0.8333333333333334,
-      "Games Played": 1,
+      "GP": 1,
       "rowColor": "#ebc026",
       "FG%_display": "31.82%",
       "TS%_display": "42.61%",
@@ -104,7 +104,7 @@
       "TOV_display": "1.00",
       "FLS_display": "2.00",
       "GSC_display": "10.80",
-      "Games Played_display": "1.00"
+      "GP_display": "1"
     },
     {
       "NAMES": "Injury Reserves",
@@ -131,7 +131,7 @@
       "2P%": 0.5128205128205128,
       "3P%": 0.23076923076923078,
       "FT%": 0.7142857142857143,
-      "Games Played": 1,
+      "GP": 1,
       "rowColor": "#b50728",
       "FG%_display": "40.00%",
       "TS%_display": "47.78%",
@@ -156,7 +156,7 @@
       "TOV_display": "6.00",
       "FLS_display": "6.00",
       "GSC_display": "10.36",
-      "Games Played_display": "1.00"
+      "GP_display": "1"
     },
     {
       "NAMES": "Jack Groves",
@@ -183,7 +183,7 @@
       "2P%": 0.7142857142857143,
       "3P%": 0.0,
       "FT%": 0.0,
-      "Games Played": 1,
+      "GP": 1,
       "rowColor": "#FF99CC",
       "FG%_display": "62.50%",
       "TS%_display": "59.24%",
@@ -208,7 +208,7 @@
       "TOV_display": "1.00",
       "FLS_display": "4.00",
       "GSC_display": "11.10",
-      "Games Played_display": "1.00"
+      "GP_display": "1"
     },
     {
       "NAMES": "Joel Kingdom-Evans",
@@ -235,7 +235,7 @@
       "2P%": 0.0,
       "3P%": 0.25,
       "FT%": 0.0,
-      "Games Played": 1,
+      "GP": 1,
       "rowColor": "#99FF66",
       "FG%_display": "20.00%",
       "TS%_display": "30.00%",
@@ -260,7 +260,7 @@
       "TOV_display": "1.00",
       "FLS_display": "0.00",
       "GSC_display": "1.60",
-      "Games Played_display": "1.00"
+      "GP_display": "1"
     },
     {
       "NAMES": "Lachlan Farley",
@@ -287,7 +287,7 @@
       "2P%": 0.5,
       "3P%": 0.4,
       "FT%": 0.7142857142857143,
-      "Games Played": 1,
+      "GP": 1,
       "rowColor": "#59dea2",
       "FG%_display": "48.00%",
       "TS%_display": "55.20%",
@@ -312,7 +312,7 @@
       "TOV_display": "2.00",
       "FLS_display": "0.00",
       "GSC_display": "26.30",
-      "Games Played_display": "1.00"
+      "GP_display": "1"
     }
   ]
 }

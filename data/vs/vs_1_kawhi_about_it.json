@@ -27,7 +27,7 @@
       "2P%": 0.5,
       "3P%": 0.36666666666666664,
       "FT%": 0.5,
-      "Games Played": 2,
+      "GP": 2,
       "rowColor": "#be60f7",
       "FG%_display": "42.00%",
       "TS%_display": "53.13%",
@@ -52,7 +52,7 @@
       "TOV_display": "2.50",
       "FLS_display": "0.50",
       "GSC_display": "20.35",
-      "Games Played_display": "2.00"
+      "GP_display": "2"
     },
     {
       "NAMES": "Brooklyn Bulmer",
@@ -79,7 +79,7 @@
       "2P%": 0.5,
       "3P%": 0.16666666666666666,
       "FT%": 0.0,
-      "Games Played": 2,
+      "GP": 2,
       "rowColor": "#5f99f5",
       "FG%_display": "25.00%",
       "TS%_display": "31.25%",
@@ -104,7 +104,7 @@
       "TOV_display": "0.00",
       "FLS_display": "1.00",
       "GSC_display": "2.75",
-      "Games Played_display": "2.00"
+      "GP_display": "2"
     },
     {
       "NAMES": "Daniel Monitto",
@@ -131,7 +131,7 @@
       "2P%": 0.4,
       "3P%": 0.3,
       "FT%": 0.0,
-      "Games Played": 1,
+      "GP": 1,
       "rowColor": "#ebc026",
       "FG%_display": "34.29%",
       "TS%_display": "42.86%",
@@ -156,7 +156,7 @@
       "TOV_display": "1.00",
       "FLS_display": "1.00",
       "GSC_display": "18.30",
-      "Games Played_display": "1.00"
+      "GP_display": "1"
     },
     {
       "NAMES": "Hayden Cromberge",
@@ -183,7 +183,7 @@
       "2P%": 0.4230769230769231,
       "3P%": 0.125,
       "FT%": 0.5,
-      "Games Played": 1,
+      "GP": 1,
       "rowColor": "#FF99CC",
       "FG%_display": "35.29%",
       "TS%_display": "38.65%",
@@ -208,7 +208,7 @@
       "TOV_display": "1.00",
       "FLS_display": "0.00",
       "GSC_display": "16.60",
-      "Games Played_display": "1.00"
+      "GP_display": "1"
     },
     {
       "NAMES": "Injury Reserves",
@@ -235,7 +235,7 @@
       "2P%": 0.4186046511627907,
       "3P%": 0.24719101123595505,
       "FT%": 0.42857142857142855,
-      "Games Played": 2,
+      "GP": 2,
       "rowColor": "#b50728",
       "FG%_display": "33.14%",
       "TS%_display": "39.74%",
@@ -260,7 +260,7 @@
       "TOV_display": "7.00",
       "FLS_display": "3.50",
       "GSC_display": "9.20",
-      "Games Played_display": "2.00"
+      "GP_display": "2"
     },
     {
       "NAMES": "Joel Kingdom-Evans",
@@ -287,7 +287,7 @@
       "2P%": 0.0,
       "3P%": 0.16666666666666666,
       "FT%": 0.0,
-      "Games Played": 2,
+      "GP": 2,
       "rowColor": "#99FF66",
       "FG%_display": "16.67%",
       "TS%_display": "25.00%",
@@ -312,7 +312,7 @@
       "TOV_display": "0.50",
       "FLS_display": "0.50",
       "GSC_display": "-0.35",
-      "Games Played_display": "2.00"
+      "GP_display": "2"
     },
     {
       "NAMES": "Matthew Bayly",
@@ -339,7 +339,7 @@
       "2P%": 0.25,
       "3P%": 0.0,
       "FT%": 0.0,
-      "Games Played": 1,
+      "GP": 1,
       "rowColor": "#A6C9EC",
       "FG%_display": "20.00%",
       "TS%_display": "18.89%",
@@ -364,7 +364,7 @@
       "TOV_display": "4.00",
       "FLS_display": "0.00",
       "GSC_display": "-0.10",
-      "Games Played_display": "1.00"
+      "GP_display": "1"
     },
     {
       "NAMES": "Zack Johnston",
@@ -391,7 +391,7 @@
       "2P%": 0.4444444444444444,
       "3P%": 0.0,
       "FT%": 0.0,
-      "Games Played": 2,
+      "GP": 2,
       "rowColor": "#59dea2",
       "FG%_display": "30.77%",
       "TS%_display": "30.77%",
@@ -416,7 +416,7 @@
       "TOV_display": "1.00",
       "FLS_display": "1.00",
       "GSC_display": "9.30",
-      "Games Played_display": "2.00"
+      "GP_display": "2"
     }
   ]
 }

@@ -50,7 +50,7 @@
     "FLS_display": "2",
     "GSC_display": "24.30",
     "Lowest GSC_display": "13",
-    "Games Played_display": "6"
+    "GP_display": "6"
   },
   {
     "NAMES": "Brodie ",
@@ -103,7 +103,7 @@
     "FLS_display": "1",
     "GSC_display": "1.00",
     "Lowest GSC_display": "1",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Brooklyn Bulmer",
@@ -156,7 +156,7 @@
     "FLS_display": "2",
     "GSC_display": "10.00",
     "Lowest GSC_display": "0",
-    "Games Played_display": "8"
+    "GP_display": "8"
   },
   {
     "NAMES": "Daniel Monitto",
@@ -209,7 +209,7 @@
     "FLS_display": "2",
     "GSC_display": "25.00",
     "Lowest GSC_display": "8",
-    "Games Played_display": "7"
+    "GP_display": "7"
   },
   {
     "NAMES": "Hayden Cromberge",
@@ -262,7 +262,7 @@
     "FLS_display": "2",
     "GSC_display": "24.50",
     "Lowest GSC_display": "2",
-    "Games Played_display": "7"
+    "GP_display": "7"
   },
   {
     "NAMES": "Injury Reserves",
@@ -315,7 +315,7 @@
     "FLS_display": "9",
     "GSC_display": "13.42",
     "Lowest GSC_display": "5",
-    "Games Played_display": "8"
+    "GP_display": "8"
   },
   {
     "NAMES": "Joel Kingdom-Evans",
@@ -368,7 +368,7 @@
     "FLS_display": "1",
     "GSC_display": "8.10",
     "Lowest GSC_display": "-4",
-    "Games Played_display": "8"
+    "GP_display": "8"
   },
   {
     "NAMES": "Lachlan Farley",
@@ -421,7 +421,7 @@
     "FLS_display": "3",
     "GSC_display": "13.20",
     "Lowest GSC_display": "8",
-    "Games Played_display": "2"
+    "GP_display": "2"
   },
   {
     "NAMES": "Matthew Bayly",
@@ -474,7 +474,7 @@
     "FLS_display": "0",
     "GSC_display": "-0.10",
     "Lowest GSC_display": "0",
-    "Games Played_display": "1"
+    "GP_display": "1"
   },
   {
     "NAMES": "Zack Johnston",
@@ -527,6 +527,6 @@
     "FLS_display": "4",
     "GSC_display": "13.70",
     "Lowest GSC_display": "1",
-    "Games Played_display": "5"
+    "GP_display": "5"
   }
 ]
