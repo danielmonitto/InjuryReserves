@@ -297,3 +297,11 @@ tbody td:first-child{
 .muted{
   color:var(--muted);
 }
+
+/* FORCE new font for all table content */
+.table-wrap table,
+.table-wrap thead th,
+.table-wrap tbody td {
+  font-family: "IBM Plex Sans", Arial, sans-serif !important;
+  font-variant-numeric: tabular-nums;
+}
