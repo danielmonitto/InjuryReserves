@@ -35,6 +35,24 @@ body{
   flex-wrap:wrap;
 }
 
+.brand-with-logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.logo{
+  height:56px;          /* adjust size here */
+  width:auto;
+  object-fit:contain;
+}
+
+.brand-text{
+  display:flex;
+  flex-direction:column;
+}
+
+
 .brand{ min-width:260px; }
 
 h1{
