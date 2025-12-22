@@ -183,34 +183,45 @@ body{
 .cards{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin:10px 0 14px;
+  gap:18px;
+  margin:16px 0 20px;
+  align-items:stretch;
 }
-@media (max-width: 800px){
-  .cards{ grid-template-columns:1fr; }
+@media (max-width: 700px){
+  .cards{
+    grid-template-columns:1fr;
+  }
 }
+
 
 .card{
   border-radius:18px;
-  padding:14px;
-  border:1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.40);
+  padding:18px 16px;
+  border:1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:6px;
 }
 
+
+/* team name */
 .card .title{
-  font-size:12px;
-  color:rgba(255,255,255,0.88);
-  text-transform:none;
-  font-weight:800;
-  letter-spacing:0.3px;
+  font-size:14px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  opacity:0.9;
 }
 
+/* score number */
 .card .score{
-  font-size:40px;
-  font-weight:950;
-  margin-top:6px;
-  letter-spacing:0.5px;
+  font-size:46px;
+  font-weight:900;
+  line-height:1;
 }
+
 
 /* ===== tables ===== */
 .table-wrap{
@@ -228,6 +239,14 @@ table{
   border-spacing:0;
   table-layout:auto;
 }
+
+table,
+thead th,
+tbody td {
+  font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.2px;
+}
+
 
 thead th{
   position:sticky;
