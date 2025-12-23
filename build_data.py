@@ -12,16 +12,16 @@ COLUMNS_SUM = ['2PM','2PA','3PM','3PA','FGM','FGA','FTM','FTA',
                'O REB','D REB','PTS','REB','AST','BLK','STL','TOV','FLS']
 
 COLOR_MAP = {
-    'Hayden Cromberge': '#FF99CC',
+    'Hayden Cromberge': '#e36868',
     'Joel Kingdom-Evans': '#99FF66',
     'Brooklyn Bulmer': '#5f99f5',
     'Adrian Monitto': '#be60f7',
     'Daniel Monitto': '#ebc026',
     'Jack Groves': '#FF99CC',
-    'Zack Johnston': '#59dea2',
+    'Zack Johnston': '#5364b0',
     'Lachlan Farley': '#59dea2',
     'James Norrish': '#fc9219',
-    'Injury Reserves': '#b50728',
+    'Injury Reserves': '#ff2929',
 }
 
 OPP_COLOR_MAP = {
