@@ -21,7 +21,7 @@ COLOR_MAP = {
     'Zack Johnston': '#5364b0',
     'Lachlan Farley': '#59dea2',
     'James Norrish': '#fc9219',
-    'Injury Reserves': '#ff2929',
+    'Injury Reserves': '#DB2E2E',
 }
 
 OPP_COLOR_MAP = {

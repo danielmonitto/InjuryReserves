@@ -120,7 +120,7 @@ body{
 }
 
 .tabs button.active{
-  border-color: rgba(181,7,40,0.75);
+  border-color: rgba(241, 41, 74, 0.75);
   background:
     linear-gradient(180deg, rgba(181,7,40,0.35), rgba(10,10,12,0.55));
   box-shadow: 0 0 0 2px rgba(181,7,40,0.18) inset;
