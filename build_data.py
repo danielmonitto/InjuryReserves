@@ -2,7 +2,7 @@ import json, re
 from pathlib import Path
 import pandas as pd
 
-FILE_PATH = "Melton Basketball.xlsm"
+FILE_PATH = "InjuryReserves.xlsm"
 OUT_ROOT = Path(".")
 DATA_DIR = OUT_ROOT / "data"
 
