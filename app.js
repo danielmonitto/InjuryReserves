@@ -127,35 +127,44 @@ function selectCols(rows, cols){
 function appendTeamPanTables(content, rows){
   const { team, pan } = splitTeam(rows);
 
-  // 1) main stats - players
+  /* ===== MAIN STATS ===== */
+
+  // players – main stats
+  if(team.length || pan.length){
+    content.appendChild(el("h3", {}, ["Quick Stats"]));
+  }
+
   if(team.length){
     const summaryCols = selectCols(team, SUMMARY_COLS);
     content.appendChild(buildTable(team, true, summaryCols, SUMMARY_LABELS));
   }
 
-  // 2) main stats - injury reserves
+  // injury reserves – main stats
   if(pan.length){
     content.appendChild(el("div", { style:"height:10px" }, []));
     const summaryCols = selectCols(pan, SUMMARY_COLS);
     content.appendChild(buildTable(pan, true, summaryCols, SUMMARY_LABELS));
   }
 
-  // spacing before advanced
+  /* ===== ADVANCED STATS TITLE ===== */
   if(team.length || pan.length){
-    content.appendChild(el("div", { style:"height:16px" }, []));
+    content.appendChild(el("h3", {}, ["Advanced Stats"]));
   }
 
-  // 3) advanced/full stats - players
+  /* ===== ADVANCED / FULL STATS ===== */
+
+  // players – advanced stats
   if(team.length){
     content.appendChild(buildTable(team, true));
   }
 
-  // 4) advanced/full stats - injury reserves
+  // injury reserves – advanced stats
   if(pan.length){
     content.appendChild(el("div", { style:"height:10px" }, []));
     content.appendChild(buildTable(pan, true));
   }
 }
+
 
 function buildTable(rows, preferDisplay=true, columnsOverride=null, labelMap=null){
   if(!rows || rows.length === 0) return el("div", { class:"note" }, ["no data"]);
@@ -212,7 +221,7 @@ async function renderGame(){
 
   const payload = await loadJSON(`data/games/${state.season}_${state.game}.json`);
 
-  content.appendChild(el("h2", {}, [`game ${payload.game} stats (season ${payload.season})`]));
+  content.appendChild(el("h2", {}, [`Season ${payload.season} Game ${payload.game} Stats`]));
 
   const cards = el("div", { class:"cards" }, [
     el("div", { class:"card", style:`background:#db2e2e; color:white;` }, [
@@ -225,7 +234,6 @@ async function renderGame(){
     ])
   ]);
   content.appendChild(cards);
-  content.appendChild(el("h3", {}, ["player stats"]));
 
   appendTeamPanTables(content, payload.players);
 }
@@ -234,7 +242,7 @@ async function renderAggregate(kind){
   const content = document.getElementById("content");
   content.innerHTML = "";
 
-  const titleMap = { averages:"player averages", totals:"player totals", highs:"career highs" };
+  const titleMap = { averages:"Player Averages", totals:"Player Totals", highs:"Career Highs" };
   content.appendChild(el("h2", {}, [titleMap[kind] || kind]));
 
   let path;
@@ -252,7 +260,7 @@ async function renderType(){
   const content = document.getElementById("content");
   content.innerHTML = "";
 
-  content.appendChild(el("h2", {}, [`stats by game type (${state.gameType})`]));
+  content.appendChild(el("h2", {}, [`Stats By Game Type (${state.gameType})`]));
   const rows = await loadJSON(`data/aggregates/by_type_${state.gameType}.json`);
   appendTeamPanTables(content, rows);
 }
@@ -263,7 +271,7 @@ async function renderVs(){
 
   const teams = state.index.seasonTeams[state.season] || [];
   const name = teams.find(t => slugify(t) === state.vsOpponentSlug) || state.vsOpponentSlug;
-  content.appendChild(el("h2", {}, [`averages vs ${String(name).toLowerCase()} (season ${state.season})`]));
+  content.appendChild(el("h2", {}, [`Averages vs ${String(name).toLowerCase()} (season ${state.season})`]));
 
   const payload = await loadJSON(`data/vs/vs_${state.season}_${state.vsOpponentSlug}.json`);
   const rows = payload.rows || [];
