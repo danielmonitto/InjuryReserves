@@ -56,6 +56,11 @@ def slugify(s: str) -> str:
     s = re.sub(r'_+', '_', s).strip('_')
     return s or "team"
 
+def filter_min_games(df: pd.DataFrame, min_games: int = 3) -> pd.DataFrame:
+    if "GP" not in df.columns:
+        return df
+    return df[df["GP"] >= min_games].copy()
+
 def exclude_injury_opp(d: pd.DataFrame) -> pd.DataFrame:
     return d[~d['OPP'].astype(str).str.contains('Injury Reserves', case=False, na=False)].copy()
 
@@ -165,6 +170,9 @@ def write_json(path: Path, obj):
 
 def main():
     df = pd.read_excel(FILE_PATH)
+    # all-time base data (exclude injury reserve opponents, require GAME > 0)
+    base = df[df['GAME'] > 0].copy()
+    base = exclude_injury_opp(base)
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     seasons = sorted(df['SEASON'].dropna().unique().tolist(), reverse=True)
@@ -186,9 +194,18 @@ def main():
     write_json(DATA_DIR / "index.json", index)
 
     base_all = exclude_injury_opp(df[df['GAME'] > 0].copy())
-    write_json(DATA_DIR / "aggregates" / "averages_all.json", calc_averages(base_all).to_dict(orient="records"))
-    write_json(DATA_DIR / "aggregates" / "totals_all.json", calc_totals(base_all).to_dict(orient="records"))
-    write_json(DATA_DIR / "aggregates" / "highs_all.json", calc_highs(base_all).drop(columns=['GP'], errors='ignore').to_dict(orient="records"))
+    averages_all = filter_min_games(calc_averages(base), 3)
+    totals_all = filter_min_games(calc_totals(base), 3)
+    highs_all = filter_min_games(calc_highs(base), 3)
+
+    write_json(DATA_DIR / "aggregates" / "averages_all.json",
+               averages_all.to_dict(orient="records"))
+
+    write_json(DATA_DIR / "aggregates" / "totals_all.json",
+               totals_all.to_dict(orient="records"))
+
+    write_json(DATA_DIR / "aggregates" / "highs_all.json",
+               highs_all.to_dict(orient="records"))
 
     opp_names_all = set(df['OPP'].dropna().unique().tolist())
 
