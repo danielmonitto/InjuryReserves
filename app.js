@@ -100,7 +100,7 @@ function splitTeam(rows){
   const pan = rows.filter(r => String(r.NAMES).includes("Injury Reserves"));
   return { team, pan };
 }
-const SUMMARY_COLS = ["NAMES","PTS","REB","AST","BLK","STL","TOV","FLS","FG%","3P%","FT%","TS%","GSC"];
+const SUMMARY_COLS = ["NAMES","PTS","REB","AST","BLK","STL","TOV","FLS","FG%","3P%","FT%","TS%","GSC","GP"];
 
 const SUMMARY_LABELS = {
   "NAMES":"name",
