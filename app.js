@@ -14,6 +14,65 @@ async function loadJSON(path){
   return await res.json();
 }
 
+const GAME_VIDEOS = {
+  /* =======================
+     SEASON 1 (games -1, 1–8)
+     ======================= */
+
+  "1_-1": {
+    highlights: "",
+    full: ""
+  },
+  "1_1": { highlights: "https://youtu.be/TuhGsU7g8Cw?si=_ub67gn5fRS1DNmr", full: "https://youtu.be/HJ09aE7yl1k?si=zw2yF--pbbsWaDrF" },
+  "1_2": { highlights: "https://youtu.be/Zi4JsPZL_XU?si=qoU5qhK4CYBcjxTe", full: "https://youtu.be/Lj9Ldb4mOHw?si=J0A8YhSFutEGYakT" },
+  "1_3": { highlights: "https://youtu.be/5_Q0uLOkrIA?si=B0zfxgX1GS_PRo41", full: "https://youtu.be/hN33TNS1lKc?si=f2rEAt3Hngy1_oJ6" },
+  "1_4": { highlights: "https://youtu.be/PqeMcCG0484?si=VhIjF9R2H2R71RMB", full: "https://youtu.be/3lJUMncv15w?si=C5c2O8GNOs7kGZGl" },
+  "1_5": { highlights: "https://youtu.be/9GTpawXcBOc?si=AqmUSsMYLO0n6nLx", full: "https://youtu.be/i8DPU3Gszwk?si=jet5UNObe8sWhXGc" },
+  "1_6": { highlights: "https://youtu.be/r_xKFs-bhdE?si=z7vuMyXVQ2e7i96v", full: "https://youtu.be/iqltjeugIe4?si=proYkYoot3WQHYDA" },
+  "1_7": { highlights: "https://youtu.be/_jlVPWDIrBM?si=2rFV5FXfO9EI_q_A", full: "https://youtu.be/l-oPeeYAxA8?si=t1t1eRDXBbQq595C" },
+  "1_8": { highlights: "https://youtu.be/2JqKKGoF1CI?si=a_BIJ0NlUCrSRldu", full: "https://youtu.be/bv1wPIaH6NY?si=jPKBVb3FMwgCkqh8" },
+
+  /* =======================
+     SEASON 2 (games -3 to -1, 1–15)
+     ======================= */
+
+  "2_-3": { highlights: "https://youtu.be/VUwmPmtK3qM?si=pfqM1QUWKctRaAqF", full: "https://youtu.be/MbA02XWEEjY?si=bBmFAthm3elkUbva" },
+  "2_-2": { highlights: "https://youtu.be/-YKs3dteuX0?si=ENM8HR_LSTWHfyfu", full: "https://youtu.be/Hvk6CSezX8U?si=HfoNrX6sT0fZ-xS2" },
+  "2_-1": { highlights: "https://youtu.be/nsiXyS4cBpM?si=UYF4PG6l4Vx_gw5f", full: "https://youtu.be/eBk0OkKX37Y?si=HcTcd6L8rudpKTvE" },
+
+  "2_1":  { highlights: "https://youtu.be/-YDefr4-Cus?si=BjXSkszaWxKGzmUX", full: "https://youtu.be/36mHwCukXVQ?si=wi_4efknsgYDUdEI" },
+  "2_2":  { highlights: "https://youtu.be/jtrjhIO-5Vk?si=eyaJK4mc-sg33eXF", full: "https://youtu.be/1dQoPdkiei0?si=60nQRVMJR_PCLjLt" },
+  "2_3":  { highlights: "https://youtu.be/pVF2EH_q_t0?si=XKfuOfM5UMru5ane", full: "https://youtu.be/tZk1YLcqXxo?si=LdV8fpju_Bm8cNex" },
+  "2_4":  { highlights: "https://youtu.be/gw3zq-WRm7Q?si=U1iuYBCwF0gMJ-UL", full: "https://youtu.be/8_nIAyQc0pY?si=0o_kYMDopLN1LFeF" },
+  "2_5":  { highlights: "https://youtu.be/WfUPHlvSkYw?si=zl-gIsIpRMUmWHkr", full: "https://youtu.be/Q0NkLdwIZiU?si=NML0bZ-jJIVOHBBl" },
+  "2_6":  { highlights: "https://youtu.be/yTS-DEy0PhQ?si=fG1EWZH31FKJDg5d", full: "https://youtu.be/MBK3GPOh5Yo?si=PYOfVS1OxxygVes5" },
+  "2_7":  { highlights: "https://youtu.be/-sbhNnIzcdI?si=nqLDEz8rMRskjZ7F", full: "https://youtu.be/sxQWeUJG4QU?si=WhfVMC31-nH58GKx" },
+  "2_8":  { highlights: "https://youtu.be/UA631kFqkI8?si=ptezngXrUg7gZiYw", full: "https://youtu.be/PVKLlxK6HgQ?si=v0-Rk3q2w2CjOSz7" },
+  "2_9":  { highlights: "https://youtu.be/wISZIZCjmj8?si=3-BDVWzp422EJBim", full: "https://youtu.be/-msWsD2VP5c?si=mLCQtV6TxUk8Jp_j" },
+  "2_10": { highlights: "https://youtu.be/H8zZHxd8d1A?si=WQZf5P1lGrKTIz7M", full: "https://youtu.be/f4_50jpZpaU?si=7iCeOAMqu85XDGMt" },
+  "2_11": { highlights: "https://youtu.be/RvTXl5Y7udg?si=58OM76rzRH9UYyRD", full: "https://youtu.be/2uRKFUbU-HI?si=IGfgOTYzmeEztQxk" },
+  "2_12": { highlights: "https://youtu.be/R_E53o280tc?si=VwGFrXG_Khl1A2FK", full: "https://youtu.be/ip_8rh9xS7c?si=5qVYkXaNaEGhMQ1t" },
+  "2_13": { highlights: "https://youtu.be/C7U6Xml0C24?si=NCWQXeCYw-ApoEnI", full: "https://youtu.be/_-ElmkOVvXw?si=hrg4rQcdMUfM9bMM" },
+  "2_14": { highlights: "https://youtu.be/YrvBCYhP9uQ?si=Rf9SYgGG57ZctvEM", full: "https://youtu.be/VFjRL1HS33o?si=y3WtCRV9rQlhW8Re" },
+  "2_15": { highlights: "https://youtu.be/3uU1sPSJWUY?si=Zf1EOFJ1i91Tv_Hb", full: "https://youtu.be/PLCswvdE2NM?si=411snao5LHaUm7RO" },
+
+  /* =======================
+     SEASON 3 (games -1, 1–7)
+     ======================= */
+
+  "3_-1": { highlights: "https://youtu.be/PCja5P4AJUg?si=zom0lpNDUGq8M-Jt", full: "https://youtu.be/YOTnmWINbsw?si=yOjznEiGL51MLHQd" },
+
+  "3_1": { highlights: "https://youtu.be/WL7CB8PBLN8?si=hdW5KSlNPeJfrGcr", full: "https://youtu.be/ZDnecme0aq8?si=CoYz3DzN0TUWdyHt" },
+  "3_2": { highlights: "https://youtu.be/wm3PoGC_69Y?si=kn0kafjppOX1r9dX", full: "https://youtu.be/tsPV9CI8Hi8?si=GcgwcUs72I-hUH6T" },
+  "3_3": { highlights: "https://youtu.be/Yiu2GjbAAwc?si=wtgsOaWHhi96yZZO", full: "https://youtu.be/NAEHUH1eHzs?si=DgdwJEFH-KYYp1Dk" },
+  "3_4": { highlights: "https://youtu.be/QH4euaws45M?si=zzwsMGRaLdMDqVK_", full: "https://youtu.be/P2CEUvMANnw?si=pNjbPjaFZtKrF7Kz" },
+  "3_5": { highlights: "https://youtu.be/Qb3DfykRf2w?si=IXukh-ImQDMOXQ9k", full: "https://youtu.be/8bJP4bjhsTc?si=cLEPUm2GNQgk1taq" },
+  "3_6": { highlights: "", full: "https://youtu.be/PeRAu0btAOg?si=ERppFtRqPnrd8GCe" },
+  "3_7": { highlights: "https://youtu.be/VlQ7-4MRbHM?si=l1OzbLoNg9xsoWRe", full: "https://youtu.be/zWJzhAlJvDs?si=lshix12IxWw9FjTF" }
+};
+
+
+
 function el(tag, attrs={}, children=[]){
   const n = document.createElement(tag);
   Object.entries(attrs).forEach(([k,v])=>{
@@ -236,6 +295,34 @@ async function renderGame(){
   content.appendChild(cards);
 
   appendTeamPanTables(content, payload.players);
+
+  // ===== GAME VIDEOS =====
+const videoKey = `${payload.season}_${payload.game}`;
+const videos = GAME_VIDEOS[videoKey];
+
+if (videos) {
+  content.appendChild(el("div", { style: "margin-top:24px" }, [
+    el("h3", {}, ["Game Footage"]),
+    el("div", { class: "video-links" }, [
+      videos.highlights
+        ? el("a", {
+            href: videos.highlights,
+            target: "_blank",
+            class: "video-link"
+          }, ["▶ Watch Highlights"])
+        : null,
+
+      videos.full
+        ? el("a", {
+            href: videos.full,
+            target: "_blank",
+            class: "video-link"
+          }, ["▶ Watch Full Game"])
+        : null
+    ].filter(Boolean))
+  ]));
+}
+
 }
 
 async function renderAggregate(kind){

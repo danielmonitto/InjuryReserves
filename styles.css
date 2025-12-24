@@ -315,3 +315,26 @@ tbody td:first-child{
   font-family: "IBM Plex Sans", Arial, sans-serif !important;
   font-variant-numeric: tabular-nums;
 }
+
+.video-links{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.video-link{
+  display:inline-block;
+  padding:10px 16px;
+  border-radius:10px;
+  background:linear-gradient(180deg, #f02929, #c91818);
+  color:white;
+  font-weight:600;
+  text-decoration:none;
+  box-shadow:0 6px 14px rgba(0,0,0,0.35);
+  transition:transform 0.2s, box-shadow 0.2s;
+}
+
+.video-link:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 22px rgba(0,0,0,0.45);
+}
