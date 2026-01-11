@@ -189,9 +189,19 @@
       filter: brightness(1.06);
     }
 
-    .trow{
-      position: relative;
-    }
+   .trow{
+  position: relative;
+}
+
+/* race stripe */
+
+
+/* keep content above the stripe */
+.trow > .td{
+  position: relative;
+  z-index: 1;
+}
+
 
     .trow::before{
       content:"";
@@ -204,6 +214,16 @@
       border-radius: 6px 0 0 6px;
       pointer-events: none;
     }
+
+    .trow::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--rowcolor);
+  opacity: 0.18;          /* strength of stripe */
+  pointer-events: none;
+  z-index: 0;
+}
 
     .trow.hasColor{
       background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(0,0,0,0.0));
@@ -453,6 +473,7 @@
       chip.className = "chip";
 
       const c = COLOR_MAP[p.NAMES];
+      if (c) row.style.setProperty("--rowcolor", c);
       if (c) {
         row.classList.add("hasColor");
         row.style.setProperty("--rowcolor", c);
