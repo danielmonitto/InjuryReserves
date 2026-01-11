@@ -56,10 +56,6 @@ const GAME_VIDEOS = {
   "2_14": { highlights: "https://youtu.be/YrvBCYhP9uQ?si=Rf9SYgGG57ZctvEM", full: "https://youtu.be/VFjRL1HS33o?si=y3WtCRV9rQlhW8Re" },
   "2_15": { highlights: "https://youtu.be/3uU1sPSJWUY?si=Zf1EOFJ1i91Tv_Hb", full: "https://youtu.be/PLCswvdE2NM?si=411snao5LHaUm7RO" },
 
-  /* =======================
-     SEASON 3 (games -1, 1–7)
-     ======================= */
-
   "3_-1": { highlights: "https://youtu.be/PCja5P4AJUg?si=zom0lpNDUGq8M-Jt", full: "https://youtu.be/YOTnmWINbsw?si=yOjznEiGL51MLHQd" },
 
   "3_1": { highlights: "https://youtu.be/WL7CB8PBLN8?si=hdW5KSlNPeJfrGcr", full: "https://youtu.be/ZDnecme0aq8?si=CoYz3DzN0TUWdyHt" },
