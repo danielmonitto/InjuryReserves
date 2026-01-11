@@ -124,6 +124,16 @@
     "Brooklyn Bulmer"
   ];
 
+  const COLOR_MAP = {
+  "Brooklyn Bulmer": "#5f99f5",
+  "Daniel Monitto": "#ebc026",
+  "Lachlan Farley": "#59dea2",
+  "James Norrish": "#fc9219",
+  "Vince Tomasello": "#63b010",
+  "Austin Thorneycroft": "#8858e8",
+};
+
+
   const EDITABLE = [
     ["2PM","2pm"], ["2PA","2pa"], ["3PM","3pm"], ["3PA","3pa"],
     ["FTM","ftm"], ["FTA","fta"],
@@ -221,6 +231,13 @@
 
       const row = document.createElement("div");
       row.className = "trow";
+
+      const color = COLOR_MAP[p.NAMES];
+      if (color) {
+        row.style.background = color;
+        row.style.color = "#000"; // keeps text readable
+      }
+
 
       const name = document.createElement("div");
       name.className = "td namecell";
