@@ -4,112 +4,329 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>injury reserves - admin</title>
-  <div>
-  <div class="hint">our score (auto)</div>
-  <input id="teamScore" value="0" disabled />
-</div>
-<div>
-  <div class="hint">opp score</div>
-  <input id="oppScore" value="0" />
-</div>
 
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 1200px; margin: 20px auto; padding: 0 12px; }
-    .top { display:flex; gap:12px; flex-wrap: wrap; align-items:end; }
-    input, select, button { padding: 10px; font-size: 14px; }
-    button { cursor: pointer; }
-    .hint { color:#666; font-size: 13px; }
-    .small { font-size: 12px; color:#555; margin-top: 8px; }
+    :root{
+      --bg0:#0b0c10;
+      --bg1:#11131a;
+      --panel: rgba(10,10,14,0.62);
+      --stroke: rgba(255,255,255,0.12);
+      --stroke2: rgba(255,255,255,0.08);
+      --text: #f2f2f2;
+      --muted: rgba(242,242,242,0.75);
+      --red1:#DB2E2E;
+      --red2:#b50728;
+    }
 
-    .table { margin-top: 14px; border:1px solid #ddd; border-radius: 14px; overflow: hidden; }
-    .thead, .trow {
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% 0%, rgba(219,46,46,0.22), transparent 60%),
+        radial-gradient(1100px 520px at 90% 20%, rgba(181,7,40,0.18), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height: 100vh;
+    }
+
+    .wrap{
+      width: min(1200px, 94vw);
+      margin: 22px auto;
+      padding: 0 0 28px;
+    }
+
+    .header{
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(15,16,22,0.55);
+      border: 1px solid var(--stroke);
+      box-shadow: 0 22px 70px rgba(0,0,0,0.60);
+      backdrop-filter: blur(14px);
+    }
+
+    .title{
+      font-size: 28px;
+      font-weight: 750;
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel{
+      margin-top: 14px;
+      border-radius: 22px;
+      padding: 16px;
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+      backdrop-filter: blur(14px);
+    }
+
+    .top{
+      display:flex;
+      gap:12px;
+      flex-wrap: wrap;
+      align-items:end;
+    }
+
+    .hint{
+      color: var(--muted);
+      font-size: 12px;
+      margin: 0 0 6px;
+    }
+
+    input, select, button{
+      padding: 10px 12px;
+      font-size: 14px;
+      color: var(--text);
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,0.35);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    input:disabled{
+      opacity: 0.75;
+      cursor: not-allowed;
+    }
+
+    input:focus, select:focus{
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(181,7,40,0.20), 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    button{
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    button.primary{
+      background: linear-gradient(180deg, rgba(219,46,46,0.95), rgba(181,7,40,0.85));
+      border-color: rgba(255,255,255,0.14);
+      box-shadow: 0 0 0 2px rgba(181,7,40,0.18) inset, 0 18px 44px rgba(0,0,0,0.45);
+    }
+
+    button.ghost{
+      background: rgba(0,0,0,0.28);
+    }
+
+    .small{
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+
+    .msg{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--stroke);
+      display:none;
+    }
+
+    .msg.danger{
+      border-color: rgba(255,90,90,0.40);
+    }
+
+    .table{
+      margin-top: 14px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--stroke);
+      background: rgba(0,0,0,0.28);
+      box-shadow: 0 16px 55px rgba(0,0,0,0.55);
+    }
+
+    .thead, .trow{
       display: grid;
       grid-template-columns:
-        220px  /* name */
-        repeat(13, 72px) /* editable stats */
-        80px; /* remove */
-      gap: 0;
+        220px
+        repeat(13, 70px)
+        120px; /* remove */
       align-items: center;
     }
-    .thead { background: #fafafa; border-bottom: 1px solid #eee; }
-    .th, .td { padding: 10px 8px; border-right: 1px solid #eee; }
-    .thead .th:last-child, .trow .td:last-child { border-right: none; }
 
-    .trow { border-bottom: 1px solid #eee; }
-    .trow:last-child { border-bottom: none; }
+    .thead{
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: linear-gradient(180deg, rgba(181,7,40,0.35), rgba(0,0,0,0.85));
+      border-bottom: 1px solid var(--stroke2);
+      backdrop-filter: blur(10px);
+    }
 
-    .statbox {
-      border: 1px solid #e2e2e2;
-      border-radius: 12px;
+    .th, .td{
+      padding: 12px 10px;
+      border-right: 1px solid var(--stroke2);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-size: 11px;
+      color: rgba(242,242,242,0.85);
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .td{
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 650;
+      border-top: 1px solid var(--stroke2);
+    }
+
+    .thead .th:last-child, .trow .td:last-child{ border-right: none; }
+
+    .trow:hover .td{
+      filter: brightness(1.06);
+    }
+
+    .trow{
+      position: relative;
+    }
+
+    .trow::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:6px;
+      background: var(--rowcolor, transparent);
+      border-radius: 6px 0 0 6px;
+      pointer-events: none;
+    }
+
+    .trow.hasColor{
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(0,0,0,0.0));
+    }
+
+    .namecell{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .chip{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.45);
+      flex: 0 0 auto;
+    }
+
+    .statbox{
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
       padding: 8px 8px;
       user-select: none;
       cursor: pointer;
       text-align: center;
-      background: white;
+      background: rgba(0,0,0,0.25);
     }
-    .statlabel { font-size: 10px; color:#666; margin-bottom: 2px; }
-    .statval { font-size: 18px; font-weight: 700; line-height: 1.1; }
-    .namecell { font-weight: 700; }
-    .msg { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background:#f6f6f6; border:1px solid #e5e5e5; display:none; }
-    .danger { border-color: #ffb3b3; }
 
-    @media (max-width: 1100px) {
-      body { max-width: 100%; }
-      .thead, .trow { overflow-x: auto; }
-      .table { overflow-x: auto; }
+    .statlabel{
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      font-weight: 800;
+    }
+
+    .statval{
+      font-size: 16px;
+      font-weight: 850;
+      line-height: 1.1;
+    }
+
+    .removeBtn{
+      width: 100%;
+      padding: 10px 10px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.30);
+    }
+
+    @media (max-width: 1100px){
+      .table{ overflow-x: auto; }
+      .thead, .trow{ min-width: 1250px; }
     }
   </style>
 </head>
+
 <body>
-  <h2>admin game entry</h2>
-
-  <div class="top">
-    <div>
-      <div class="hint">season</div>
-      <input id="season" value="4" />
-    </div>
-    <div>
-      <div class="hint">game</div>
-      <input id="game" value="1" />
-    </div>
-    <div style="min-width: 220px;">
-      <div class="hint">opp</div>
-      <input id="opp" placeholder="OPP" />
-    </div>
-    <div>
-      <div class="hint">type</div>
-      <select id="type">
-        <option value="REG">REG</option>
-        <option value="PRE">PRE</option>
-        <option value="FINAL">FINAL</option>
-      </select>
+  <div class="wrap">
+    <div class="header">
+      <h1 class="title">admin game entry</h1>
+      <div class="subtitle">click a stat to +1. shift+click to -1. derived stats auto-calc on save.</div>
     </div>
 
-    <div style="min-width: 260px;">
-      <div class="hint">add player</div>
-      <select id="playerSelect" style="min-width: 260px;">
-        <option value="">select player...</option>
-      </select>
+    <div class="panel">
+      <div class="top">
+        <div>
+          <div class="hint">season</div>
+          <input id="season" value="4" />
+        </div>
+
+        <div>
+          <div class="hint">game</div>
+          <input id="game" value="1" />
+        </div>
+
+        <div style="min-width: 220px;">
+          <div class="hint">opp</div>
+          <input id="opp" placeholder="OPP" />
+        </div>
+
+        <div>
+          <div class="hint">type</div>
+          <select id="type">
+            <option value="REG">REG</option>
+            <option value="PRE">PRE</option>
+            <option value="FINAL">FINAL</option>
+          </select>
+        </div>
+<div>
+          <div class="hint">opp score</div>
+          <input id="oppScore" value="0" />
+        </div>
+
+        <div style="min-width: 260px;">
+          <div class="hint">add player</div>
+          <select id="playerSelect" style="min-width: 260px;">
+            <option value="">select player...</option>
+          </select>
+        </div>
+
+        <div style="min-width: 220px;">
+          <div class="hint">or custom name</div>
+          <input id="customName" placeholder="new player name" />
+        </div>
+
+        <button id="addPlayer" class="ghost">add</button>
+        <button id="save" class="primary">save game</button>
+      </div>
+
+      <div class="small">
+        click a stat to +1. shift+click to -1. fgm/fga/pts/reb/%/gsc are calculated automatically.
+      </div>
+
+      <div id="msg" class="msg"></div>
+
+      <div class="table" id="table">
+        <div class="thead" id="thead"></div>
+        <div id="tbody"></div>
+      </div>
     </div>
-
-    <div style="min-width: 220px;">
-      <div class="hint">or custom name</div>
-      <input id="customName" placeholder="new player name" />
-    </div>
-
-    <button id="addPlayer">add</button>
-    <button id="save">save game</button>
-  </div>
-
-  <div class="small">
-    double click a stat to +1. shift + double click to -1. derived stats (%/gsc/fgm/fga/pts/reb) still auto-calc on save.
-  </div>
-
-  <div id="msg" class="msg"></div>
-
-  <div class="table" id="table">
-    <div class="thead" id="thead"></div>
-    <div id="tbody"></div>
   </div>
 
 <script>
@@ -124,15 +341,15 @@
     "Brooklyn Bulmer"
   ];
 
+  // only common names
   const COLOR_MAP = {
-  "Brooklyn Bulmer": "#5f99f5",
-  "Daniel Monitto": "#ebc026",
-  "Lachlan Farley": "#59dea2",
-  "James Norrish": "#fc9219",
-  "Vince Tomasello": "#63b010",
-  "Austin Thorneycroft": "#8858e8",
-};
-
+    "Brooklyn Bulmer": "#5f99f5",
+    "Daniel Monitto": "#ebc026",
+    "Lachlan Farley": "#59dea2",
+    "James Norrish": "#fc9219",
+    "Vince Tomasello": "#63b010",
+    "Austin Thorneycroft": "#8858e8",
+  };
 
   const EDITABLE = [
     ["2PM","2pm"], ["2PA","2pa"], ["3PM","3pm"], ["3PA","3pa"],
@@ -157,16 +374,13 @@
   }
 
   function derive(p) {
-    // clamp editable
     for (const [k] of EDITABLE) p[k] = clamp0(p[k] || 0);
 
-    // derived core
     p.FGM = p["2PM"] + p["3PM"];
     p.FGA = p["2PA"] + p["3PA"];
     p.REB = p.OREB + p.DREB;
     p.PTS = 2*p["2PM"] + 3*p["3PM"] + p.FTM;
 
-    // %
     p["2P%"] = pct(p["2PM"], p["2PA"]);
     p["3P%"] = pct(p["3PM"], p["3PA"]);
     p["FT%"] = pct(p.FTM, p.FTA);
@@ -184,7 +398,6 @@
       "2PM":0,"2PA":0,"3PM":0,"3PA":0,
       FTM:0,FTA:0, OREB:0,DREB:0,
       AST:0,STL:0,BLK:0,TOV:0,FLS:0,
-      // derived placeholders
       FGM:0,FGA:0,PTS:0,REB:0,
       "FG%":0,"TS%":0,"FT%":0,"2P%":0,"3P%":0,
       GSC:0
@@ -232,19 +445,33 @@
       const row = document.createElement("div");
       row.className = "trow";
 
-      const color = COLOR_MAP[p.NAMES];
-      if (color) {
-        row.style.background = color;
-        row.style.color = "#000"; // keeps text readable
-      }
-
-
+      // name cell with color chip + row strip (only for mapped names)
       const name = document.createElement("div");
       name.className = "td namecell";
-      name.textContent = p.NAMES;
+
+      const chip = document.createElement("div");
+      chip.className = "chip";
+
+      const c = COLOR_MAP[p.NAMES];
+      if (c) {
+        row.classList.add("hasColor");
+        row.style.setProperty("--rowcolor", c);
+        row.style.borderLeft = "6px solid " + c;
+        row.style.background = "linear-gradient(90deg, " + c + "22 0%, rgba(0,0,0,0) 22%)";
+        chip.style.background = c;
+      } else {
+        chip.style.background = "rgba(255,255,255,0.25)";
+        chip.style.opacity = "0.8";
+      }
+
+      const label = document.createElement("div");
+      label.textContent = p.NAMES;
+
+      name.appendChild(chip);
+      name.appendChild(label);
       row.appendChild(name);
 
-      for (const [key,label] of EDITABLE) {
+      for (const [key,labelTxt] of EDITABLE) {
         const cell = document.createElement("div");
         cell.className = "td";
 
@@ -256,10 +483,9 @@
           renderRows();
         };
 
-
         const l = document.createElement("div");
         l.className = "statlabel";
-        l.textContent = label;
+        l.textContent = labelTxt;
 
         const v = document.createElement("div");
         v.className = "statval";
@@ -274,6 +500,7 @@
       const rm = document.createElement("div");
       rm.className = "td";
       const btn = document.createElement("button");
+      btn.className = "removeBtn";
       btn.textContent = "remove";
       btn.onclick = () => {
         state.players.splice(idx, 1);
@@ -309,7 +536,6 @@
 
     if (!name) return;
 
-    // avoid duplicates
     const exists = state.players.some(p => p.NAMES.toLowerCase() === name.toLowerCase());
     if (exists) {
       showMsg("player already added", false);
@@ -338,7 +564,6 @@
     }
 
     const players = state.players.map(p => derive({...p}));
-
     const oppScore = Number(document.getElementById("oppScore").value || 0);
 
     const payload = {
@@ -347,11 +572,10 @@
         game: Number(game),
         opp,
         type,
-        oppScore   // ✅ THIS WAS MISSING
+        oppScore
       },
       players
     };
-
 
     try {
       const res = await fetch(API + "/api/save_game", {
