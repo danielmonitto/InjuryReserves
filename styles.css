@@ -338,3 +338,45 @@ tbody td:first-child{
   transform:translateY(-2px);
   box-shadow:0 10px 22px rgba(0,0,0,0.45);
 }
+
+/* ===== polish pass overrides (append at end of file) ===== */
+
+.header{
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 22px 70px rgba(0,0,0,0.60);
+}
+
+.brand-row{
+  gap: 14px;
+}
+
+.brand-text h1{
+  font-size: 28px;
+  letter-spacing: 0.2px;
+}
+
+.subtitle{
+  opacity: 0.85;
+}
+
+.tabs{
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.tabs button{
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 650;
+  letter-spacing: 0.2px;
+  background: rgba(0,0,0,0.28);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.tabs button.active{
+  background: linear-gradient(180deg, rgba(219,46,46,0.95), rgba(181,7,40,0.85));
+  border-color: rgba(255,255,255,0.14);
+  box-shadow: 0 0 0 2px rgba(181,7,40,0.18) inset, 0 18px 44px rgba(0,0,0,0.45);
+}
