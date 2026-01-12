@@ -9,33 +9,105 @@ DB_PATH = Path("ir_stats.db")
 
 app = Flask(__name__)
 
-# live scoreboard state (used by obs)
-LIVE_SCORE = {"home": 0, "away": 0}
+# live overlay state (used by obs)
+# includes opponent name + colors so the overlay can update instantly when edited in admin
+LIVE_STATE = {
+    "home": 0,
+    "away": 0,
+    "opp": "OPP",
+    "injColor": "#DB2E2E",
+    "oppColor": "#4B5563",
+}
+
+# ---- sqlite helpers ----
+
+def con():
+    return sqlite3.connect(DB_PATH)
+
+def ensure_meta_tables():
+    c = con()
+    cur = c.cursor()
+    cur.execute(
+        """
+        create table if not exists OpponentMeta (
+            opp text primary key,
+            color text
+        )
+        """
+    )
+    c.commit()
+    c.close()
+
+def set_opp_color(opp: str, color: str) -> None:
+    if not opp:
+        return
+    ensure_meta_tables()
+    c = con()
+    cur = c.cursor()
+    cur.execute(
+        """
+        insert into OpponentMeta (opp, color)
+        values (?, ?)
+        on conflict(opp) do update set color=excluded.color
+        """,
+        (opp, color),
+    )
+    c.commit()
+    c.close()
+
+def get_opp_color(opp: str) -> str | None:
+    if not opp:
+        return None
+    ensure_meta_tables()
+    c = con()
+    cur = c.cursor()
+    cur.execute("select color from OpponentMeta where opp=?", (opp,))
+    row = cur.fetchone()
+    c.close()
+    return row[0] if row and row[0] else None
+
+# ---- build step ----
+
+def rebuild_json():
+    # keep your existing pipeline
+    subprocess.check_call([sys.executable, "build_data_from_sqlite.py"])
+
+# ---- live overlay api ----
 
 @app.post("/api/live_score")
 def live_score():
-    body = request.get_json(force=True)
-    LIVE_SCORE["home"] = int(body.get("home", 0))
-    LIVE_SCORE["away"] = int(body.get("away", 0))
+    body = request.get_json(force=True) or {}
+
+    # scores
+    LIVE_STATE["home"] = int(body.get("home", LIVE_STATE["home"]) or 0)
+    LIVE_STATE["away"] = int(body.get("away", LIVE_STATE["away"]) or 0)
+
+    # opp label + color
+    opp = str(body.get("opp", LIVE_STATE["opp"]) or "").strip()
+    if opp:
+        LIVE_STATE["opp"] = opp
+
+    opp_color = str(body.get("oppColor", LIVE_STATE["oppColor"]) or "").strip()
+    if opp_color:
+        LIVE_STATE["oppColor"] = opp_color
+
     return {"ok": True}
 
 @app.get("/api/scoreboard")
 def scoreboard_live():
-    return LIVE_SCORE
+    return jsonify(LIVE_STATE)
 
-# the columns your db already has
-DB_COLS = [
-    "OPP","SEASON","GAME","NAMES",
-    "2PM","2PA","3PM","3PA","FGM","FGA","FTM","FTA",
-    "OREB","DREB","PTS","REB","AST","BLK","STL","TOV","FLS",
-    "FG%","TS%","FT%","2P%","3P%","GSC","TYPE"
-]
+@app.get("/api/opponent_meta")
+def opponent_meta():
+    # used by the stats site as a fallback to color the opponent card
+    opp = str(request.args.get("opp", "")).strip()
+    return jsonify({
+        "ok": True,
+        "opp": opp,
+        "color": get_opp_color(opp) or LIVE_STATE.get("oppColor"),
+    })
 
-def rebuild_json():
-    subprocess.check_call([sys.executable, "build_data_from_sqlite.py"])
-
-def con():
-    return sqlite3.connect(DB_PATH)
+# ---- ui routes ----
 
 @app.get("/")
 def ui():
@@ -45,18 +117,21 @@ def ui():
 def scoreboard_page():
     return render_template("scoreboard.html")
 
-# optional: db-based scoreboard (not used by obs overlay)
+# ---- optional: db-based scoreboard (not used by obs overlay) ----
+
 @app.get("/api/scoreboard_db")
 def scoreboard_db():
     c = con()
     cur = c.cursor()
 
-    cur.execute("""
-      select NAMES, PTS
-      from InjuryReserves
-      where SEASON = (select max(SEASON) from InjuryReserves)
-        and GAME = (select max(GAME) from InjuryReserves)
-    """)
+    cur.execute(
+        """
+        select NAMES, PTS
+        from InjuryReserves
+        where SEASON = (select max(SEASON) from InjuryReserves)
+          and GAME = (select max(GAME) from InjuryReserves)
+        """
+    )
 
     rows = cur.fetchall()
     c.close()
@@ -75,6 +150,16 @@ def scoreboard_db():
 def health():
     return {"ok": True, "db_exists": DB_PATH.exists()}
 
+# ---- save game ----
+
+# the columns your db already has
+DB_COLS = [
+    "OPP","SEASON","GAME","NAMES",
+    "2PM","2PA","3PM","3PA","FGM","FGA","FTM","FTA",
+    "OREB","DREB","PTS","REB","AST","BLK","STL","TOV","FLS",
+    "FG%","TS%","FT%","2P%","3P%","GSC","TYPE"
+]
+
 @app.post("/api/save_game")
 def save_game():
     body = request.get_json(force=True)
@@ -86,11 +171,16 @@ def save_game():
     opp = str(meta["opp"]).strip()
     gtype = str(meta.get("type", "REG")).strip()
     opp_score = int(meta.get("oppScore", 0) or 0)
+    opp_color = str(meta.get("oppColor", "") or "").strip()
 
     if not opp:
         return jsonify({"ok": False, "error": "opp required"}), 400
     if not players:
         return jsonify({"ok": False, "error": "no players"}), 400
+
+    # persist opponent color (doesn't affect existing stats functionality)
+    if opp_color:
+        set_opp_color(opp, opp_color)
 
     def blank_row():
         r = {c: None for c in DB_COLS}
@@ -171,7 +261,13 @@ def save_game():
     c.close()
 
     rebuild_json()
-    return jsonify({"ok": True, "inserted": len(all_rows), "teamScore": team_score, "oppScore": opp_score})
+    return jsonify({
+        "ok": True,
+        "inserted": len(all_rows),
+        "teamScore": team_score,
+        "oppScore": opp_score,
+        "oppColor": opp_color or (get_opp_color(opp) or None),
+    })
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

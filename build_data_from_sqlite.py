@@ -23,8 +23,6 @@ COLOR_MAP = {
     'Zack Johnston': '#5364b0',
     'Lachlan Farley': '#59dea2',
     'James Norrish': '#fc9219',
-    'Vince Tomasello': '#63b010',
-    'Austin Thorneycroft': '#8858e8',
     'Injury Reserves': '#DB2E2E',
 }
 
@@ -51,7 +49,6 @@ OPP_COLOR_MAP = {
     'Low Expectations': '#b642f5',
     'too drunk to dunk': '#ff4fdf',
     'Jims Ballers': '#6203fc',
-    'GRIPP': '#fb94ff',
 }
 DEFAULT_OPP_COLOR = "#6C757D"
 
@@ -254,26 +251,7 @@ def main():
                 & (g_df["NAMES"].astype(str) == opp)
                 ]["PTS"].sum()
 
-            # ---- build team totals row (injury reserves) ----
-            tot = {}
-            tot["NAMES"] = "Injury Reserves"
-
-            # sum counting stats to match the old “team totals” row
-            sum_cols = ["2PM", "2PA", "3PM", "3PA", "FGM", "FGA", "FTM", "FTA", "O REB", "D REB",
-                        "PTS", "REB", "AST", "BLK", "STL", "TOV", "FLS"]
-            for c in sum_cols:
-                tot[c] = float(players[c].sum()) if c in players.columns else 0.0
-
-            # team GSC shown on site is the average of player GSC (your screenshot matches this)
-            tot["GSC"] = float(players["GSC"].mean()) if "GSC" in players.columns and len(players) else 0.0
-
-            # drop metadata columns from players (but keep the totals row)
-            players = players.drop(columns=['OPP', 'SEASON', 'GAME', 'TYPE'], errors='ignore')
-
-            # append totals row
-            players = pd.concat([players, pd.DataFrame([tot])], ignore_index=True)
-
-            # recalc %s, colors, display formatting
+            players = players.drop(columns=['OPP','SEASON','GAME','TYPE'], errors='ignore')
             players = add_percentages(players)
             players['rowColor'] = players['NAMES'].map(lambda x: COLOR_MAP.get(x, '#A6C9EC'))
             players = format_fields(players, "game")

@@ -116,6 +116,15 @@
       background: rgba(0,0,0,0.28);
     }
 
+
+    .smallbtn{
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
     .small{
       color: var(--muted);
       font-size: 12px;
@@ -308,6 +317,11 @@
         </div>
 
         <div>
+          <div class="hint">opp colour</div>
+          <input id="oppColor" type="color" value="#4B5563" />
+        </div>
+
+        <div>
           <div class="hint">type</div>
           <select id="type">
             <option value="REG">REG</option>
@@ -318,6 +332,12 @@
 <div>
           <div class="hint">opp score</div>
           <input id="oppScore" value="0" />
+          <div class="btnrow" style="display:flex; gap:8px; margin-top:8px;">
+            <button class="ghost smallbtn" data-oppdelta="-1">-1</button>
+            <button class="ghost smallbtn" data-oppdelta="1">+1</button>
+            <button class="ghost smallbtn" data-oppdelta="2">+2</button>
+            <button class="ghost smallbtn" data-oppdelta="3">+3</button>
+          </div>
         </div>
 
         <div style="min-width: 260px;">
@@ -380,7 +400,7 @@
   fetch(API + "/api/live_score", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ home: team, away: opp })
+    body: JSON.stringify({ home: team, away: opp, opp: document.getElementById("opp").value || "OPP", oppColor: document.getElementById("oppColor").value || "#4B5563" })
   });
 }
 
@@ -588,6 +608,7 @@
     document.getElementById("customName").value = "";
     sel.value = "";
     renderRows();
+    pushLiveScore();
   };
 
   document.getElementById("save").onclick = async () => {
@@ -614,7 +635,8 @@
         game: Number(game),
         opp,
         type,
-        oppScore
+        oppScore,
+        oppColor: document.getElementById("oppColor").value || ""
       },
       players
     };
@@ -636,6 +658,21 @@
   initPlayersDropdown();
   render();
   document.getElementById("oppScore").addEventListener("input", pushLiveScore);
+  document.getElementById("opp").addEventListener("input", pushLiveScore);
+  document.getElementById("oppColor").addEventListener("input", pushLiveScore);
+
+  // quick +/- buttons for opp score (1/2/3)
+  document.querySelectorAll("[data-oppdelta]").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const d = Number(btn.getAttribute("data-oppdelta") || 0);
+      const inp = document.getElementById("oppScore");
+      const cur = Number(inp.value || 0);
+      inp.value = String(Math.max(0, cur + d));
+      pushLiveScore();
+    });
+  });
+
 </script>
 </body>
 </html>

@@ -276,6 +276,19 @@ async function renderGame(){
 
   const payload = await loadJSON(`data/games/${state.season}_${state.game}.json`);
 
+  // opponent colour fallback (when game json doesn't include opponentColor)
+  let oppColor = payload.opponentColor;
+  if(!oppColor && payload.opponent){
+    try{
+      const metaRes = await fetch(`/api/opponent_meta?opp=${encodeURIComponent(payload.opponent)}`, { cache:"no-store" });
+      if(metaRes.ok){
+        const meta = await metaRes.json();
+        if(meta && meta.color) oppColor = meta.color;
+      }
+    }catch(e){}
+  }
+  if(!oppColor) oppColor = "#4B5563";
+
   content.appendChild(el("h2", {}, [`Season ${payload.season} Game ${payload.game} Stats`]));
 
   const cards = el("div", { class:"cards" }, [
@@ -283,7 +296,7 @@ async function renderGame(){
       el("div", { class:"title" }, ["injury reserves"]),
       el("div", { class:"score" }, [String(payload.teamScore)])
     ]),
-    el("div", { class:"card", style:`background:${payload.opponentColor}; color:white;` }, [
+    el("div", { class:"card", style:`background:${oppColor}; color:white;` }, [
       el("div", { class:"title" }, [String(payload.opponent).toLowerCase()]),
       el("div", { class:"score" }, [String(payload.opponentScore)])
     ])
