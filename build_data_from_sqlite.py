@@ -49,6 +49,7 @@ OPP_COLOR_MAP = {
     'Low Expectations': '#b642f5',
     'too drunk to dunk': '#ff4fdf',
     'Jims Ballers': '#6203fc',
+    'GRIPP': '#ec9aed',
 }
 DEFAULT_OPP_COLOR = "#6C757D"
 
