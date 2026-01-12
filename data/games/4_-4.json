@@ -130,7 +130,7 @@
       "FT%": 0.5,
       "2P%": 0.625,
       "3P%": 0.2,
-      "GSC": 19.4,
+      "GSC": 20.1,
       "rowColor": "#fc9219",
       "FG%_display": "52.38%",
       "TS%_display": "54.84%",
@@ -154,7 +154,7 @@
       "STL_display": "0",
       "TOV_display": "2",
       "FLS_display": "0",
-      "GSC_display": "19.40"
+      "GSC_display": "20.10"
     },
     {
       "NAMES": "Vince Tomasello",
@@ -181,7 +181,7 @@
       "2P%": 0.4,
       "3P%": 0.6666666666666666,
       "GSC": 14.6,
-      "rowColor": "#A6C9EC",
+      "rowColor": "#63b010",
       "FG%_display": "50.00%",
       "TS%_display": "62.50%",
       "2P%_display": "40.00%",
@@ -231,7 +231,7 @@
       "2P%": 0.875,
       "3P%": 0.25,
       "GSC": 16.2,
-      "rowColor": "#A6C9EC",
+      "rowColor": "#8858e8",
       "FG%_display": "66.67%",
       "TS%_display": "63.38%",
       "2P%_display": "87.50%",
