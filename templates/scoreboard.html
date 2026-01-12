@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body{
+  margin:0;
+  background:transparent;
+  font-family: system-ui, sans-serif;
+}
+.box{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:14px 22px;
+  background:rgba(0,0,0,0.65);
+  color:white;
+  font-size:32px;
+  font-weight:800;
+  border-radius:14px;
+}
+.team{ min-width:140px; text-align:center; }
+.score{ font-size:40px; min-width:60px; text-align:center; }
+.sep{ font-size:36px; }
+</style>
+</head>
+<body>
+
+<div class="box">
+  <div class="team">INJ</div>
+  <div class="score" id="home">0</div>
+  <div class="sep">–</div>
+  <div class="score" id="away">0</div>
+  <div class="team" id="opp">OPP</div>
+</div>
+
+<script>
+async function poll(){
+  const r = await fetch("/api/scoreboard");
+  if(!r.ok) return;
+  const j = await r.json();
+  document.getElementById("home").textContent = j.home;
+  document.getElementById("away").textContent = j.away;
+}
+setInterval(poll, 500);
+poll();
+</script>
+
+</body>
+</html>

@@ -5,9 +5,23 @@ from pathlib import Path
 from flask import Flask, request, jsonify, render_template
 import subprocess, sys
 
-DB_PATH = Path("ir_stats.db")  # put your sqlite db here
+DB_PATH = Path("ir_stats.db")
 
 app = Flask(__name__)
+
+# live scoreboard state (used by obs)
+LIVE_SCORE = {"home": 0, "away": 0}
+
+@app.post("/api/live_score")
+def live_score():
+    body = request.get_json(force=True)
+    LIVE_SCORE["home"] = int(body.get("home", 0))
+    LIVE_SCORE["away"] = int(body.get("away", 0))
+    return {"ok": True}
+
+@app.get("/api/scoreboard")
+def scoreboard_live():
+    return LIVE_SCORE
 
 # the columns your db already has
 DB_COLS = [
@@ -18,8 +32,6 @@ DB_COLS = [
 ]
 
 def rebuild_json():
-    # optional: rebuild static data/ after every save
-    # comment this out if you want manual rebuild
     subprocess.check_call([sys.executable, "build_data_from_sqlite.py"])
 
 def con():
@@ -28,6 +40,36 @@ def con():
 @app.get("/")
 def ui():
     return render_template("admin.html")
+
+@app.get("/scoreboard")
+def scoreboard_page():
+    return render_template("scoreboard.html")
+
+# optional: db-based scoreboard (not used by obs overlay)
+@app.get("/api/scoreboard_db")
+def scoreboard_db():
+    c = con()
+    cur = c.cursor()
+
+    cur.execute("""
+      select NAMES, PTS
+      from InjuryReserves
+      where SEASON = (select max(SEASON) from InjuryReserves)
+        and GAME = (select max(GAME) from InjuryReserves)
+    """)
+
+    rows = cur.fetchall()
+    c.close()
+
+    score = {"home": 0, "away": 0}
+
+    for name, pts in rows:
+        if name == "Injury Reserves":
+            score["home"] = pts
+        else:
+            score["away"] = pts
+
+    return jsonify(score)
 
 @app.get("/api/health")
 def health():
@@ -52,11 +94,9 @@ def save_game():
 
     def blank_row():
         r = {c: None for c in DB_COLS}
-        # ints
         for k in ["2PM","2PA","3PM","3PA","FGM","FGA","FTM","FTA","OREB","DREB",
                   "PTS","REB","AST","BLK","STL","TOV","FLS"]:
             r[k] = 0
-        # floats
         for k in ["FG%","TS%","FT%","2P%","3P%","GSC"]:
             r[k] = 0.0
         return r
@@ -64,7 +104,6 @@ def save_game():
     rows = []
     team_score = 0
 
-    # player rows (OPP is the opponent)
     for p in players:
         name = str(p.get("NAMES", "")).strip()
         if not name:
@@ -90,7 +129,6 @@ def save_game():
     if not rows:
         return jsonify({"ok": False, "error": "no valid players"}), 400
 
-    # score rows
     team_row = blank_row()
     team_row["OPP"] = opp
     team_row["SEASON"] = season
@@ -100,7 +138,7 @@ def save_game():
     team_row["PTS"] = int(team_score)
 
     opp_row = blank_row()
-    opp_row["OPP"] = "Injury Reserves"   # your requirement
+    opp_row["OPP"] = "Injury Reserves"
     opp_row["SEASON"] = season
     opp_row["GAME"] = game
     opp_row["TYPE"] = gtype
@@ -110,7 +148,6 @@ def save_game():
     c = con()
     cur = c.cursor()
 
-    # delete old score rows for this season/game (so it truly "updates")
     cur.execute(
         """
         delete from InjuryReserves
@@ -122,10 +159,6 @@ def save_game():
         """,
         (season, game, opp, opp),
     )
-
-    # also delete any previous player rows for the same game+opp+type if you want a full overwrite:
-    # cur.execute("delete from InjuryReserves where SEASON=? and GAME=? and OPP=? and TYPE=? and NAMES not in (?,?)",
-    #             (season, game, opp, gtype, "Injury Reserves", opp))
 
     all_rows = rows + [team_row, opp_row]
 
@@ -141,5 +174,4 @@ def save_game():
     return jsonify({"ok": True, "inserted": len(all_rows), "teamScore": team_score, "oppScore": opp_score})
 
 if __name__ == "__main__":
-    # run api on 5001
     app.run(debug=True, port=5001)

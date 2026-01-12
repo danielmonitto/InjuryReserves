@@ -371,6 +371,21 @@
     "Austin Thorneycroft": "#8858e8",
   };
 
+  function pushLiveScore() {
+  let team = 0;
+  state.players.forEach(p => team += p.PTS || 0);
+
+  const opp = Number(document.getElementById("oppScore").value || 0);
+
+  fetch(API + "/api/live_score", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ home: team, away: opp })
+  });
+}
+
+
+
   const EDITABLE = [
     ["2PM","2pm"], ["2PA","2pa"], ["3PM","3pm"], ["3PA","3pa"],
     ["FTM","ftm"], ["FTA","fta"],
@@ -499,10 +514,12 @@
         const box = document.createElement("div");
         box.className = "statbox";
         box.onclick = (e) => {
-          const delta = e.shiftKey ? -1 : 1;
-          p[key] = clamp0((p[key] || 0) + delta);
-          renderRows();
+            const delta = e.shiftKey ? -1 : 1;
+            p[key] = clamp0((p[key] || 0) + delta);
+            renderRows();
+            pushLiveScore();
         };
+
 
         const l = document.createElement("div");
         l.className = "statlabel";
@@ -526,13 +543,17 @@
       btn.onclick = () => {
         state.players.splice(idx, 1);
         renderRows();
+        pushLiveScore();
       };
+
       rm.appendChild(btn);
       row.appendChild(rm);
 
       body.appendChild(row);
     });
   }
+
+
 
   function render() {
     renderHeader();
@@ -614,6 +635,7 @@
 
   initPlayersDropdown();
   render();
+  document.getElementById("oppScore").addEventListener("input", pushLiveScore);
 </script>
 </body>
 </html>
