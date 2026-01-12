@@ -23,6 +23,8 @@ COLOR_MAP = {
     'Zack Johnston': '#5364b0',
     'Lachlan Farley': '#59dea2',
     'James Norrish': '#fc9219',
+    "Vince Tomasello": "#63b010",
+    "Austin Thorneycroft": "#8858e8",
     'Injury Reserves': '#DB2E2E',
 }
 
