@@ -17,6 +17,7 @@ LIVE_STATE = {
     "opp": "OPP",
     "injColor": "#DB2E2E",
     "oppColor": "#4B5563",
+    "period": "1ST",
 }
 
 # ---- sqlite helpers ----
@@ -91,6 +92,10 @@ def live_score():
     if opp_color:
         LIVE_STATE["oppColor"] = opp_color
 
+
+    period = str(body.get("period", LIVE_STATE.get("period","1ST")) or "").strip()
+    if period:
+        LIVE_STATE["period"] = period
     return {"ok": True}
 
 @app.get("/api/scoreboard")

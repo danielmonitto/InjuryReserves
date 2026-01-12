@@ -319,6 +319,16 @@
         <div>
           <div class="hint">opp colour</div>
           <input id="oppColor" type="color" value="#4B5563" />
+<div style="min-width: 170px;">
+  <div class="hint">period</div>
+  <select id="period" style="min-width: 170px;">
+    <option value="1ST">1ST</option>
+    <option value="2ND">2ND</option>
+    <option value="3RD">3RD</option>
+    <option value="4TH">4TH</option>
+    <option value="OT">OT</option>
+  </select>
+</div>
         </div>
 
         <div>
@@ -396,13 +406,21 @@
   state.players.forEach(p => team += p.PTS || 0);
 
   const opp = Number(document.getElementById("oppScore").value || 0);
+  const period = document.getElementById("period").value;
 
   fetch(API + "/api/live_score", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ home: team, away: opp, opp: document.getElementById("opp").value || "OPP", oppColor: document.getElementById("oppColor").value || "#4B5563" })
+    body: JSON.stringify({
+      home: team,
+      away: opp,
+      opp: document.getElementById("opp").value || "OPP",
+      oppColor: document.getElementById("oppColor").value || "#4B5563",
+      period: period
+    })
   });
 }
+
 
 
 
@@ -660,6 +678,7 @@
   document.getElementById("oppScore").addEventListener("input", pushLiveScore);
   document.getElementById("opp").addEventListener("input", pushLiveScore);
   document.getElementById("oppColor").addEventListener("input", pushLiveScore);
+  document.getElementById("period").addEventListener("change", pushLiveScore);
 
   // quick +/- buttons for opp score (1/2/3)
   document.querySelectorAll("[data-oppdelta]").forEach(btn => {

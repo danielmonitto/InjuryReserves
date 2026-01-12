@@ -1,127 +1,133 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  :root{
-    --inj: #DB2E2E;
-    --opp: #4B5563;
-    --fg: #ffffff;
-  }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --inj: #DB2E2E;
+      --opp: #4B5563;
+      --fg: #ffffff;
+    }
 
-  html, body{
-    width:100%;
-    height:100%;
-  }
+    html, body{
+      margin:0;
+      padding:0;
+      background: transparent;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+    }
 
-  body{
-    margin:0;
-    background: transparent;
-    overflow: hidden;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
-  }
+.bar{
+  display:flex;
+  align-items:stretch;
+  border-radius: 0;
+  overflow:hidden;
+  box-shadow: 0 16px 50px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+}
 
-  /* broadcast-safe: no "grey glass" container, only the team blocks */
-  .bar{
-    display:inline-flex;
-    align-items:stretch;
-    border-radius: 14px;
-    overflow:hidden;
-  }
 
-  .side{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    padding: 10px 16px;
-    color: var(--fg);
-  }
+    .team{
+      flex: 1 1 0;
+      min-width: 240px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 10px 14px;
+      color: var(--fg);
+    }
 
-  .side.inj{ background: var(--inj); }
-  .side.opp{ background: var(--opp); }
+    .team.inj{
+      background: linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.35)), var(--inj);
+    }
 
-  .team{
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    min-width: 110px;
-    text-align:center;
-  }
+    .team.opp{
+      background: linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.35)), var(--opp);
+    }
 
-  .score{
-    font-size: 44px;
-    font-weight: 950;
-    min-width: 64px;
-    text-align:center;
-    line-height: 1;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.45);
-  }
+    .abbr{
+      font-weight: 1000;
+      font-size: 26px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.95;
+    }
 
-  .mid{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding: 0 14px;
-    background: rgba(0,0,0,0.55);
-    color: rgba(255,255,255,0.92);
-    font-weight: 950;
-    font-size: 30px;
-    letter-spacing: 0.5px;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-  }
+    .pts{
+      font-weight: 1000;
+      font-size: 48px;
+      line-height: 1;
+      letter-spacing: -1px;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      min-width: 56px;
+      text-align:right;
+    }
 
-  /* optional: keeps the overlay tidy in OBS preview */
-  .stage{
-    width: 100%;
-    height: 100%;
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    padding: 18px;
-    box-sizing: border-box;
-  }
-</style>
+    .period{
+      width: 80px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,0.90);
+      color: rgba(255,255,255,0.95);
+      font-weight: 1000;
+      font-size: 22px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 0;
+    }
+
+    .abbr, .pts, .period{
+      text-shadow: 0 8px 22px rgba(0,0,0,0.40);
+    }
+  </style>
 </head>
+
 <body>
-
-<div class="stage">
-  <div class="bar" role="img" aria-label="scoreboard overlay">
-    <div class="side inj">
-      <div class="team">INJ</div>
-      <div class="score" id="home">0</div>
-    </div>
-
-    <div class="mid">–</div>
-
-    <div class="side opp">
-      <div class="score" id="away">0</div>
-      <div class="team" id="opp">OPP</div>
-    </div>
-  </div>
+  <div class="bar" id="bar">
+<div class="team inj">
+  <div class="abbr">inj</div>
+  <div class="pts" id="home">0</div>
 </div>
+
+<div class="team opp">
+  <div class="abbr" id="oppAbbr">opp</div>
+  <div class="pts" id="away">0</div>
+</div>
+
+
+    <div class="period" id="period">1st</div>
+  </div>
 
 <script>
 async function poll(){
   const r = await fetch("/api/scoreboard", { cache: "no-store" });
   if(!r.ok) return;
   const j = await r.json();
-  document.getElementById("home").textContent = (j.home ?? 0);
-  document.getElementById("away").textContent = (j.away ?? 0);
 
-  const opp = (j.opp || "OPP").toString();
-  document.getElementById("opp").textContent = opp;
+  const home = j.home ?? 0;
+  const away = j.away ?? 0;
 
-  /* colours pushed from admin */
+  document.getElementById("home").textContent = home;
+  document.getElementById("away").textContent = away;
+
+  const opp = (j.opp || "opp").toString().trim();
+  const abbr = (opp.length <= 4 ? opp : "opp").toLowerCase();
+  document.getElementById("oppAbbr").textContent = abbr;
+
   const injColor = j.injColor || "#DB2E2E";
   const oppColor = j.oppColor || "#4B5563";
   document.documentElement.style.setProperty("--inj", injColor);
   document.documentElement.style.setProperty("--opp", oppColor);
+
+  const p = (j.period || "1ST").toString();
+  document.getElementById("period").textContent = p.toLowerCase();
 }
+
 setInterval(poll, 250);
 poll();
 </script>
-
 </body>
 </html>
