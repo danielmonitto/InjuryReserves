@@ -235,12 +235,42 @@ def main():
                 continue
 
             opp = str(g_df['OPP'].iloc[0])
-            # players: only real player rows (exclude the 2 score rows)
+            # players: only real player rows
             players = g_df[
                 (g_df["OPP"].astype(str) == opp)
                 & (~g_df["NAMES"].astype(str).str.contains("Injury Reserves", case=False, na=False))
                 & (g_df["NAMES"].astype(str) != opp)
                 ].copy()
+
+            # --- build a synthetic "injury reserves" totals row from players ---
+            stat_cols = ["2PM", "2PA", "3PM", "3PA", "FGM", "FGA", "FTM", "FTA", "O REB", "D REB",
+                         "PTS", "REB", "AST", "BLK", "STL", "TOV", "FLS", "GSC"]
+
+            for c in stat_cols:
+                if c in players.columns:
+                    players[c] = pd.to_numeric(players[c], errors="coerce").fillna(0)
+
+            tot = {}
+            for c in stat_cols:
+                if c not in players.columns:
+                    continue
+                if c == "GSC":
+                    tot[c] = float(players[c].mean())
+                else:
+                    tot[c] = float(players[c].sum())
+
+            tot["NAMES"] = "Injury Reserves"
+
+            totals_row = pd.DataFrame([tot])
+
+            # combine: players + totals row
+            players = pd.concat([players, totals_row], ignore_index=True)
+
+            # drop non-display cols, then format
+            players = players.drop(columns=['OPP', 'SEASON', 'GAME', 'TYPE'], errors='ignore')
+            players = add_percentages(players)
+            players['rowColor'] = players['NAMES'].map(lambda x: COLOR_MAP.get(x, '#A6C9EC'))
+            players = format_fields(players, "game")
 
             # team score row: NAMES contains 'Injury Reserves' and OPP == opp
             team_score = g_df[

@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 FILE_PATH = "InjuryReserves.xlsm"
-OUT_ROOT = Path(".")
+OUT_ROOT = Path("..")
 DATA_DIR = OUT_ROOT / "data"
 
 COLUMNS_AVG = ['2PM','2PA','3PM','3PA','FGM','FGA','FTM','FTA','O REB','D REB',
