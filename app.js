@@ -66,7 +66,7 @@ const GAME_VIDEOS = {
   "3_6": { highlights: "", full: "https://youtu.be/PeRAu0btAOg?si=ERppFtRqPnrd8GCe" },
   "3_7": { highlights: "https://youtu.be/VlQ7-4MRbHM?si=l1OzbLoNg9xsoWRe", full: "https://youtu.be/zWJzhAlJvDs?si=lshix12IxWw9FjTF" },
 
-  "4_-4": { highlights: "", full: "https://youtu.be/k3MNfUl-T0c" },
+  "4_-4": { highlights: "https://youtu.be/no1VOff5m8o", full: "https://youtu.be/k3MNfUl-T0c" },
   "4_-3": { highlights: "", full: "" },
   "4_-2": { highlights: "", full: "" },
   "4_-1": { highlights: "", full: "" },
