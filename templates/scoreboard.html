@@ -365,8 +365,15 @@ async function poll(){
   }
 
   const opp = (j.opp || "opp").toString().trim();
-  const abbr = (opp.length <= 4 ? opp : "opp").toLowerCase();
-  document.getElementById("oppAbbr").textContent = abbr;
+
+// keep full name in admin, show 3-letter abbr on scoreboard
+const abbr = opp
+  .replace(/[^a-zA-Z]/g, "")   // remove spaces/symbols/numbers
+  .slice(0, 3)                 // first 3 letters
+  .toUpperCase();              // scoreboard style
+
+document.getElementById("oppAbbr").textContent = abbr || "OPP";
+
 
   document.documentElement.style.setProperty("--inj", j.injColor || "#DB2E2E");
   document.documentElement.style.setProperty("--opp", j.oppColor || "#4B5563");
