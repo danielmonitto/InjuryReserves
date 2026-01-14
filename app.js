@@ -87,6 +87,11 @@ const GAME_VIDEOS = {
 
 };
 
+function sortByGamesPlayed(rows){
+  if(!rows || !rows.length) return rows;
+  if(!("GP" in rows[0])) return rows;
+  return [...rows].sort((a, b) => (b.GP ?? 0) - (a.GP ?? 0));
+}
 
 
 function el(tag, attrs={}, children=[]){
@@ -200,7 +205,12 @@ function selectCols(rows, cols){
 }
 
 function appendTeamPanTables(content, rows){
-  const { team, pan } = splitTeam(rows);
+  // game statistics should stay unsorted
+  const isGamePage = state.page === "game";
+
+  const sorted = isGamePage ? rows : sortByGamesPlayed(rows);
+  const { team, pan } = splitTeam(sorted);
+
 
   /* ===== MAIN STATS ===== */
 
