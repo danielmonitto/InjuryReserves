@@ -319,6 +319,19 @@
         <div>
           <div class="hint">opp colour</div>
           <input id="oppColor" type="color" value="#4B5563" />
+            <!-- admin.html changes: add two color pickers and send them in pushLiveScore() -->
+
+<!-- put this near "opp colour" -->
+<div>
+  <div class="hint">opp stripe 1</div>
+  <input id="oppStripe1" type="color" value="#ffffff" />
+</div>
+
+<div>
+  <div class="hint">opp stripe 2</div>
+  <input id="oppStripe2" type="color" value="#9CA3AF" />
+</div>
+
 <div style="min-width: 170px;">
   <div class="hint">period</div>
   <select id="period" style="min-width: 170px;">
@@ -401,12 +414,16 @@
     "Austin Thorneycroft": "#8858e8",
   };
 
-  function pushLiveScore() {
+function pushLiveScore() {
   let team = 0;
   state.players.forEach(p => team += p.PTS || 0);
 
   const opp = Number(document.getElementById("oppScore").value || 0);
   const period = document.getElementById("period").value;
+
+  // convert hex -> rgba strings (so scoreboard can use alpha if you want later)
+  const s1 = document.getElementById("oppStripe1")?.value || "#ffffff";
+  const s2 = document.getElementById("oppStripe2")?.value || "#9CA3AF";
 
   fetch(API + "/api/live_score", {
     method: "POST",
@@ -416,10 +433,18 @@
       away: opp,
       opp: document.getElementById("opp").value || "OPP",
       oppColor: document.getElementById("oppColor").value || "#4B5563",
-      period: period
+      period: period,
+
+      // new stripe fields (hex is fine; css accepts it)
+      oppStripe1: s1,
+      oppStripe2: s2
     })
   });
 }
+// also add listeners so it updates live:
+document.getElementById("oppStripe1").addEventListener("input", pushLiveScore);
+document.getElementById("oppStripe2").addEventListener("input", pushLiveScore);
+
 
 
 

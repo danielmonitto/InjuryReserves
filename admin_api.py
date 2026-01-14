@@ -9,8 +9,6 @@ DB_PATH = Path("ir_stats.db")
 
 app = Flask(__name__)
 
-# live overlay state (used by obs)
-# includes opponent name + colors so the overlay can update instantly when edited in admin
 LIVE_STATE = {
     "home": 0,
     "away": 0,
@@ -18,9 +16,13 @@ LIVE_STATE = {
     "injColor": "#DB2E2E",
     "oppColor": "#4B5563",
     "period": "1ST",
-}
 
-# ---- sqlite helpers ----
+    # new: stripe colors
+    "injStripe1": "rgba(255,255,255,0.95)",  # white
+    "injStripe2": "rgba(181,7,40,0.95)",     # red
+    "oppStripe1": "rgba(255,255,255,0.85)",
+    "oppStripe2": "rgba(255,255,255,0.25)",
+}
 
 def con():
     return sqlite3.connect(DB_PATH)
@@ -79,11 +81,9 @@ def rebuild_json():
 def live_score():
     body = request.get_json(force=True) or {}
 
-    # scores
     LIVE_STATE["home"] = int(body.get("home", LIVE_STATE["home"]) or 0)
     LIVE_STATE["away"] = int(body.get("away", LIVE_STATE["away"]) or 0)
 
-    # opp label + color
     opp = str(body.get("opp", LIVE_STATE["opp"]) or "").strip()
     if opp:
         LIVE_STATE["opp"] = opp
@@ -92,11 +92,18 @@ def live_score():
     if opp_color:
         LIVE_STATE["oppColor"] = opp_color
 
-
     period = str(body.get("period", LIVE_STATE.get("period","1ST")) or "").strip()
     if period:
         LIVE_STATE["period"] = period
+
+    # new: stripe colors (optional)
+    for k in ["oppStripe1", "oppStripe2"]:
+        v = str(body.get(k, "") or "").strip()
+        if v:
+            LIVE_STATE[k] = v
+
     return {"ok": True}
+
 
 @app.get("/api/scoreboard")
 def scoreboard_live():
