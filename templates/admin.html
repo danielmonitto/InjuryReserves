@@ -413,6 +413,196 @@
     "Vince Tomasello": "#63b010",
     "Austin Thorneycroft": "#8858e8",
   };
+  // popup tracking (once per player per game)
+const TEAM_COLOR = "#DB2E2E";
+const MILESTONE_REACHED = {}; // name -> highest 10s reached
+
+function postOverlayEvent({title, line, color=TEAM_COLOR, ttlMs=2500}) {
+  fetch(API + "/api/overlay_event", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ title, line, color, ttlMs })
+  }).catch(()=>{});
+}
+
+function checkAndPostMilestone(name, pts){
+  const mil = Math.floor((pts || 0) / 10);
+  const reached = MILESTONE_REACHED[name] || 0;
+  if (mil > reached && mil > 0){
+    MILESTONE_REACHED[name] = mil;
+    postOverlayEvent({ title: name, line: `${mil*10} points`, ttlMs: 2500 });
+  }
+}
+
+async function postCareerFtIfAvailable(name){
+  try{
+    const r = await fetch(API + "/api/player_career_ft?name=" + encodeURIComponent(name), { cache: "no-store" });
+    if (!r.ok) return;
+    const j = await r.json();
+    if (j.pct === null || j.pct === undefined) return;
+    postOverlayEvent({ title: name, line: `ft% (career): ${j.pct}%`, ttlMs: 1800 });
+  }catch(_){}
+}
+
+
+
+// ---- extra popup logic ----
+const POP_STATE = {
+  // run tracking
+  prevTeam: 0,
+  prevOpp: 0,
+  runPts: 0,
+  lastRunShown: 0,
+
+  // per-player: points within window + streaks
+  bursts: {},          // name -> [{ts, pts}]
+  lastBurstShown: {},  // name -> ts
+  makeStreak: {},      // name -> int
+  lastStreakShown: {}, // name -> int
+
+  // team shooting window
+  teamShots: [],       // [{ts, made}]
+  lastTeamRunShown: "",
+  lastTeamShootShown: "",
+
+  // milestones / fouls
+  flags: {}            // `${name}|key|val` -> true
+};
+
+function playerColor(name){
+  return COLOR_MAP[name] || TEAM_COLOR;
+}
+
+function flagOnce(name, key, val){
+  const k = `${name}|${key}|${val}`;
+  if (POP_STATE.flags[k]) return false;
+  POP_STATE.flags[k] = true;
+  return true;
+}
+
+function maybeRunPopup(teamNow, oppNow){
+  // reset if opponent scored/changed
+  if (oppNow !== POP_STATE.prevOpp){
+    POP_STATE.runPts = 0;
+  }
+  const inc = teamNow - POP_STATE.prevTeam;
+  if (oppNow === POP_STATE.prevOpp && inc > 0){
+    POP_STATE.runPts += inc;
+  }
+  POP_STATE.prevTeam = teamNow;
+  POP_STATE.prevOpp = oppNow;
+
+  // trigger at 6+ (feel free to change)
+  if (POP_STATE.runPts >= 6 && POP_STATE.runPts !== POP_STATE.lastRunShown){
+    POP_STATE.lastRunShown = POP_STATE.runPts;
+    postOverlayEvent({
+      title: "inj",
+      line: `${POP_STATE.runPts}–0 run`,
+      color: TEAM_COLOR,
+      ttlMs: 2400
+    });
+  }
+}
+
+function recordShotForTeam(made){ /* disabled */ }
+
+function recordMakeForPlayer(name, ptsDelta){
+  const now = Date.now();
+  // burst window (90s)
+  const arr = (POP_STATE.bursts[name] ||= []);
+  arr.push({ ts: now, pts: ptsDelta });
+  const cutoff = now - 90_000;
+  while (arr.length && arr[0].ts < cutoff) arr.shift();
+  const sum = arr.reduce((a,e)=>a+e.pts,0);
+
+  if (sum >= 6){
+    const last = POP_STATE.lastBurstShown[name] || 0;
+    // cool-down 30s to avoid spam
+    if (now - last > 30_000){
+      POP_STATE.lastBurstShown[name] = now;
+      postOverlayEvent({
+        title: name,
+        line: `${sum} points (last 90s)`,
+        color: playerColor(name),
+        ttlMs: 2400
+      });
+    }
+  }
+
+  // make streak (resets on a miss via attempts)
+  POP_STATE.makeStreak[name] = (POP_STATE.makeStreak[name] || 0) + 1;
+  const streak = POP_STATE.makeStreak[name];
+  if (streak >= 3){
+    const shown = POP_STATE.lastStreakShown[name] || 0;
+    if (streak > shown){
+      POP_STATE.lastStreakShown[name] = streak;
+      postOverlayEvent({
+        title: name,
+        line: `${streak} straight makes`,
+        color: playerColor(name),
+        ttlMs: 2200
+      });
+    }
+  }
+}
+
+function recordMissForPlayer(name){
+  POP_STATE.makeStreak[name] = 0;
+}
+
+function checkOtherMilestones(p){
+  const name = p.NAMES;
+
+  // rebounds
+  const reb = p.REB || 0;
+  if (reb >= 5 && flagOnce(name,"reb",5)) postOverlayEvent({ title: name, line: "5 rebounds", color: playerColor(name), ttlMs: 2000 });
+  if (reb >= 10 && flagOnce(name,"reb",10)) postOverlayEvent({ title: name, line: "10 rebounds", color: playerColor(name), ttlMs: 2200 });
+
+  // assists
+  const ast = p.AST || 0;
+  if (ast >= 5 && flagOnce(name,"ast",5)) postOverlayEvent({ title: name, line: "5 assists", color: playerColor(name), ttlMs: 2000 });
+  if (ast >= 10 && flagOnce(name,"ast",10)) postOverlayEvent({ title: name, line: "10 assists", color: playerColor(name), ttlMs: 2200 });
+
+  // foul trouble (individual only)
+  const fls = p.FLS || 0;
+  if (fls >= 3 && flagOnce(name,"fls",3)) postOverlayEvent({ title: name, line: "3 fouls", color: playerColor(name), ttlMs: 2200 });
+  if (fls >= 4 && flagOnce(name,"fls",4)) postOverlayEvent({ title: name, line: "4 fouls", color: playerColor(name), ttlMs: 2200 });
+  if (fls >= 5 && flagOnce(name,"fls",5)) postOverlayEvent({ title: name, line: "5 fouls FOULED OUT", color: playerColor(name), ttlMs: 2400 });
+
+  // double/triple/quadruple-double tracking (pts, reb, ast, stl, blk)
+  const pts = p.PTS || 0;
+  const stl = p.STL || 0;
+  const blk = p.BLK || 0;
+  const fgPct = Math.round(((p["FG%"] || 0) * 100));
+
+  // counts across 5 categories for doubles
+  const watchCount =
+    (pts>=8) + (reb>=8) + (ast>=8) + (stl>=8) + (blk>=8);
+
+  const doneCount =
+    (pts>=10) + (reb>=10) + (ast>=10) + (stl>=10) + (blk>=10);
+
+  // always show full line on watch/achieved
+  const statLine = `${pts}p ${reb}r ${ast}a ${stl}s ${blk}b fg ${fgPct}%`;
+
+  // watch popups (only once per level)
+  if (watchCount >= 4 && flagOnce(name,"qd_watch",1)){
+    postOverlayEvent({ title: name, line: `quadruple-double watch: ${statLine}`, color: playerColor(name), ttlMs: 3000 });
+  } else if (watchCount === 3 && flagOnce(name,"td_watch",1)){
+    postOverlayEvent({ title: name, line: `triple-double watch: ${statLine}`, color: playerColor(name), ttlMs: 2800 });
+  } else if (watchCount === 2 && flagOnce(name,"dd_watch",1)){
+    postOverlayEvent({ title: name, line: `double-double watch: ${statLine}`, color: playerColor(name), ttlMs: 2600 });
+  }
+
+  // achieved popups (only once per level)
+  if (doneCount >= 4 && flagOnce(name,"qd",1)){
+    postOverlayEvent({ title: name, line: `quadruple-double: ${statLine}`, color: playerColor(name), ttlMs: 3400 });
+  } else if (doneCount === 3 && flagOnce(name,"td",1)){
+    postOverlayEvent({ title: name, line: `triple-double: ${statLine}`, color: playerColor(name), ttlMs: 3200 });
+  } else if (doneCount === 2 && flagOnce(name,"dd",1)){
+    postOverlayEvent({ title: name, line: `double-double: ${statLine}`, color: playerColor(name), ttlMs: 2800 });
+  }
+}
 
 function pushLiveScore() {
   let team = 0;
@@ -420,6 +610,9 @@ function pushLiveScore() {
 
   const opp = Number(document.getElementById("oppScore").value || 0);
   const period = document.getElementById("period").value;
+
+  // run detection (team points while opp unchanged)
+  maybeRunPopup(team, opp);
 
   // convert hex -> rgba strings (so scoreboard can use alpha if you want later)
   const s1 = document.getElementById("oppStripe1")?.value || "#ffffff";
@@ -442,8 +635,6 @@ function pushLiveScore() {
   });
 }
 // also add listeners so it updates live:
-document.getElementById("oppStripe1").addEventListener("input", pushLiveScore);
-document.getElementById("oppStripe2").addEventListener("input", pushLiveScore);
 
 
 
@@ -576,12 +767,41 @@ document.getElementById("oppStripe2").addEventListener("input", pushLiveScore);
 
         const box = document.createElement("div");
         box.className = "statbox";
-        box.onclick = (e) => {
-            const delta = e.shiftKey ? -1 : 1;
-            p[key] = clamp0((p[key] || 0) + delta);
-            renderRows();
-            pushLiveScore();
+        
+        box.onclick = async (e) => {
+          const delta = e.shiftKey ? -1 : 1;
+
+          // before change
+          const before = derive({...p});
+
+          // apply
+          p[key] = clamp0((p[key] || 0) + delta);
+          derive(p);
+
+          // render + push live score
+          renderRows();
+          pushLiveScore();
+
+          // points milestones (10s)
+          checkAndPostMilestone(p.NAMES, p.PTS || 0);
+
+          // other milestones + fouls + dd watch
+          checkOtherMilestones(p);
+
+          // shot/run/streak logic (based on clicks)
+          if (delta === 1){
+            if (key === "2PM"){ recordMakeForPlayer(p.NAMES, 2); recordShotForTeam(true); }
+            if (key === "3PM"){ recordMakeForPlayer(p.NAMES, 3); recordShotForTeam(true); }
+            if (key === "FTM"){ recordMakeForPlayer(p.NAMES, 1); }
+            if (key === "2PA" || key === "3PA"){ recordMissForPlayer(p.NAMES); recordShotForTeam(false); }
+          }
+
+          // career ft% popup when increasing fta
+          if (key === "FTA" && delta === 1){
+            await postCareerFtIfAvailable(p.NAMES);
+          }
         };
+
 
 
         const l = document.createElement("div");
@@ -703,6 +923,8 @@ document.getElementById("oppStripe2").addEventListener("input", pushLiveScore);
   document.getElementById("oppScore").addEventListener("input", pushLiveScore);
   document.getElementById("opp").addEventListener("input", pushLiveScore);
   document.getElementById("oppColor").addEventListener("input", pushLiveScore);
+  document.getElementById("oppStripe1").addEventListener("input", pushLiveScore);
+  document.getElementById("oppStripe2").addEventListener("input", pushLiveScore);
   document.getElementById("period").addEventListener("change", pushLiveScore);
 
   // quick +/- buttons for opp score (1/2/3)

@@ -35,7 +35,7 @@
 
     html, body{
       width: 750px;
-      height: 70px;
+      height: 110px;
       margin:0;
       padding:0;
       background: transparent;
@@ -44,15 +44,21 @@
     }
 
     .bar{
-      width: 100%;
-      height: 100%;
-      display:flex;
-      align-items:stretch;
-      overflow:hidden;
-      border-radius: 0;
-      border: 2px solid var(--stroke);
-      box-shadow: var(--shadow);
-    }
+  width: 750px;
+  height: 70px;           /* scoreboard stays 70px */
+  display:flex;
+  align-items:stretch;
+  overflow:hidden;
+  border-radius: 0;
+  border: 2px solid var(--stroke);
+  box-shadow: var(--shadow);
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;              /* locks it to the bottom */
+}
+
 
     .team{
       flex: 1 1 0;
@@ -101,8 +107,7 @@
       position:absolute;
       top: 50%;
       left: 100px;
-      transform: translate(-50%, -50%)
-      rotate(var(--stripe-tilt));
+      transform: translate(-50%, -50%) rotate(var(--stripe-tilt));
       width: var(--stripe-w);
       height: calc(var(--stripe-h) * 2 + var(--stripe-gap));
       z-index: 1;
@@ -115,8 +120,10 @@
     /* opp side: anchored right, still points toward its abbr */
 /* opp side: anchored right, flip it */
     .team.opp .midstripes{
-      right: 20px;
-      transform: translateY(-50%) rotate(var(--stripe-tilt));
+      left: auto;
+      right: 170px; /* adjust if you want closer/further from abbr */
+      top: 50%;
+      transform: translate(50%, 50%) rotate(calc(var(--stripe-tilt)));
     }
 
     .midstripes::before{
@@ -187,7 +194,80 @@
       text-shadow: 0 6px 18px rgba(0,0,0,0.55);
     }
 
-    *{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.toast{
+  position: absolute;
+  left: 10px;
+
+  transform: translateY(14px);
+
+  bottom: 70px;          /* sits above the 70px bar */
+  margin-bottom: 6px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 6px 14px;
+  height: auto;          /* fit content */
+  width: max-content;    /* fit text */
+  max-width: 720px;      /* safety */
+
+  background: rgba(0,0,0,0.88);
+  border: 2px solid rgba(255,255,255,0.18);
+  box-shadow: 0 14px 32px rgba(0,0,0,0.75);
+
+  overflow: hidden;
+  pointer-events: none;
+
+  opacity: 0;
+  transition:
+    transform 160ms cubic-bezier(.2,.9,.2,1),
+    opacity 160ms ease;
+  z-index: 100;
+}
+
+.toast.show{
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
+.toast .accent{
+  width: 7px;
+  height: 100%;
+  background: var(--toastColor, #DB2E2E);
+  flex: 0 0 auto;
+}
+
+.toast,
+.toast .title,
+.toast .line{
+  color: #ffffff;
+}
+
+
+.toast .t{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.toast .title{
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.toast .line{
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.92);
+}
+
+
+*{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   </style>
 </head>
 
@@ -213,7 +293,7 @@
       </div>
 
       <div class="left">
-        <div class="chip"><div class="abbr" id="oppAbbr">opp</div></div>
+        <div class="abbr" id="oppAbbr">opp</div>
       </div>
       <div class="pts" id="away">0</div>
     </div>
@@ -221,14 +301,68 @@
     <div class="period" id="period">1st</div>
   </div>
 
+  <div class="toast" id="toast">
+  <div class="accent" id="toastAccent"></div>
+  <div class="t">
+    <div class="title" id="toastTitle">player</div>
+    <div class="line" id="toastLine">10 points</div>
+  </div>
+</div>
+
+
 <script>
+let lastEventSeq = 0;
+let toastTimer = null;
+let prevHome = null;
+let prevAway = null;
+let pulseTimer = null;
+
+function pulseBar(){
+  const bar = document.getElementById('bar');
+  if(!bar) return;
+  bar.classList.remove('pulse');
+  // force reflow so animation retriggers
+  void bar.offsetWidth;
+  bar.classList.add('pulse');
+  if(pulseTimer) clearTimeout(pulseTimer);
+  pulseTimer = setTimeout(()=>bar.classList.remove('pulse'), 450);
+}
+
+
+function showToast(ev){
+  const toast = document.getElementById("toast");
+  const title = document.getElementById("toastTitle");
+  const line  = document.getElementById("toastLine");
+
+  const color = (ev && ev.color) ? ev.color : "#DB2E2E";
+  document.documentElement.style.setProperty("--toastColor", color);
+
+  title.textContent = (ev.title || "").toString();
+  line.textContent  = (ev.line  || "").toString();
+
+  toast.classList.add("show");
+  pulseBar();
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), Number(ev.ttlMs || 2500));
+}
+
 async function poll(){
+  // scores + colors (existing)
   const r = await fetch("/api/scoreboard", { cache: "no-store" });
   if(!r.ok) return;
   const j = await r.json();
 
-  document.getElementById("home").textContent = j.home ?? 0;
-  document.getElementById("away").textContent = j.away ?? 0;
+  const homeVal = j.home ?? 0;
+  const awayVal = j.away ?? 0;
+
+  document.getElementById("home").textContent = homeVal;
+  document.getElementById("away").textContent = awayVal;
+
+  if (prevHome === null) { prevHome = homeVal; prevAway = awayVal; }
+  if (homeVal !== prevHome || awayVal !== prevAway){
+    prevHome = homeVal; prevAway = awayVal;
+    pulseBar();
+  }
 
   const opp = (j.opp || "opp").toString().trim();
   const abbr = (opp.length <= 4 ? opp : "opp").toLowerCase();
@@ -237,22 +371,31 @@ async function poll(){
   document.documentElement.style.setProperty("--inj", j.injColor || "#DB2E2E");
   document.documentElement.style.setProperty("--opp", j.oppColor || "#4B5563");
 
-  /* stripes:
-     - inj is always red+white (defaulted), but you can still override via API if you want
-     - opp stripes are configurable from admin
-  */
   if (j.injStripe1) document.documentElement.style.setProperty("--injStripe1", j.injStripe1);
   if (j.injStripe2) document.documentElement.style.setProperty("--injStripe2", j.injStripe2);
-
   if (j.oppStripe1) document.documentElement.style.setProperty("--oppStripe1", j.oppStripe1);
   if (j.oppStripe2) document.documentElement.style.setProperty("--oppStripe2", j.oppStripe2);
 
   document.getElementById("period").textContent =
     (j.period || "1st").toString().toLowerCase();
+
+  // NEW: popup event polling
+  try{
+    const er = await fetch("/api/overlay_event", { cache: "no-store" });
+    if (er.ok){
+      const ej = await er.json();
+      const seq = Number(ej.seq || 0);
+      if (seq > lastEventSeq && ej.event){
+        lastEventSeq = seq;
+        showToast(ej.event);
+      }
+    }
+  }catch(_){}
 }
 
 setInterval(poll, 250);
 poll();
 </script>
+
 </body>
 </html>

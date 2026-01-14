@@ -4,6 +4,7 @@ import sqlite3
 from pathlib import Path
 from flask import Flask, request, jsonify, render_template
 import subprocess, sys
+import time
 
 DB_PATH = Path("ir_stats.db")
 
@@ -22,6 +23,9 @@ LIVE_STATE = {
     "injStripe2": "rgba(181,7,40,0.95)",     # red
     "oppStripe1": "rgba(255,255,255,0.85)",
     "oppStripe2": "rgba(255,255,255,0.25)",
+    # transient overlay event for scoreboard popups
+    "eventSeq": 0,
+    "event": None,
 }
 
 def con():
@@ -69,6 +73,33 @@ def get_opp_color(opp: str) -> str | None:
     c.close()
     return row[0] if row and row[0] else None
 
+
+def career_ft_pct(name: str) -> int | None:
+    """
+    returns whole-number career FT% for a player name (0-100), or None if not enough attempts.
+    based on InjuryReserves table in ir_stats.db.
+    """
+    name = (name or "").strip()
+    if not name or name.lower() == "injury reserves":
+        return None
+
+    c = con()
+    cur = c.cursor()
+    try:
+        cur.execute(
+            'select coalesce(sum("FTM"),0), coalesce(sum("FTA"),0) from InjuryReserves where NAMES=?',
+            (name,),
+        )
+        ftm, fta = cur.fetchone() or (0, 0)
+    finally:
+        c.close()
+
+    ftm = int(ftm or 0)
+    fta = int(fta or 0)
+    if fta <= 0:
+        return None
+    return int(round((ftm / fta) * 100))
+
 # ---- build step ----
 
 def rebuild_json():
@@ -108,6 +139,44 @@ def live_score():
 @app.get("/api/scoreboard")
 def scoreboard_live():
     return jsonify(LIVE_STATE)
+
+@app.get("/api/player_career_ft")
+def player_career_ft():
+    name = str(request.args.get("name", "") or "").strip()
+    pct = career_ft_pct(name)
+    return jsonify({"ok": True, "name": name, "pct": pct})
+
+@app.post("/api/overlay_event")
+def overlay_event():
+    """
+    set a transient scoreboard popup event.
+    expected json: {title, line, kind, color, ttlMs}
+    """
+    body = request.get_json(force=True) or {}
+    title = str(body.get("title", "") or "").strip()
+    line = str(body.get("line", "") or "").strip()
+    kind = str(body.get("kind", "") or "info").strip()
+    color = str(body.get("color", "") or "").strip()  # use team color
+    ttl_ms = int(body.get("ttlMs", 2500) or 2500)
+
+    if not title and not line:
+        return jsonify({"ok": False, "error": "empty event"}), 400
+
+    LIVE_STATE["eventSeq"] = int(LIVE_STATE.get("eventSeq", 0) or 0) + 1
+    LIVE_STATE["event"] = {
+        "seq": LIVE_STATE["eventSeq"],
+        "title": title,
+        "line": line,
+        "kind": kind,
+        "color": color,
+        "ttlMs": ttl_ms,
+        "ts": int(time.time() * 1000),
+    }
+    return jsonify({"ok": True, "seq": LIVE_STATE["eventSeq"]})
+
+@app.get("/api/overlay_event")
+def overlay_event_get():
+    return jsonify({"ok": True, "seq": int(LIVE_STATE.get("eventSeq", 0) or 0), "event": LIVE_STATE.get("event")})
 
 @app.get("/api/opponent_meta")
 def opponent_meta():
@@ -282,4 +351,4 @@ def save_game():
     })
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(port=5001, debug=True, use_reloader=False)
