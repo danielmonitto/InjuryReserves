@@ -28,6 +28,13 @@ LIVE_STATE = {
     "event": None,
 }
 
+# endgame screen state (in-memory)
+ENDGAME_STATE = {
+    "seq": 0,
+    "state": None,
+}
+
+
 def con():
     return sqlite3.connect(DB_PATH)
 
@@ -197,6 +204,27 @@ def ui():
 @app.get("/scoreboard")
 def scoreboard_page():
     return render_template("scoreboard.html")
+
+@app.get("/endgame")
+def endgame_page():
+    return render_template("endgame.html")
+
+@app.post("/api/endgame_state")
+def set_endgame_state():
+    body = request.get_json(force=True) or {}
+    state = body.get("state")
+    ENDGAME_STATE["seq"] = int(ENDGAME_STATE.get("seq", 0) or 0) + 1
+    ENDGAME_STATE["state"] = state
+    return jsonify({"ok": True, "seq": ENDGAME_STATE["seq"]})
+
+@app.get("/api/endgame_state")
+def get_endgame_state():
+    return jsonify({
+        "ok": True,
+        "seq": int(ENDGAME_STATE.get("seq", 0) or 0),
+        "state": ENDGAME_STATE.get("state"),
+    })
+
 
 # ---- optional: db-based scoreboard (not used by obs overlay) ----
 

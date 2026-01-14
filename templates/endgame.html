@@ -1,0 +1,400 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --inj: #DB2E2E;
+      --opp: #4B5563;
+      --bg: rgba(0,0,0,0.72);
+      --stroke: rgba(255,255,255,0.18);
+      --muted: rgba(255,255,255,0.78);
+      --text: #ffffff;
+      --shadow: 0 18px 60px rgba(0,0,0,0.70);
+    }
+
+    html, body{
+      width: 1920px;
+      height: 1080px;
+      margin:0;
+      padding:0;
+      background: #000;
+      font-family: "Russo One", system-ui, sans-serif;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .wrap{
+      width: 1860px;
+      height: 1040px;
+      margin: 20px auto;
+      padding: 18px;
+      background: var(--bg);
+      border: 2px solid var(--stroke);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .top{
+      display:flex;
+      align-items:stretch;
+      gap: 14px;
+      flex: 0 0 auto;
+    }
+
+    .scorecard{
+      flex: 0 0 520px;
+      border: 2px solid var(--stroke);
+      background: rgba(0,0,0,0.35);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.55);
+      overflow: hidden;
+    }
+
+    .scorebar{
+      display:flex;
+      align-items:stretch;
+      height: 110px;
+      overflow:hidden;
+    }
+
+    .side{
+      flex: 1 1 0;
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      color: #fff;
+    }
+
+    .side.inj{ background: var(--inj); }
+    .side.opp{ background: var(--opp); border-left: 2px solid rgba(255,255,255,0.22); }
+
+    .abbr{
+      font-size: 30px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 8px 20px rgba(0,0,0,0.45);
+    }
+
+    .pts{
+      font-size: 70px;
+      line-height: 1;
+      letter-spacing: -1px;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 10px 24px rgba(0,0,0,0.45);
+    }
+
+    .meta{
+      padding: 12px 14px;
+      border-top: 2px solid rgba(255,255,255,0.10);
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .meta b{
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .teamtotals{
+      flex: 1 1 auto;
+      border: 2px solid var(--stroke);
+      background: rgba(0,0,0,0.35);
+      padding: 12px 14px;
+      overflow: hidden;
+    }
+
+    .h{
+      font-size: 18px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin: 0 0 10px;
+    }
+
+    .totgrid{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px 14px;
+    }
+
+    .stat{
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.25);
+      padding: 10px 10px 9px;
+    }
+
+    .k{
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .v{
+      font-size: 20px;
+      letter-spacing: 1px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .table{
+      flex: 1 1 auto;
+      border: 2px solid var(--stroke);
+      background: rgba(0,0,0,0.35);
+      overflow: hidden;
+      display:flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .thead, .row{
+      display:grid;
+      grid-template-columns:
+        340px
+        80px 80px 80px 80px 80px 80px 90px 90px
+        210px 210px 210px;
+      align-items:center;
+    }
+
+    .thead{
+      background: rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      flex: 0 0 auto;
+    }
+
+    .rows{
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .th, .td{
+      padding: 10px 12px;
+      border-right: 1px solid rgba(255,255,255,0.10);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .thead .th{
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .row .td{
+      font-size: 16px;
+      letter-spacing: 0.6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .td.name{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .pill{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.22);
+      flex: 0 0 auto;
+    }
+
+    /* per-row color */
+    .row{
+      position: relative;
+      border-top: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .row::before{
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 10px;
+      background: var(--rowcolor, rgba(255,255,255,0.18));
+      pointer-events: none;
+    }
+
+    .row::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--rowcolor, transparent);
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    .row > .td{
+      position: relative;
+      z-index: 1;
+    }
+
+    /* hide scrollbar in obs if you want */
+    .rows::-webkit-scrollbar{ width: 10px; }
+    .rows::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.18); }
+
+  </style>
+</head>
+<body>
+  <div class="wrap" id="wrap">
+    <div class="top">
+      <div class="scorecard">
+        <div class="scorebar">
+          <div class="side inj">
+            <div class="abbr">inj</div>
+            <div class="pts" id="injPts">0</div>
+          </div>
+          <div class="side opp">
+            <div class="abbr" id="oppAbbr">opp</div>
+            <div class="pts" id="oppPts">0</div>
+          </div>
+        </div>
+        <div class="meta">
+          <div>season <b id="season">-</b></div>
+          <div>game <b id="game">-</b></div>
+          <div>opp <b id="oppName">-</b></div>
+          <div>type <b id="type">-</b></div>
+        </div>
+      </div>
+
+      <div class="teamtotals">
+        <div class="h">team totals</div>
+        <div class="totgrid" id="totals"></div>
+      </div>
+    </div>
+
+    <div class="table">
+      <div class="thead">
+        <div class="th">player</div>
+        <div class="th">pts</div>
+        <div class="th">reb</div>
+        <div class="th">ast</div>
+        <div class="th">stl</div>
+        <div class="th">blk</div>
+        <div class="th">tov</div>
+        <div class="th">fouls</div>
+        <div class="th">gsc</div>
+        <div class="th">fg</div>
+        <div class="th">3p</div>
+        <div class="th">ft</div>
+      </div>
+      <div class="rows" id="rows"></div>
+    </div>
+  </div>
+
+<script>
+function pct(x){ return Math.round((x || 0) * 100); }
+
+function statBox(k, v){
+  const d = document.createElement("div");
+  d.className = "stat";
+  d.innerHTML = `<div class="k">${k}</div><div class="v">${v}</div>`;
+  return d;
+}
+
+function lineFG(p){
+  const fg = `${p.FGM||0}/${p.FGA||0} (${pct(p["FG%"])}%)`;
+  const th = `${p["3PM"]||0}/${p["3PA"]||0} (${pct(p["3P%"])}%)`;
+  const ft = `${p.FTM||0}/${p.FTA||0} (${pct(p["FT%"])}%)`;
+  return {fg, th, ft};
+}
+
+async function poll(){
+  const r = await fetch("/api/endgame_state", { cache: "no-store" });
+  if(!r.ok) return;
+  const j = await r.json();
+  if(!j.ok || !j.state) return;
+
+  const s = j.state;
+
+  document.documentElement.style.setProperty("--inj", s.injColor || "#DB2E2E");
+  document.documentElement.style.setProperty("--opp", s.oppColor || "#4B5563");
+
+  document.getElementById("injPts").textContent = s.final?.inj ?? 0;
+  document.getElementById("oppPts").textContent = s.final?.opp ?? 0;
+
+  const opp = (s.meta?.opp || "opp").toString().trim();
+  const abbr = opp.replace(/[^a-zA-Z]/g, "").slice(0,3).toLowerCase();
+  document.getElementById("oppAbbr").textContent = abbr || "opp";
+  document.getElementById("oppName").textContent = opp || "-";
+
+  document.getElementById("season").textContent = s.meta?.season ?? "-";
+  document.getElementById("game").textContent = s.meta?.game ?? "-";
+  document.getElementById("type").textContent = s.meta?.type ?? "-";
+
+  // totals
+  const t = s.teamTotals || {};
+  const totals = document.getElementById("totals");
+  totals.innerHTML = "";
+  totals.appendChild(statBox("fg", `${t.FGM||0}/${t.FGA||0} (${pct(t["FG%"])}%)`));
+  totals.appendChild(statBox("3p", `${t["3PM"]||0}/${t["3PA"]||0} (${pct(t["3P%"])}%)`));
+  totals.appendChild(statBox("ft", `${t.FTM||0}/${t.FTA||0} (${pct(t["FT%"])}%)`));
+  totals.appendChild(statBox("reb", (t.REB||0)));
+  totals.appendChild(statBox("ast", (t.AST||0)));
+  totals.appendChild(statBox("stl", (t.STL||0)));
+  totals.appendChild(statBox("blk", (t.BLK||0)));
+  totals.appendChild(statBox("tov", (t.TOV||0)));
+  totals.appendChild(statBox("fouls", (t.FLS||0)));
+  totals.appendChild(statBox("gsc", Math.round(t.GSC||0)));
+
+  // players
+  const rows = document.getElementById("rows");
+  rows.innerHTML = "";
+
+  (s.players || []).forEach(p => {
+    const row = document.createElement("div");
+    row.className = "row";
+
+    const c = (s.playerColors && p && p.NAMES) ? (s.playerColors[p.NAMES] || "") : "";
+    const rowColor = c || (s.injColor || "#DB2E2E");
+    row.style.setProperty("--rowcolor", rowColor);
+
+    const {fg, th, ft} = lineFG(p || {});
+    const gsc = Math.round((p?.GSC ?? 0) || 0);
+
+    row.innerHTML = `
+      <div class="td name"><span class="pill" style="background:${rowColor}"></span>${p.NAMES || ""}</div>
+      <div class="td">${p.PTS||0}</div>
+      <div class="td">${p.REB||0}</div>
+      <div class="td">${p.AST||0}</div>
+      <div class="td">${p.STL||0}</div>
+      <div class="td">${p.BLK||0}</div>
+      <div class="td">${p.TOV||0}</div>
+      <div class="td">${p.FLS||0}</div>
+      <div class="td">${gsc}</div>
+      <div class="td">${fg}</div>
+      <div class="td">${th}</div>
+      <div class="td">${ft}</div>
+    `;
+    rows.appendChild(row);
+  });
+}
+
+setInterval(poll, 500);
+poll();
+</script>
+</body>
+</html>

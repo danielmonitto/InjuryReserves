@@ -157,7 +157,7 @@
       display: grid;
       grid-template-columns:
         220px
-        repeat(13, 70px)
+        repeat(14, 70px)
         120px;
       align-items: center;
     }
@@ -249,6 +249,12 @@
       cursor: pointer;
       text-align: center;
       background: rgba(0,0,0,0.25);
+    }
+
+    .statbox.readonly{
+      cursor: default;
+      opacity: 0.92;
+      background: rgba(0,0,0,0.18);
     }
 
     .statlabel{
@@ -592,7 +598,73 @@
         oppStripe1: s1,
         oppStripe2: s2
       })
-    });
+    }).catch(()=>{});
+
+    // keep endgame screen in sync while you click stats
+    pushEndgameState();
+  }
+
+  function calcTeamTotals(players){
+    const t = {
+      "2PM":0,"2PA":0,"3PM":0,"3PA":0,
+      FTM:0,FTA:0,OREB:0,DREB:0,
+      AST:0,STL:0,BLK:0,TOV:0,FLS:0,
+      FGM:0,FGA:0,PTS:0,REB:0,
+      "FG%":0,"3P%":0,"FT%":0,"TS%":0,
+      GSC:0
+    };
+
+    for (const p of players){
+      t["2PM"] += p["2PM"]||0; t["2PA"] += p["2PA"]||0;
+      t["3PM"] += p["3PM"]||0; t["3PA"] += p["3PA"]||0;
+      t.FTM += p.FTM||0; t.FTA += p.FTA||0;
+      t.OREB += p.OREB||0; t.DREB += p.DREB||0;
+      t.AST += p.AST||0; t.STL += p.STL||0; t.BLK += p.BLK||0;
+      t.TOV += p.TOV||0; t.FLS += p.FLS||0;
+      t.FGM += p.FGM||0; t.FGA += p.FGA||0;
+      t.REB += p.REB||0; t.PTS += p.PTS||0;
+      t.GSC += p.GSC||0;
+    }
+
+    t["FG%"] = t.FGA ? (t.FGM / t.FGA) : 0;
+    t["3P%"] = t["3PA"] ? (t["3PM"] / t["3PA"]) : 0;
+    t["FT%"] = t.FTA ? (t.FTM / t.FTA) : 0;
+    const denom = 2 * (t.FGA + 0.44 * t.FTA);
+    t["TS%"] = denom ? (t.PTS / denom) : 0;
+
+    return t;
+  }
+
+  function pushEndgameState(){
+    try{
+      const season = Number(document.getElementById("season").value || 0);
+      const game = Number(document.getElementById("game").value || 0);
+      const opp = (document.getElementById("opp").value || "OPP").toString().trim();
+      const type = (document.getElementById("type").value || "REG").toString().trim();
+      const oppScore = Number(document.getElementById("oppScore").value || 0);
+      const oppColor = (document.getElementById("oppColor").value || "#4B5563").toString().trim();
+
+      const players = state.players.map(p => derive({...p}));
+
+      const injScore = players.reduce((a,p)=>a+(p.PTS||0),0);
+      const teamTotals = calcTeamTotals(players);
+
+      const payload = {
+        injColor: TEAM_COLOR,
+        oppColor: oppColor,
+        final: { inj: injScore, opp: oppScore },
+        meta: { season: season || "-", game: game || "-", opp: opp || "-", type: type || "-" },
+        teamTotals: teamTotals,
+        players: players,
+        playerColors: COLOR_MAP
+      };
+
+      fetch(API + "/api/endgame_state", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ state: payload })
+      }).catch(()=>{});
+    }catch(_){}
   }
 
   const EDITABLE = [
@@ -713,6 +785,11 @@ document.getElementById("reset").onclick = (e) => {
       head.appendChild(th);
     }
 
+    const thGsc = document.createElement("div");
+    thGsc.className = "th";
+    thGsc.textContent = "gsc";
+    head.appendChild(thGsc);
+
     const thRemove = document.createElement("div");
     thRemove.className = "th";
     thRemove.textContent = "";
@@ -799,6 +876,22 @@ document.getElementById("reset").onclick = (e) => {
         cell.appendChild(box);
         row.appendChild(cell);
       }
+
+      // derived: gsc (read-only)
+      const gscCell = document.createElement("div");
+      gscCell.className = "td";
+      const gscBox = document.createElement("div");
+      gscBox.className = "statbox readonly";
+      const gl = document.createElement("div");
+      gl.className = "statlabel";
+      gl.textContent = "gsc";
+      const gv = document.createElement("div");
+      gv.className = "statval";
+      gv.textContent = String(Math.round(p.GSC || 0));
+      gscBox.appendChild(gl);
+      gscBox.appendChild(gv);
+      gscCell.appendChild(gscBox);
+      row.appendChild(gscCell);
 
       const rm = document.createElement("div");
       rm.className = "td";
