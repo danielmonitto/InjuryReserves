@@ -26,11 +26,11 @@
       --period-stroke: rgba(255,255,255,0.16);
 
       /* stripe geometry */
-      --stripe-w: 200px;
-      --stripe-h: 9px;
-      --stripe-gap: 3px;
+      --stripe-w: 170px;
+      --stripe-h: 8px;
+      --stripe-gap: 5px;
       --stripe-tilt: -50deg; /* towards abbreviation */
-      --stripe-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      --stripe-shadow: 0 6px 16px rgba(0,0,0,0.28);
     }
 
     html, body{
@@ -44,7 +44,7 @@
     }
 
     .bar{
-  width: 730px;
+  width: 750px;
   height: 70px;           /* scoreboard stays 70px */
   display:flex;
   align-items:stretch;
@@ -130,7 +130,7 @@
     .midstripes::before{
       content: "";
       position: absolute;
-      inset: -2px;                 /* thickness of black backing */
+      inset: -3px;                 /* thickness of black backing */
       background: #000;            /* solid black */
       z-index: -1;
     }
@@ -383,6 +383,20 @@ document.getElementById("oppAbbr").textContent = abbr || "OPP";
   if (j.injStripe2) document.documentElement.style.setProperty("--injStripe2", j.injStripe2);
   if (j.oppStripe1) document.documentElement.style.setProperty("--oppStripe1", j.oppStripe1);
   if (j.oppStripe2) document.documentElement.style.setProperty("--oppStripe2", j.oppStripe2);
+
+  if (j.stripeGap !== undefined && j.stripeGap !== null){
+    const g = Number(j.stripeGap);
+    if (!Number.isNaN(g)) document.documentElement.style.setProperty("--stripe-gap", `${Math.max(0, g)}px`);
+  }
+  if (j.stripeShadowAlpha !== undefined && j.stripeShadowAlpha !== null){
+    const a = Number(j.stripeShadowAlpha);
+    if (!Number.isNaN(a)) document.documentElement.style.setProperty("--stripe-shadow", `0 6px 16px rgba(0,0,0,${Math.max(0, Math.min(1, a))})`);
+  }
+  if (j.strokeAlpha !== undefined && j.strokeAlpha !== null){
+    const a = Number(j.strokeAlpha);
+    if (!Number.isNaN(a)) document.documentElement.style.setProperty("--stroke", `rgba(255,255,255,${Math.max(0, Math.min(1, a))})`);
+  }
+
 
   document.getElementById("period").textContent =
     (j.period || "1st").toString().toLowerCase();

@@ -146,7 +146,10 @@
 
     .table{
       margin-top: 14px;
-      border-radius: 18px;      border: 1px solid var(--stroke);
+      overflow: auto;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--stroke);
       background: rgba(0,0,0,0.28);
       box-shadow: 0 16px 55px rgba(0,0,0,0.55);
     }
@@ -278,7 +281,7 @@
     }
 
     @media (max-width: 1100px){
-      .table{ overflow: auto; }
+      .table{ overflow-x: auto; }
       .thead, .trow{ min-width: 1250px; }
     }
   </style>
@@ -368,6 +371,8 @@
 
         <button id="addPlayer" class="ghost">add</button>
         <button id="save" class="primary">save game</button>
+        <button id="undo" class="ghost">undo</button>
+        <button id="config" class="ghost">config</button>
           <button id="reset" class="ghost">reset</button>
       </div>
 
@@ -383,6 +388,47 @@
       </div>
     </div>
   </div>
+
+
+  <dialog id="cfgDlg" style="border:none; border-radius:18px; padding:0; background: rgba(15,16,22,0.95); color: var(--text); width:min(520px, 92vw); box-shadow: 0 30px 90px rgba(0,0,0,0.75);">
+    <form method="dialog" style="padding:16px; border:1px solid var(--stroke); border-radius:18px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;">
+        <div style="font-weight:800; letter-spacing:0.3px;">scoreboard config</div>
+        <button id="cfgClose" class="ghost smallbtn" value="cancel" type="submit">close</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+        <div>
+          <div class="hint">run popup threshold</div>
+          <input id="cfgRunThreshold" type="number" min="2" max="30" step="1" value="6" />
+        </div>
+
+        <div>
+          <div class="hint">stripe gap (px)</div>
+          <input id="cfgStripeGap" type="number" min="0" max="30" step="1" value="5" />
+        </div>
+
+        <div>
+          <div class="hint">stripe shadow (alpha)</div>
+          <input id="cfgStripeShadowAlpha" type="number" min="0" max="1" step="0.02" value="0.28" />
+        </div>
+
+        <div>
+          <div class="hint">border (alpha)</div>
+          <input id="cfgStrokeAlpha" type="number" min="0" max="1" step="0.02" value="0.18" />
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:14px; justify-content:flex-end;">
+        <button id="cfgReset" class="ghost" type="button">defaults</button>
+        <button id="cfgSave" class="primary" type="button">save</button>
+      </div>
+
+      <div class="small" style="margin-top:10px;">
+        saved locally in this browser. sent to scoreboard automatically while you enter stats.
+      </div>
+    </form>
+  </dialog>
 
 <script>
   const API = "http://127.0.0.1:5001";
@@ -407,6 +453,68 @@
 
   const TEAM_COLOR = "#DB2E2E";
   const MILESTONE_REACHED = {};
+  const DEFAULT_CFG = {
+    runThreshold: 6,
+    stripeGap: 5,
+    stripeShadowAlpha: 0.28,
+    strokeAlpha: 0.18
+  };
+
+  function loadCfg(){
+    try{
+      const raw = localStorage.getItem("ir_config");
+      if (!raw) return {...DEFAULT_CFG};
+      const j = JSON.parse(raw);
+      return {...DEFAULT_CFG, ...j};
+    }catch(_){
+      return {...DEFAULT_CFG};
+    }
+  }
+
+  function saveCfg(cfg){
+    try{ localStorage.setItem("ir_config", JSON.stringify(cfg)); }catch(_){}
+  }
+
+  let CFG = loadCfg();
+
+  function applyCfgToUi(){
+    const rt = document.getElementById("cfgRunThreshold");
+    const sg = document.getElementById("cfgStripeGap");
+    const sa = document.getElementById("cfgStripeShadowAlpha");
+    const st = document.getElementById("cfgStrokeAlpha");
+    if (rt) rt.value = String(CFG.runThreshold);
+    if (sg) sg.value = String(CFG.stripeGap);
+    if (sa) sa.value = String(CFG.stripeShadowAlpha);
+    if (st) st.value = String(CFG.strokeAlpha);
+  }
+
+  function readCfgFromUi(){
+    const rt = Number(document.getElementById("cfgRunThreshold")?.value || DEFAULT_CFG.runThreshold);
+    const sg = Number(document.getElementById("cfgStripeGap")?.value || DEFAULT_CFG.stripeGap);
+    const sa = Number(document.getElementById("cfgStripeShadowAlpha")?.value || DEFAULT_CFG.stripeShadowAlpha);
+    const st = Number(document.getElementById("cfgStrokeAlpha")?.value || DEFAULT_CFG.strokeAlpha);
+    return {
+      runThreshold: Math.max(2, Math.min(30, Math.round(rt))),
+      stripeGap: Math.max(0, Math.min(30, Math.round(sg))),
+      stripeShadowAlpha: Math.max(0, Math.min(1, Number(sa.toFixed(2)))),
+      strokeAlpha: Math.max(0, Math.min(1, Number(st.toFixed(2))))
+    };
+  }
+
+  const UNDO_STACK = [];
+
+  function pushUndo(action){
+    UNDO_STACK.push(action);
+    if (UNDO_STACK.length > 200) UNDO_STACK.shift();
+    const b = document.getElementById("undo");
+    if (b) b.disabled = UNDO_STACK.length === 0;
+  }
+
+  function setUndoEnabled(){
+    const b = document.getElementById("undo");
+    if (b) b.disabled = UNDO_STACK.length === 0;
+  }
+
 
   function postOverlayEvent({title, line, color=TEAM_COLOR, ttlMs=2500}) {
     fetch(API + "/api/overlay_event", {
@@ -438,10 +546,12 @@
   const POP_STATE = {
     prevTeam: null,
     prevOpp: null,
+
     teamRunPts: 0,
     oppRunPts: 0,
     lastTeamRunShown: 0,
     lastOppRunShown: 0,
+
     bursts: {},
     lastBurstShown: {},
     makeStreak: {},
@@ -450,6 +560,20 @@
     lastTeamShootShown: "",
     flags: {}
   };
+
+  // snapshot/restore popup state so undo also rewinds streaks/runs
+  function snapPopState(){
+    try { return JSON.parse(JSON.stringify(POP_STATE)); }
+    catch(_){ return null; }
+  }
+  function restorePopState(s){
+    if (!s) return;
+    // replace all keys to match snapshot exactly
+    for (const k of Object.keys(POP_STATE)){ delete POP_STATE[k]; }
+    for (const k of Object.keys(s)){ POP_STATE[k] = s[k]; }
+  }
+
+
 
   function playerColor(name){
     return COLOR_MAP[name] || TEAM_COLOR;
@@ -463,66 +587,60 @@
   }
 
   function maybeRunPopup(teamNow, oppNow){
-    // first call: initialise baselines
+    const oppName = (document.getElementById("opp")?.value || "opp").trim() || "opp";
+    const oppColor = document.getElementById("oppColor")?.value || "#4B5563";
+    const thr = CFG.runThreshold || 6;
+
     if (POP_STATE.prevTeam === null || POP_STATE.prevOpp === null){
       POP_STATE.prevTeam = teamNow;
-      POP_STATE.prevOpp  = oppNow;
+      POP_STATE.prevOpp = oppNow;
       POP_STATE.teamRunPts = 0;
-      POP_STATE.oppRunPts  = 0;
+      POP_STATE.oppRunPts = 0;
       return;
     }
 
-    const teamChanged = teamNow !== POP_STATE.prevTeam;
-    const oppChanged  = oppNow  !== POP_STATE.prevOpp;
-
-    // if one side scores, the other side's run resets
-    if (teamChanged) POP_STATE.oppRunPts = 0;
-    if (oppChanged)  POP_STATE.teamRunPts = 0;
-
-    // accumulate team run only if opp score stayed fixed
-    if (!oppChanged){
-      const inc = teamNow - POP_STATE.prevTeam;
-      if (inc > 0) POP_STATE.teamRunPts += inc;
+    // team run: team increases while opp stays the same
+    if (oppNow !== POP_STATE.prevOpp){
+      POP_STATE.teamRunPts = 0;
+    }
+    const incTeam = teamNow - POP_STATE.prevTeam;
+    if (oppNow === POP_STATE.prevOpp && incTeam > 0){
+      POP_STATE.teamRunPts += incTeam;
     }
 
-    // accumulate opp run only if team score stayed fixed
-    if (!teamChanged){
-      const incOpp = oppNow - POP_STATE.prevOpp;
-      if (incOpp > 0) POP_STATE.oppRunPts += incOpp;
+    // opp run: opp increases while team stays the same
+    if (teamNow !== POP_STATE.prevTeam){
+      POP_STATE.oppRunPts = 0;
+    }
+    const incOpp = oppNow - POP_STATE.prevOpp;
+    if (teamNow === POP_STATE.prevTeam && incOpp > 0){
+      POP_STATE.oppRunPts += incOpp;
     }
 
     POP_STATE.prevTeam = teamNow;
-    POP_STATE.prevOpp  = oppNow;
+    POP_STATE.prevOpp = oppNow;
 
-    if (POP_STATE.teamRunPts >= 6 && POP_STATE.teamRunPts !== POP_STATE.lastTeamRunShown){
+    if (POP_STATE.teamRunPts >= thr && POP_STATE.teamRunPts !== POP_STATE.lastTeamRunShown){
       POP_STATE.lastTeamRunShown = POP_STATE.teamRunPts;
-
-      const teamAbbr = "inj";
-      const teamColor = (document.getElementById("injColor")?.value || "#DB2E2E").toString().trim();
-
       postOverlayEvent({
-        title: teamAbbr,
+        title: "inj",
         line: `${POP_STATE.teamRunPts}–0 run`,
-        color: teamColor,
+        color: TEAM_COLOR,
         ttlMs: 2400
       });
     }
 
-    if (POP_STATE.oppRunPts >= 6 && POP_STATE.oppRunPts !== POP_STATE.lastOppRunShown){
+    if (POP_STATE.oppRunPts >= thr && POP_STATE.oppRunPts !== POP_STATE.lastOppRunShown){
       POP_STATE.lastOppRunShown = POP_STATE.oppRunPts;
-
-      const oppName = (document.getElementById("opp")?.value || "opp").toString().trim();
-      const oppAbbr = oppName.replace(/[^a-zA-Z]/g, "").slice(0,3).toLowerCase() || "opp";
-      const oppColor = (document.getElementById("oppColor")?.value || "#4B5563").toString().trim();
-
       postOverlayEvent({
-        title: oppAbbr,
+        title: oppName,
         line: `${POP_STATE.oppRunPts}–0 run`,
         color: oppColor,
         ttlMs: 2400
       });
     }
   }
+
 
   function recordShotForTeam(made){ /* disabled */ }
 
@@ -635,7 +753,10 @@
         oppColor: document.getElementById("oppColor").value || "#4B5563",
         period: period,
         oppStripe1: s1,
-        oppStripe2: s2
+        oppStripe2: s2,
+        stripeGap: CFG.stripeGap,
+        stripeShadowAlpha: CFG.stripeShadowAlpha,
+        strokeAlpha: CFG.strokeAlpha
       })
     }).catch(()=>{});
 
@@ -727,8 +848,8 @@
   // reset milestone + popup/run tracking
   for (const k in MILESTONE_REACHED) delete MILESTONE_REACHED[k];
 
-  POP_STATE.prevTeam = 0;
-  POP_STATE.prevOpp = 0;
+  POP_STATE.prevTeam = null;
+  POP_STATE.prevOpp = null;
   POP_STATE.teamRunPts = 0;
   POP_STATE.oppRunPts = 0;
   POP_STATE.lastTeamRunShown = 0;
@@ -739,16 +860,19 @@
   POP_STATE.makeStreak = {};
   POP_STATE.lastStreakShown = {};
   POP_STATE.teamShots = [];
-  POP_STATE.lastTeamRunShown = "";
   POP_STATE.lastTeamShootShown = "";
   POP_STATE.flags = {};
 
-  // redraw + push scoreboard to 0–0 immediately
+  // clear undo history too (reset is a hard reset)
+  UNDO_STACK.length = 0;
+  setUndoEnabled();
+
   renderRows();
   pushLiveScore();
 
   showMsg("reset: scores + popups cleared");
 }
+
 
 document.getElementById("reset").onclick = (e) => {
   e.preventDefault();
@@ -826,6 +950,7 @@ document.getElementById("reset").onclick = (e) => {
       head.appendChild(th);
     }
 
+    
     const thRemove = document.createElement("div");
     thRemove.className = "th";
     thRemove.textContent = "";
@@ -878,6 +1003,8 @@ document.getElementById("reset").onclick = (e) => {
         box.onclick = async (e) => {
           const delta = e.shiftKey ? -1 : 1;
 
+          pushUndo({ type: "stat", player: p.NAMES, key, delta, pop: snapPopState() });
+
           p[key] = clamp0((p[key] || 0) + delta);
           derive(p);
 
@@ -913,13 +1040,18 @@ document.getElementById("reset").onclick = (e) => {
         row.appendChild(cell);
       }
 
+      // derived: gsc (read-only)
+
       const rm = document.createElement("div");
       rm.className = "td";
       const btn = document.createElement("button");
       btn.className = "removeBtn";
       btn.textContent = "remove";
       btn.onclick = () => {
+        const removed = JSON.parse(JSON.stringify(p));
+        const at = idx;
         state.players.splice(idx, 1);
+        pushUndo({ type: "removePlayer", index: at, player: removed });
         renderRows();
         pushLiveScore();
       };
@@ -960,7 +1092,9 @@ document.getElementById("reset").onclick = (e) => {
       return;
     }
 
+    const newIdx = state.players.length;
     state.players.push(newPlayer(name));
+    pushUndo({ type: "addPlayer", index: newIdx });
     document.getElementById("customName").value = "";
     sel.value = "";
     renderRows();
@@ -1014,6 +1148,78 @@ document.getElementById("reset").onclick = (e) => {
   initPlayersDropdown();
   render();
 
+  // config dialog
+  const cfgDlg = document.getElementById("cfgDlg");
+  document.getElementById("config").addEventListener("click", (e) => {
+    e.preventDefault();
+    CFG = loadCfg();
+    applyCfgToUi();
+    if (cfgDlg && cfgDlg.showModal) cfgDlg.showModal();
+  });
+
+  document.getElementById("cfgReset").addEventListener("click", () => {
+    CFG = { ...DEFAULT_CFG };
+    applyCfgToUi();
+  });
+
+  document.getElementById("cfgSave").addEventListener("click", () => {
+    CFG = readCfgFromUi();
+    saveCfg(CFG);
+    applyCfgToUi();
+    pushLiveScore();
+    if (cfgDlg && cfgDlg.close) cfgDlg.close();
+    showMsg("config saved");
+  });
+
+  // undo
+  function undoLast(){
+    const a = UNDO_STACK.pop();
+    setUndoEnabled();
+    if (!a) return;
+
+    restorePopState(a.pop);
+
+    if (a.type === "stat"){
+      const p = state.players.find(x => (x.NAMES || "").toLowerCase() === (a.player || "").toLowerCase());
+      if (p){
+        p[a.key] = clamp0((p[a.key] || 0) - a.delta);
+        derive(p);
+      }
+    } else if (a.type === "oppScore"){
+      document.getElementById("oppScore").value = String(a.prev ?? 0);
+    } else if (a.type === "addPlayer"){
+      const i = Number(a.index);
+      if (!Number.isNaN(i) && state.players[i]) state.players.splice(i, 1);
+    } else if (a.type === "removePlayer"){
+      const i = Number(a.index);
+      const pl = a.player;
+      if (pl){
+        const insertAt = (Number.isNaN(i) ? state.players.length : Math.max(0, Math.min(state.players.length, i)));
+        state.players.splice(insertAt, 0, pl);
+      }
+    }
+
+    renderRows();
+    pushLiveScore();
+  }
+
+  document.getElementById("undo").addEventListener("click", (e) => {
+    e.preventDefault();
+    undoLast();
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === "z" || e.key === "Z")){
+      e.preventDefault();
+      undoLast();
+    }
+  });
+
+  // load config once at startup
+  applyCfgToUi();
+  setUndoEnabled();
+
+
   document.getElementById("oppScore").addEventListener("input", pushLiveScore);
   document.getElementById("opp").addEventListener("input", pushLiveScore);
   document.getElementById("oppColor").addEventListener("input", pushLiveScore);
@@ -1027,7 +1233,11 @@ document.getElementById("reset").onclick = (e) => {
       const d = Number(btn.getAttribute("data-oppdelta") || 0);
       const inp = document.getElementById("oppScore");
       const cur = Number(inp.value || 0);
-      inp.value = String(Math.max(0, cur + d));
+      const next = Math.max(0, cur + d);
+
+      if (next !== cur) pushUndo({ type: "oppScore", prev: cur, next, pop: snapPopState() });
+
+      inp.value = String(next);
       pushLiveScore();
     });
   });

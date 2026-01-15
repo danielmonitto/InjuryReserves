@@ -23,6 +23,12 @@ LIVE_STATE = {
     "injStripe2": "rgba(181,7,40,0.95)",     # red
     "oppStripe1": "rgba(255,255,255,0.85)",
     "oppStripe2": "rgba(255,255,255,0.25)",
+
+    # optional styling knobs
+    "stripeGap": 5,
+    "stripeShadowAlpha": 0.28,
+    "strokeAlpha": 0.18,
+
     # transient overlay event for scoreboard popups
     "eventSeq": 0,
     "event": None,
@@ -139,6 +145,17 @@ def live_score():
         v = str(body.get(k, "") or "").strip()
         if v:
             LIVE_STATE[k] = v
+
+    # new: optional styling knobs
+    try:
+        if "stripeGap" in body:
+            LIVE_STATE["stripeGap"] = int(body.get("stripeGap") or 0)
+        if "stripeShadowAlpha" in body:
+            LIVE_STATE["stripeShadowAlpha"] = float(body.get("stripeShadowAlpha") or 0)
+        if "strokeAlpha" in body:
+            LIVE_STATE["strokeAlpha"] = float(body.get("strokeAlpha") or 0)
+    except Exception:
+        pass
 
     return {"ok": True}
 

@@ -308,6 +308,32 @@
   </div>
 
 <script>
+  function avgGscFromPlayers(players){
+  const vals = (players || [])
+    .map(p => Number(p?.GSC))
+    .filter(n => Number.isFinite(n))
+    // optional: ignore empty players who have literally done nothing
+    .filter((g, i) => {
+      const p = players[i] || {};
+      const zeroBox =
+        (p.PTS||0)==0 && (p.REB||0)==0 && (p.AST||0)==0 && (p.STL||0)==0 &&
+        (p.BLK||0)==0 && (p.TOV||0)==0 && (p.FLS||0)==0 &&
+        (p.FGA||0)==0 && (p.FTA||0)==0;
+      return !zeroBox;
+    });
+
+  if (!vals.length) return 0;
+  return vals.reduce((a,b)=>a+b, 0) / vals.length;
+}
+
+  function fmt2(x){
+  return (x == null || isNaN(x)) ? "0.00" : Number(x).toFixed(2);
+}
+
+function pct2(x){
+  return (x == null || isNaN(x)) ? "0.00" : (Number(x) * 100).toFixed(2);
+}
+
 function pct(x){ return Math.round((x || 0) * 100); }
 
 function statBox(k, v){
@@ -332,6 +358,7 @@ async function poll(){
   if(!j.ok || !j.state) return;
 
   const s = j.state;
+  const gscAvg = avgGscFromPlayers(s.players || []);
 
   document.documentElement.style.setProperty("--inj", s.injColor || "#DB2E2E");
   document.documentElement.style.setProperty("--opp", s.oppColor || "#4B5563");
@@ -362,7 +389,7 @@ async function poll(){
   totals.appendChild(statBox("blk", (t.BLK||0)));
   totals.appendChild(statBox("tov", (t.TOV||0)));
   totals.appendChild(statBox("fouls", (t.FLS||0)));
-  totals.appendChild(statBox("gsc", Math.round(t.GSC||0)));
+  totals.appendChild(statBox("gsc", gscAvg.toFixed(2)));
 
   // players
   const rows = document.getElementById("rows");
@@ -377,7 +404,7 @@ async function poll(){
     row.style.setProperty("--rowcolor", rowColor);
 
     const {fg, th, ft, ts} = lineFG(p || {});
-    const gsc = Math.round((p?.GSC ?? 0) || 0);
+    const gsc = fmt2(p?.GSC);
 
     row.innerHTML = `
       <div class="td name"><span class="pill" style="background:${rowColor}"></span>${p.NAMES || ""}</div>
