@@ -26,11 +26,11 @@
       --period-stroke: rgba(255,255,255,0.16);
 
       /* stripe geometry */
-      --stripe-w: 170px;
-      --stripe-h: 8px;
-      --stripe-gap: 5px;
+      --stripe-w: 200px;
+      --stripe-h: 9px;
+      --stripe-gap: 3px;
       --stripe-tilt: -50deg; /* towards abbreviation */
-      --stripe-shadow: 0 6px 16px rgba(0,0,0,0.28);
+      --stripe-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
 
     html, body{
@@ -44,13 +44,14 @@
     }
 
     .bar{
-  width: 750px;
+  width: 730px;
   height: 70px;           /* scoreboard stays 70px */
   display:flex;
   align-items:stretch;
   overflow:hidden;
   border-radius: 0;
   border: 2px solid var(--stroke);
+      border-color: silver;
   box-shadow: var(--shadow);
 
   position: absolute;
@@ -85,7 +86,7 @@
       left:0;
       top:0;
       bottom:0;
-      width: 14px;
+      width: 1px;
       background: rgba(255,255,255,0.30);
       z-index: 0;
     }
@@ -129,7 +130,7 @@
     .midstripes::before{
       content: "";
       position: absolute;
-      inset: -3px;                 /* thickness of black backing */
+      inset: -2px;                 /* thickness of black backing */
       background: #000;            /* solid black */
       z-index: -1;
     }

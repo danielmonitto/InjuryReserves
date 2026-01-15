@@ -146,9 +146,7 @@
 
     .table{
       margin-top: 14px;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--stroke);
+      border-radius: 18px;      border: 1px solid var(--stroke);
       background: rgba(0,0,0,0.28);
       box-shadow: 0 16px 55px rgba(0,0,0,0.55);
     }
@@ -157,7 +155,7 @@
       display: grid;
       grid-template-columns:
         220px
-        repeat(14, 70px)
+        repeat(13, 70px)
         120px;
       align-items: center;
     }
@@ -280,7 +278,7 @@
     }
 
     @media (max-width: 1100px){
-      .table{ overflow-x: auto; }
+      .table{ overflow: auto; }
       .thead, .trow{ min-width: 1250px; }
     }
   </style>
@@ -438,16 +436,17 @@
   }
 
   const POP_STATE = {
-    prevTeam: 0,
-    prevOpp: 0,
-    runPts: 0,
-    lastRunShown: 0,
+    prevTeam: null,
+    prevOpp: null,
+    teamRunPts: 0,
+    oppRunPts: 0,
+    lastTeamRunShown: 0,
+    lastOppRunShown: 0,
     bursts: {},
     lastBurstShown: {},
     makeStreak: {},
     lastStreakShown: {},
     teamShots: [],
-    lastTeamRunShown: "",
     lastTeamShootShown: "",
     flags: {}
   };
@@ -464,22 +463,62 @@
   }
 
   function maybeRunPopup(teamNow, oppNow){
-    if (oppNow !== POP_STATE.prevOpp){
-      POP_STATE.runPts = 0;
+    // first call: initialise baselines
+    if (POP_STATE.prevTeam === null || POP_STATE.prevOpp === null){
+      POP_STATE.prevTeam = teamNow;
+      POP_STATE.prevOpp  = oppNow;
+      POP_STATE.teamRunPts = 0;
+      POP_STATE.oppRunPts  = 0;
+      return;
     }
-    const inc = teamNow - POP_STATE.prevTeam;
-    if (oppNow === POP_STATE.prevOpp && inc > 0){
-      POP_STATE.runPts += inc;
-    }
-    POP_STATE.prevTeam = teamNow;
-    POP_STATE.prevOpp = oppNow;
 
-    if (POP_STATE.runPts >= 6 && POP_STATE.runPts !== POP_STATE.lastRunShown){
-      POP_STATE.lastRunShown = POP_STATE.runPts;
+    const teamChanged = teamNow !== POP_STATE.prevTeam;
+    const oppChanged  = oppNow  !== POP_STATE.prevOpp;
+
+    // if one side scores, the other side's run resets
+    if (teamChanged) POP_STATE.oppRunPts = 0;
+    if (oppChanged)  POP_STATE.teamRunPts = 0;
+
+    // accumulate team run only if opp score stayed fixed
+    if (!oppChanged){
+      const inc = teamNow - POP_STATE.prevTeam;
+      if (inc > 0) POP_STATE.teamRunPts += inc;
+    }
+
+    // accumulate opp run only if team score stayed fixed
+    if (!teamChanged){
+      const incOpp = oppNow - POP_STATE.prevOpp;
+      if (incOpp > 0) POP_STATE.oppRunPts += incOpp;
+    }
+
+    POP_STATE.prevTeam = teamNow;
+    POP_STATE.prevOpp  = oppNow;
+
+    if (POP_STATE.teamRunPts >= 6 && POP_STATE.teamRunPts !== POP_STATE.lastTeamRunShown){
+      POP_STATE.lastTeamRunShown = POP_STATE.teamRunPts;
+
+      const teamAbbr = "inj";
+      const teamColor = (document.getElementById("injColor")?.value || "#DB2E2E").toString().trim();
+
       postOverlayEvent({
-        title: "inj",
-        line: `${POP_STATE.runPts}–0 run`,
-        color: TEAM_COLOR,
+        title: teamAbbr,
+        line: `${POP_STATE.teamRunPts}–0 run`,
+        color: teamColor,
+        ttlMs: 2400
+      });
+    }
+
+    if (POP_STATE.oppRunPts >= 6 && POP_STATE.oppRunPts !== POP_STATE.lastOppRunShown){
+      POP_STATE.lastOppRunShown = POP_STATE.oppRunPts;
+
+      const oppName = (document.getElementById("opp")?.value || "opp").toString().trim();
+      const oppAbbr = oppName.replace(/[^a-zA-Z]/g, "").slice(0,3).toLowerCase() || "opp";
+      const oppColor = (document.getElementById("oppColor")?.value || "#4B5563").toString().trim();
+
+      postOverlayEvent({
+        title: oppAbbr,
+        line: `${POP_STATE.oppRunPts}–0 run`,
+        color: oppColor,
         ttlMs: 2400
       });
     }
@@ -690,8 +729,10 @@
 
   POP_STATE.prevTeam = 0;
   POP_STATE.prevOpp = 0;
-  POP_STATE.runPts = 0;
-  POP_STATE.lastRunShown = 0;
+  POP_STATE.teamRunPts = 0;
+  POP_STATE.oppRunPts = 0;
+  POP_STATE.lastTeamRunShown = 0;
+  POP_STATE.lastOppRunShown = 0;
 
   POP_STATE.bursts = {};
   POP_STATE.lastBurstShown = {};
@@ -785,11 +826,6 @@ document.getElementById("reset").onclick = (e) => {
       head.appendChild(th);
     }
 
-    const thGsc = document.createElement("div");
-    thGsc.className = "th";
-    thGsc.textContent = "gsc";
-    head.appendChild(thGsc);
-
     const thRemove = document.createElement("div");
     thRemove.className = "th";
     thRemove.textContent = "";
@@ -876,22 +912,6 @@ document.getElementById("reset").onclick = (e) => {
         cell.appendChild(box);
         row.appendChild(cell);
       }
-
-      // derived: gsc (read-only)
-      const gscCell = document.createElement("div");
-      gscCell.className = "td";
-      const gscBox = document.createElement("div");
-      gscBox.className = "statbox readonly";
-      const gl = document.createElement("div");
-      gl.className = "statlabel";
-      gl.textContent = "gsc";
-      const gv = document.createElement("div");
-      gv.className = "statval";
-      gv.textContent = String(Math.round(p.GSC || 0));
-      gscBox.appendChild(gl);
-      gscBox.appendChild(gv);
-      gscCell.appendChild(gscBox);
-      row.appendChild(gscCell);
 
       const rm = document.createElement("div");
       rm.className = "td";

@@ -167,8 +167,9 @@
       display:grid;
       grid-template-columns:
         340px
-        80px 80px 80px 80px 80px 80px 90px 90px
-        210px 210px 210px;
+        80px 80px 80px 80px 80px 80px 90px
+        210px 210px 210px 210px
+        90px;
       align-items:center;
     }
 
@@ -296,10 +297,11 @@
         <div class="th">blk</div>
         <div class="th">tov</div>
         <div class="th">fouls</div>
-        <div class="th">gsc</div>
         <div class="th">fg</div>
         <div class="th">3p</div>
         <div class="th">ft</div>
+        <div class="th">ts</div>
+        <div class="th">gsc</div>
       </div>
       <div class="rows" id="rows"></div>
     </div>
@@ -319,7 +321,8 @@ function lineFG(p){
   const fg = `${p.FGM||0}/${p.FGA||0} (${pct(p["FG%"])}%)`;
   const th = `${p["3PM"]||0}/${p["3PA"]||0} (${pct(p["3P%"])}%)`;
   const ft = `${p.FTM||0}/${p.FTA||0} (${pct(p["FT%"])}%)`;
-  return {fg, th, ft};
+  const ts = `${pct(p["TS%"])}%`;
+  return {fg, th, ft, ts};
 }
 
 async function poll(){
@@ -352,6 +355,7 @@ async function poll(){
   totals.appendChild(statBox("fg", `${t.FGM||0}/${t.FGA||0} (${pct(t["FG%"])}%)`));
   totals.appendChild(statBox("3p", `${t["3PM"]||0}/${t["3PA"]||0} (${pct(t["3P%"])}%)`));
   totals.appendChild(statBox("ft", `${t.FTM||0}/${t.FTA||0} (${pct(t["FT%"])}%)`));
+  totals.appendChild(statBox("ts", `${pct(t["TS%"])}%`));
   totals.appendChild(statBox("reb", (t.REB||0)));
   totals.appendChild(statBox("ast", (t.AST||0)));
   totals.appendChild(statBox("stl", (t.STL||0)));
@@ -372,7 +376,7 @@ async function poll(){
     const rowColor = c || (s.injColor || "#DB2E2E");
     row.style.setProperty("--rowcolor", rowColor);
 
-    const {fg, th, ft} = lineFG(p || {});
+    const {fg, th, ft, ts} = lineFG(p || {});
     const gsc = Math.round((p?.GSC ?? 0) || 0);
 
     row.innerHTML = `
@@ -384,10 +388,11 @@ async function poll(){
       <div class="td">${p.BLK||0}</div>
       <div class="td">${p.TOV||0}</div>
       <div class="td">${p.FLS||0}</div>
-      <div class="td">${gsc}</div>
       <div class="td">${fg}</div>
       <div class="td">${th}</div>
       <div class="td">${ft}</div>
+      <div class="td">${ts}</div>
+      <div class="td">${gsc}</div>
     `;
     rows.appendChild(row);
   });
