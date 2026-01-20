@@ -52,7 +52,6 @@
   border-radius: 0;
   border: 2px solid var(--stroke);
       border-color: silver;
-  box-shadow: var(--shadow);
 
   position: absolute;
   left: 0;
@@ -215,7 +214,7 @@
 
   background: rgba(0,0,0,0.88);
   border: 2px solid rgba(255,255,255,0.18);
-  box-shadow: 0 14px 32px rgba(0,0,0,0.75);
+
 
   overflow: hidden;
   pointer-events: none;
@@ -230,14 +229,6 @@
 .toast.show{
   transform: translateY(0);
   opacity: 1;
-}
-
-
-.toast .accent{
-  width: 7px;
-  height: 100%;
-  background: var(--toastColor, #DB2E2E);
-  flex: 0 0 auto;
 }
 
 .toast,
@@ -256,13 +247,13 @@
 }
 
 .toast .title{
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .toast .line{
-  font-size: 13px;
+  font-size: 18px;
   letter-spacing: 1px;
   color: rgba(255,255,255,0.92);
 }
