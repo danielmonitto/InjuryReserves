@@ -52,6 +52,7 @@ OPP_COLOR_MAP = {
     'too drunk to dunk': '#ff4fdf',
     'Jims Ballers': '#6203fc',
     'GRIPP': '#ec9aed',
+    'Billboard Bruisers': '#000000',
 }
 DEFAULT_OPP_COLOR = "#6C757D"
 
