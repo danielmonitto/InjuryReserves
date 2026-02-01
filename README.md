@@ -1,4 +1,3 @@
-here is a clean, updated **README.md** with clearer structure, tighter wording, and small technical clarifications. you can copy-paste this directly.
 
 ---
 
