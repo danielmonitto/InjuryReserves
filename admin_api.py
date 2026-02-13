@@ -32,7 +32,14 @@ LIVE_STATE = {
     # transient overlay event for scoreboard popups
     "eventSeq": 0,
     "event": None,
+
 }
+
+LINEUP_STATE = {
+    "seq": 0,
+    "state": None
+}
+
 
 # endgame screen state (in-memory)
 ENDGAME_STATE = {
@@ -119,7 +126,8 @@ def rebuild_json():
     # keep your existing pipeline
     subprocess.check_call([sys.executable, "build_data_from_sqlite.py"])
 
-# ---- live overlay api ----
+
+
 
 @app.post("/api/live_score")
 def live_score():
@@ -158,6 +166,25 @@ def live_score():
         pass
 
     return {"ok": True}
+
+@app.post("/api/lineup_state")
+def set_lineup_state():
+    body = request.get_json(force=True) or {}
+    LINEUP_STATE["seq"] += 1
+    LINEUP_STATE["state"] = body.get("state")
+    return jsonify({"ok": True, "seq": LINEUP_STATE["seq"]})
+
+@app.get("/api/lineup_state")
+def get_lineup_state():
+    return jsonify({
+        "ok": True,
+        "seq": LINEUP_STATE["seq"],
+        "state": LINEUP_STATE["state"]
+    })
+
+@app.get("/lineup")
+def lineup_page():
+    return render_template("lineup.html")
 
 
 @app.get("/api/scoreboard")
