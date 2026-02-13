@@ -160,7 +160,7 @@
   display: grid;
 grid-template-columns:
   80px
-  repeat(13, minmax(44px, 1fr))
+  repeat(13, minmax(50px, 1fr))
   60px
   90px
         32px;
@@ -198,6 +198,7 @@ grid-template-columns:
         color: var(--text);
         font-weight: 650;
         border-top: 1px solid var(--stroke2);
+        min-width: 0;
       }
 
       .thead .th:last-child,
@@ -257,6 +258,7 @@ grid-template-columns:
         transition: all 0.15s ease;
         width: 100%;
         padding: 6px 4px;
+        box-sizing: border-box;
       }
 
       .statbox:hover {
