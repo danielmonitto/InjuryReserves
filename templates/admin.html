@@ -459,6 +459,7 @@ grid-template-columns:
         </div>
 
         <button id="addPlayer" class="ghost">add</button>
+        <button id="addAll" class="ghost">add all</button>
         <button id="save" class="primary">save game</button>
           <button id="reset" class="ghost">reset</button>
         <div style="flex-basis: 100%; height: 0;"></div>
@@ -1467,6 +1468,33 @@ btn.title = "remove player";
     renderRows();
     pushLiveScore();
   };
+
+document.getElementById("addAll").onclick = () => {
+  let added = 0;
+
+  COMMON_PLAYERS.forEach(name => {
+    const exists = state.players.some(
+      p => p.NAMES.toLowerCase() === name.toLowerCase()
+    );
+
+    if (!exists) {
+      const newIdx = state.players.length;
+      state.players.push(newPlayer(name));
+      pushUndo({ type: "addPlayer", index: newIdx });
+      added++;
+    }
+  });
+
+  if (added === 0) {
+    showMsg("all common players already added", false);
+    return;
+  }
+
+  renderRows();
+  pushLiveScore();
+  showMsg(`added ${added} players`);
+};
+
 
   document.getElementById("save").onclick = async () => {
     const season = document.getElementById("season").value.trim();
