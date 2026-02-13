@@ -7,7 +7,6 @@
   ],
   "seasonGames": {
     "4": [
-      -2,
       -3,
       -4,
       -5
@@ -55,25 +54,16 @@
     ]
   },
   "seasonTeams": {
-    "4": [
-      "BackyardBallerz",
-      "Billboard Bruisers",
-      "GRIPP",
-      "Killer Barbies"
-    ],
+    "4": [],
     "3": [
       "Disciples",
       "Konoha",
       "Mickeylads",
-      "Smoove Movers",
       "The Warriors",
       "Wolves",
       "slow motion"
     ],
     "2": [
-      "Dirty Magic",
-      "Goon Squad",
-      "Jims Ballers",
       "Killer Barbies",
       "PRIME TIME",
       "Park City",
@@ -86,7 +76,6 @@
       "Low Expectations",
       "Monstars",
       "Non Compliant",
-      "PRIME TIME",
       "Uncle Brickers",
       "slow motion",
       "too drunk to dunk"

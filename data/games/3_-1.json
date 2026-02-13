@@ -31,6 +31,8 @@
       "2P%": 0.46153846153846156,
       "3P%": 0.0,
       "GSC": 3.3,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#ebc026",
       "FG%_display": "37.50%",
       "TS%_display": "37.50%",
@@ -54,7 +56,9 @@
       "STL_display": "1",
       "TOV_display": "2",
       "FLS_display": "3",
-      "GSC_display": "3.30"
+      "GSC_display": "3.30",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Bailey Moon",
@@ -81,6 +85,8 @@
       "2P%": 0.0,
       "3P%": 0.5,
       "GSC": 6.9,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#A6C9EC",
       "FG%_display": "20.00%",
       "TS%_display": "34.01%",
@@ -104,7 +110,9 @@
       "STL_display": "1",
       "TOV_display": "2",
       "FLS_display": "4",
-      "GSC_display": "6.90"
+      "GSC_display": "6.90",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Lachlan Farley",
@@ -131,6 +139,8 @@
       "2P%": 0.5294117647058824,
       "3P%": 0.0,
       "GSC": 19.5,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#59dea2",
       "FG%_display": "45.00%",
       "TS%_display": "49.83%",
@@ -154,7 +164,9 @@
       "STL_display": "1",
       "TOV_display": "1",
       "FLS_display": "1",
-      "GSC_display": "19.50"
+      "GSC_display": "19.50",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Ashton Moon",
@@ -181,6 +193,8 @@
       "2P%": 0.7,
       "3P%": 0.0,
       "GSC": 11.9,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#A6C9EC",
       "FG%_display": "70.00%",
       "TS%_display": "63.78%",
@@ -204,7 +218,9 @@
       "STL_display": "1",
       "TOV_display": "3",
       "FLS_display": "3",
-      "GSC_display": "11.90"
+      "GSC_display": "11.90",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Joel Kingdom-Evans",
@@ -231,6 +247,8 @@
       "2P%": 0.0,
       "3P%": 0.0,
       "GSC": -2.5,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#99FF66",
       "FG%_display": "0.00%",
       "TS%_display": "0.00%",
@@ -254,7 +272,9 @@
       "STL_display": "0",
       "TOV_display": "0",
       "FLS_display": "0",
-      "GSC_display": "-2.50"
+      "GSC_display": "-2.50",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Injury Reserves",
@@ -281,6 +301,8 @@
       "2P%": 0.5116279069767442,
       "3P%": 0.08333333333333333,
       "GSC": 7.82,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#DB2E2E",
       "FG%_display": "41.82%",
       "TS%_display": "44.47%",
@@ -304,7 +326,9 @@
       "STL_display": "4",
       "TOV_display": "8",
       "FLS_display": "11",
-      "GSC_display": "7.82"
+      "GSC_display": "7.82",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     }
   ]
 }

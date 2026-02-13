@@ -31,6 +31,8 @@
       "2P%": 0.4,
       "3P%": 0.3,
       "GSC": 18.3,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#ebc026",
       "FG%_display": "34.29%",
       "TS%_display": "42.86%",
@@ -54,7 +56,9 @@
       "STL_display": "3",
       "TOV_display": "1",
       "FLS_display": "1",
-      "GSC_display": "18.30"
+      "GSC_display": "18.30",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Brooklyn Bulmer",
@@ -81,6 +85,8 @@
       "2P%": 0.6666666666666666,
       "3P%": 0.2,
       "GSC": 6.0,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#5f99f5",
       "FG%_display": "30.77%",
       "TS%_display": "38.46%",
@@ -104,7 +110,9 @@
       "STL_display": "0",
       "TOV_display": "0",
       "FLS_display": "2",
-      "GSC_display": "6.00"
+      "GSC_display": "6.00",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Adrian Monitto",
@@ -131,6 +139,8 @@
       "2P%": 0.5333333333333333,
       "3P%": 0.26666666666666666,
       "GSC": 20.3,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#be60f7",
       "FG%_display": "40.00%",
       "TS%_display": "47.89%",
@@ -154,7 +164,9 @@
       "STL_display": "7",
       "TOV_display": "4",
       "FLS_display": "1",
-      "GSC_display": "20.30"
+      "GSC_display": "20.30",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Joel Kingdom-Evans",
@@ -181,6 +193,8 @@
       "2P%": 0.0,
       "3P%": 0.14285714285714285,
       "GSC": -0.9,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#99FF66",
       "FG%_display": "14.29%",
       "TS%_display": "21.43%",
@@ -204,7 +218,9 @@
       "STL_display": "0",
       "TOV_display": "0",
       "FLS_display": "0",
-      "GSC_display": "-0.90"
+      "GSC_display": "-0.90",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Zack Johnston",
@@ -231,6 +247,8 @@
       "2P%": 0.5714285714285714,
       "3P%": 0.0,
       "GSC": 13.7,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#5364b0",
       "FG%_display": "40.00%",
       "TS%_display": "40.00%",
@@ -254,7 +272,9 @@
       "STL_display": "1",
       "TOV_display": "2",
       "FLS_display": "2",
-      "GSC_display": "13.70"
+      "GSC_display": "13.70",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     },
     {
       "NAMES": "Injury Reserves",
@@ -281,6 +301,8 @@
       "2P%": 0.5,
       "3P%": 0.23636363636363636,
       "GSC": 11.48,
+      "MIN": 0.0,
+      "PM": 0.0,
       "rowColor": "#DB2E2E",
       "FG%_display": "34.74%",
       "TS%_display": "42.05%",
@@ -304,7 +326,9 @@
       "STL_display": "11",
       "TOV_display": "7",
       "FLS_display": "6",
-      "GSC_display": "11.48"
+      "GSC_display": "11.48",
+      "MIN_display": "0:00",
+      "PM_display": "0"
     }
   ]
 }

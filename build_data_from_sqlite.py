@@ -7,11 +7,20 @@ DB_PATH = Path("ir_stats.db")          # put your db in project root with this n
 OUT_ROOT = Path(".")
 DATA_DIR = OUT_ROOT / "data"
 
-# same logic as your existing build_data.py (excel version) :contentReference[oaicite:5]{index=5}
-COLUMNS_AVG = ['2PM','2PA','3PM','3PA','FGM','FGA','FTM','FTA','O REB','D REB',
-               'PTS','REB','AST','BLK','STL','TOV','FLS','GSC']
-COLUMNS_SUM = ['2PM','2PA','3PM','3PA','FGM','FGA','FTM','FTA',
-               'O REB','D REB','PTS','REB','AST','BLK','STL','TOV','FLS']
+COLUMNS_AVG = [
+    'MIN','PM','2PM','2PA','3PM','3PA','FGM','FGA','FTM','FTA',
+    'O REB','D REB','PTS','REB','AST','BLK','STL',
+    'TOV','FLS','GSC',
+]
+
+COLUMNS_SUM = [
+    'MIN','PM','2PM','2PA','3PM','3PA','FGM','FGA','FTM','FTA',
+    'O REB','D REB','PTS','REB','AST','BLK','STL',
+    'TOV','FLS','GSC',
+]
+
+
+
 
 COLOR_MAP = {
     'Hayden Cromberge': '#e36868',
@@ -97,6 +106,20 @@ def format_fields(d: pd.DataFrame, kind: str) -> pd.DataFrame:
         if c in pct_cols:
             continue
 
+        # special formatting for minutes (stored as seconds)
+        if c == "MIN":
+            def fmt_min(x):
+                try:
+                    x = int(x)
+                except:
+                    return "0:00"
+                m = x // 60
+                s = x % 60
+                return f"{m}:{s:02d}"
+
+            d[c + "_display"] = d[c].fillna(0).map(fmt_min)
+            continue
+
         if pd.api.types.is_numeric_dtype(d[c]):
             if c == "GP":
                 d[c + "_display"] = d[c].fillna(0).astype(int).map(lambda x: f"{x}")
@@ -117,7 +140,8 @@ def format_fields(d: pd.DataFrame, kind: str) -> pd.DataFrame:
     return d
 
 def calc_averages(player_data: pd.DataFrame) -> pd.DataFrame:
-    g = player_data.groupby('NAMES')[COLUMNS_AVG].mean().reset_index()
+    cols = [c for c in COLUMNS_AVG if c in player_data.columns]
+    g = player_data.groupby('NAMES')[cols].mean().reset_index()
     g = add_percentages(g)
     games = player_data.groupby('NAMES').size().reset_index(name='GP')
     out = g.merge(games, on='NAMES', how='left')
@@ -125,7 +149,8 @@ def calc_averages(player_data: pd.DataFrame) -> pd.DataFrame:
     return format_fields(out, "avg")
 
 def calc_totals(player_data: pd.DataFrame) -> pd.DataFrame:
-    totals = player_data.groupby('NAMES').agg({c:'sum' for c in COLUMNS_SUM}).reset_index()
+    cols = [c for c in COLUMNS_SUM if c in player_data.columns]
+    totals = player_data.groupby('NAMES').agg({c: 'sum' for c in cols}).reset_index()
     totals = add_percentages(totals)
     gsc_avg = player_data.groupby('NAMES')['GSC'].mean().reset_index(name='GSC')
     totals = totals.merge(gsc_avg, on='NAMES', how='left')
@@ -135,16 +160,27 @@ def calc_totals(player_data: pd.DataFrame) -> pd.DataFrame:
     return format_fields(out, "tot")
 
 def calc_highs(player_data: pd.DataFrame) -> pd.DataFrame:
-    cols = COLUMNS_SUM + ['GSC']
+    # only use columns that exist
+    base_cols = COLUMNS_SUM + ['GSC']
+    cols = [c for c in base_cols if c in player_data.columns]
+
     highs = player_data.groupby('NAMES')[cols].max().reset_index()
-    lowest_gsc = player_data.groupby('NAMES')['GSC'].min().reset_index(name='Lowest GSC')
-    out = highs.merge(lowest_gsc, on='NAMES', how='left')
+
+    if 'GSC' in player_data.columns:
+        lowest_gsc = player_data.groupby('NAMES')['GSC'].min().reset_index(name='Lowest GSC')
+        highs = highs.merge(lowest_gsc, on='NAMES', how='left')
+
     games = player_data.groupby('NAMES').size().reset_index(name='GP')
-    out = out.merge(games, on='NAMES', how='left')
+    out = highs.merge(games, on='NAMES', how='left')
+
     out['rowColor'] = out['NAMES'].map(lambda x: COLOR_MAP.get(x, '#A6C9EC'))
-    gp = out.pop('GP')
-    out.insert(1, 'GP', gp)
+
+    if 'GP' in out.columns:
+        gp = out.pop('GP')
+        out.insert(1, 'GP', gp)
+
     return format_fields(out, "highs")
+
 
 def filter_min_games(df: pd.DataFrame, min_games: int = 3) -> pd.DataFrame:
     if "GP" not in df.columns:
@@ -156,27 +192,52 @@ def exclude_injury_opp(d: pd.DataFrame) -> pd.DataFrame:
 
 def load_from_sqlite() -> pd.DataFrame:
     con = sqlite3.connect(DB_PATH)
-    df = pd.read_sql_query('select * from InjuryReserves', con)
+
+    df = pd.read_sql_query("SELECT * FROM InjuryReserves", con)
+
+    gps = pd.read_sql_query("""
+        SELECT season, game, player, minutes, plus_minus
+        FROM game_player_stats
+    """, con)
+
     con.close()
 
-    # map db cols -> excel-like cols expected by current logic
-    rename = {
+    gps = gps.rename(columns={
+        "season": "SEASON",
+        "game": "GAME",
+        "player": "NAMES",
+        "minutes": "MIN",
+        "plus_minus": "PM"
+    })
+
+    df = df.merge(gps, on=["SEASON", "GAME", "NAMES"], how="left")
+
+    df["MIN"] = pd.to_numeric(df["MIN"], errors="coerce").fillna(0)
+    df["PM"] = pd.to_numeric(df["PM"], errors="coerce").fillna(0)
+
+    # rename db cols
+    df = df.rename(columns={
         "OREB": "O REB",
         "DREB": "D REB",
-    }
-    df = df.rename(columns=rename)
+    })
 
-    # force numeric where possible (db has many TEXT columns)
-    numeric_cols = ["2PM","2PA","3PM","3PA","FGM","FGA","FTM","FTA","O REB","D REB",
-                    "PTS","REB","AST","BLK","STL","TOV","FLS","GSC"]
+    numeric_cols = [
+        "2PM","2PA","3PM","3PA","FGM","FGA","FTM","FTA",
+        "O REB","D REB","PTS","REB","AST","BLK","STL",
+        "TOV","FLS","GSC","MIN","PM"
+    ]
+
     for c in numeric_cols:
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce").fillna(0)
 
     return df
 
+
+
 def main():
     df = load_from_sqlite()
+
     if df.empty:
         raise SystemExit("no rows in InjuryReserves")
 
@@ -187,7 +248,16 @@ def main():
 
     season_teams = {}
     for s in seasons:
-        s_df = exclude_injury_opp(df[df['SEASON']==s])
+        s_int = int(s)
+
+        s_df = exclude_injury_opp(
+            df[(df['SEASON'] == s_int) & (df['GAME'] > 0)].copy()
+        )
+
+        # Only season 4+ keeps MIN and PM
+        if s_int < 4:
+            s_df = s_df.drop(columns=["MIN", "PM"], errors="ignore")
+
         season_teams[str(s)] = sorted(s_df['OPP'].dropna().unique().tolist())
 
     index = {
@@ -202,6 +272,17 @@ def main():
 
     base = exclude_injury_opp(df[df['GAME'] > 0].copy())
 
+    # Only keep MIN/PM for season 4+
+    base = base.copy()
+    base.loc[base["SEASON"] < 4, ["MIN", "PM"]] = pd.NA
+
+    # drop columns entirely if no valid values exist
+    if base["MIN"].dropna().empty:
+        base = base.drop(columns=["MIN"], errors="ignore")
+
+    if base["PM"].dropna().empty:
+        base = base.drop(columns=["PM"], errors="ignore")
+
     averages_all = filter_min_games(calc_averages(base), 3)
     totals_all = filter_min_games(calc_totals(base), 3)
     highs_all = filter_min_games(calc_highs(base), 3)
@@ -213,7 +294,11 @@ def main():
     opp_names_all = set(df['OPP'].dropna().unique().tolist())
 
     for s in seasons:
-        s_df = exclude_injury_opp(df[(df['SEASON']==s) & (df['GAME'] > 0)].copy())
+        s_df = exclude_injury_opp(df[(df['SEASON'] == s) & (df['GAME'] > 0)].copy())
+
+        if int(s) < 4:
+            s_df = s_df.drop(columns=["MIN", "PM"], errors="ignore")
+
         write_json(DATA_DIR / "aggregates" / f"averages_by_season_{s}.json", calc_averages(s_df).to_dict(orient="records"))
         write_json(DATA_DIR / "aggregates" / f"totals_by_season_{s}.json", calc_totals(s_df).to_dict(orient="records"))
         write_json(DATA_DIR / "aggregates" / f"highs_by_season_{s}.json", calc_highs(s_df).drop(columns=['GP'], errors='ignore').to_dict(orient="records"))
@@ -232,16 +317,40 @@ def main():
 
         for gnum in season_games[str(s)]:
             g_df = df[(df['SEASON']==s) & (df['GAME']==gnum)].copy()
+            # ---- load minutes and plus-minus from game_player_stats ----
+            con = sqlite3.connect(DB_PATH)
+            gps = pd.read_sql_query(
+                """
+                SELECT player, minutes, plus_minus
+                FROM game_player_stats
+                WHERE season = ?
+                  AND game = ?
+                """,
+                con,
+                params=(s, gnum)
+            )
+            con.close()
+
+            gps = gps.rename(columns={
+                "player": "NAMES",
+                "minutes": "MIN",
+                "plus_minus": "PM"
+            })
+
             if g_df.empty:
                 continue
 
-            opp = str(g_df['OPP'].iloc[0])
-            # players: only real player rows
+            # identify opponent safely
+            opp = str(g_df['OPP'].iloc[0]).strip()
+
+            # real player rows:
             players = g_df[
-                (g_df["OPP"].astype(str) == opp)
-                & (~g_df["NAMES"].astype(str).str.contains("Injury Reserves", case=False, na=False))
-                & (g_df["NAMES"].astype(str) != opp)
+                (~g_df["NAMES"].astype(str).str.contains("Injury Reserves", case=False, na=False))
+                & (g_df["NAMES"].astype(str).str.strip() != opp)
                 ].copy()
+
+            has_minutes = not gps.empty
+
 
             # --- build a synthetic "injury reserves" totals row from players ---
             stat_cols = ["2PM", "2PA", "3PM", "3PA", "FGM", "FGA", "FTM", "FTA", "O REB", "D REB",
@@ -261,6 +370,12 @@ def main():
                     tot[c] = float(players[c].sum())
 
             tot["NAMES"] = "Injury Reserves"
+
+            if "MIN" in players.columns:
+                tot["MIN"] = float(players["MIN"].sum())
+
+            if "PM" in players.columns:
+                tot["PM"] = float(players["PM"].sum())
 
             totals_row = pd.DataFrame([tot])
 

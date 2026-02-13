@@ -40,7 +40,6 @@
     "STL_display": "7",
     "TOV_display": "4",
     "FLS_display": "2",
-    "GSC_display": "24.30",
     "Lowest GSC_display": "11.30"
   },
   {
@@ -84,7 +83,6 @@
     "STL_display": "3",
     "TOV_display": "2",
     "FLS_display": "4",
-    "GSC_display": "11.00",
     "Lowest GSC_display": "-3.20"
   },
   {
@@ -128,7 +126,6 @@
     "STL_display": "4",
     "TOV_display": "6",
     "FLS_display": "5",
-    "GSC_display": "25.00",
     "Lowest GSC_display": "0.60"
   },
   {
@@ -172,7 +169,6 @@
     "STL_display": "5",
     "TOV_display": "5",
     "FLS_display": "3",
-    "GSC_display": "24.50",
     "Lowest GSC_display": "1.90"
   },
   {
@@ -216,7 +212,6 @@
     "STL_display": "17",
     "TOV_display": "16",
     "FLS_display": "19",
-    "GSC_display": "23.36",
     "Lowest GSC_display": "3.52"
   },
   {
@@ -260,7 +255,6 @@
     "STL_display": "7",
     "TOV_display": "3",
     "FLS_display": "4",
-    "GSC_display": "25.90",
     "Lowest GSC_display": "3.30"
   },
   {
@@ -304,7 +298,6 @@
     "STL_display": "2",
     "TOV_display": "4",
     "FLS_display": "3",
-    "GSC_display": "22.30",
     "Lowest GSC_display": "-3.10"
   },
   {
@@ -348,7 +341,6 @@
     "STL_display": "4",
     "TOV_display": "4",
     "FLS_display": "4",
-    "GSC_display": "8.30",
     "Lowest GSC_display": "-7.00"
   },
   {
@@ -392,7 +384,6 @@
     "STL_display": "3",
     "TOV_display": "4",
     "FLS_display": "5",
-    "GSC_display": "51.40",
     "Lowest GSC_display": "1.70"
   },
   {
@@ -436,7 +427,6 @@
     "STL_display": "2",
     "TOV_display": "3",
     "FLS_display": "4",
-    "GSC_display": "13.70",
     "Lowest GSC_display": "0.70"
   }
 ]

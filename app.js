@@ -181,10 +181,19 @@ function splitTeam(rows){
   const pan = rows.filter(r => String(r.NAMES).includes("Injury Reserves"));
   return { team, pan };
 }
-const SUMMARY_COLS = ["NAMES","PTS","REB","AST","BLK","STL","TOV","FLS","FG%","3P%","FT%","TS%","GSC","GP"];
+const SUMMARY_COLS = [
+  "NAMES",
+  "MIN",
+  "PM",
+  "PTS","REB","AST","BLK","STL","TOV","FLS",
+  "FG%","3P%","FT%","TS%","GSC","GP"
+];
+
 
 const SUMMARY_LABELS = {
   "NAMES":"name",
+  "MIN":"min",
+  "PM":"+/-",
   "PTS":"pts",
   "REB":"reb",
   "AST":"ast",
@@ -196,7 +205,8 @@ const SUMMARY_LABELS = {
   "3P%":"3p",
   "FT%":"ft",
   "TS%":"ts",
-  "GSC":"gsc"
+  "GSC":"gsc",
+
 };
 
 function selectCols(rows, cols){
@@ -255,8 +265,33 @@ function appendTeamPanTables(content, rows){
 function buildTable(rows, preferDisplay=true, columnsOverride=null, labelMap=null){
   if(!rows || rows.length === 0) return el("div", { class:"note" }, ["no data"]);
 
-  const autoKeys = Object.keys(rows[0]).filter(k => k !== "rowColor" && !k.endsWith("_display"));
-  const columns = (Array.isArray(columnsOverride) && columnsOverride.length) ? columnsOverride : autoKeys;
+  const autoKeys = Object.keys(rows[0])
+  .filter(k => k !== "rowColor")
+  .map(k => k.replace("_display", ""))
+  .filter((v, i, a) => a.indexOf(v) === i);
+
+ let columns = (Array.isArray(columnsOverride) && columnsOverride.length)
+  ? columnsOverride
+  : autoKeys;
+
+// hide MIN / PM in aggregate pages if entire column is zero
+if (state.page !== "game") {
+  const allZero = (key) => {
+    return rows.every(r => {
+      const v = Number(r[key] ?? 0);
+      return !v || v === 0;
+    });
+  };
+
+  if (columns.includes("MIN") && allZero("MIN")) {
+    columns = columns.filter(c => c !== "MIN");
+  }
+
+  if (columns.includes("PM") && allZero("PM")) {
+    columns = columns.filter(c => c !== "PM");
+  }
+}
+
 
   const toNumber = (x) => {
     if (x === null || x === undefined) return null;
@@ -275,6 +310,30 @@ function buildTable(rows, preferDisplay=true, columnsOverride=null, labelMap=nul
     if (preferDisplay && r[dispKey] !== undefined && r[dispKey] !== null && String(r[dispKey]).trim() !== "") {
       return r[dispKey];
     }
+    // format minutes (stored as seconds)
+if (k === "MIN"){
+  const sec = Number(r[k] || 0);
+
+  // game page → show actual game minutes
+  if (state.page === "game"){
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}:${String(s).padStart(2,"0")}`;
+  }
+
+  // aggregate pages → convert total seconds to per-game average
+  const gp = Number(r.GP || 0);
+  if (gp > 0){
+    const avgSec = Math.floor(sec / gp);
+    const m = Math.floor(avgSec / 60);
+    const s = avgSec % 60;
+    return `${m}:${String(s).padStart(2,"0")}`;
+  }
+
+  return "0:00";
+}
+
+
 
     if (k.includes("%")) {
       const n = toNumber(r[k]);
@@ -287,14 +346,46 @@ function buildTable(rows, preferDisplay=true, columnsOverride=null, labelMap=nul
     return r[k];
   };
 
-  const headerText = (k) => (labelMap && labelMap[k]) ? labelMap[k] : k;
+  const headerText = (k) => {
+  if (state.page === "game") {
+    if (k === "PM") return "+/-";
+    if (k === "MIN") return "MP";
+  }
+  return (labelMap && labelMap[k]) ? labelMap[k] : k;
+};
+
 
   const thead = el("thead", {}, [el("tr", {}, columns.map(k => el("th", {}, [headerText(k)])))]);
   const tbody = el("tbody", {}, rows.map(r=>{
     const bg = r.rowColor || "#A6C9EC";
     return el("tr", {}, columns.map(k=>{
       const v = formatCell(k, r);
-      return el("td", { style:`background:${bg};` }, [String(v ?? "")]);
+      const td = el("td", { style:`background:${bg};` }, [String(v ?? "")]);
+
+if (k === "PM"){
+  const val = Number(r[k] || 0);
+
+  td.style.color = "#000";
+  td.style.fontWeight = "800";
+  td.style.textAlign = "center";
+  td.style.borderRadius = "6px";
+  td.style.padding = "4px 8px";
+
+  if (val > 0){
+    td.style.border = "2px solid #27ae60";
+    td.innerText = `+${val}`;
+  }
+  else if (val < 0){
+    td.style.border = "2px solid #e74c3c";
+  }
+  else {
+    td.style.border = "2px solid rgba(0,0,0,0.2)";
+  }
+}
+
+
+return td;
+
     }));
   }));
 
@@ -334,7 +425,28 @@ async function renderGame(){
   ]);
   content.appendChild(cards);
 
-  appendTeamPanTables(content, payload.players);
+  // clone so we don't mutate original
+const rows = JSON.parse(JSON.stringify(payload.players));
+
+// find team totals row
+const teamRow = rows.find(r => String(r.NAMES).includes("Injury Reserves"));
+
+if (teamRow){
+
+  // 1️⃣ TEAM +/- = teamScore - opponentScore
+  teamRow.PM = Number(payload.teamScore || 0) - Number(payload.opponentScore || 0);
+
+  // 2️⃣ TEAM MIN = average minutes of real players
+  const realPlayers = rows.filter(r => !String(r.NAMES).includes("Injury Reserves"));
+  if (realPlayers.length){
+    const totalSeconds = realPlayers.reduce((sum, r) => sum + Number(r.MIN || 0), 0);
+    teamRow.MIN = Math.floor(totalSeconds / realPlayers.length);
+    delete teamRow.MIN_display;
+  }
+}
+
+appendTeamPanTables(content, rows);
+
 
   // ===== GAME VIDEOS =====
 const videoKey = `${payload.season}_${payload.game}`;
