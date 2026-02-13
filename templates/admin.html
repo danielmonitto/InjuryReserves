@@ -159,10 +159,11 @@
       .thead, .trow {
   display: grid;
 grid-template-columns:
-  90px
+  80px
   repeat(13, minmax(44px, 1fr))
   60px
-  90px;
+  90px
+        32px;
   align-items: center;
 }
 
@@ -178,7 +179,7 @@ grid-template-columns:
       }
 
       .th, .td {
-        padding: 12px 10px;
+        padding: 8px 8px;
         border-right: 1px solid var(--stroke2);
         text-transform: uppercase;
         letter-spacing: 0.8px;
@@ -186,6 +187,8 @@ grid-template-columns:
         color: rgba(242, 242, 242, 0.85);
         font-weight: 750;
         white-space: nowrap;
+        text-align: center;
+
       }
 
       .td {
@@ -197,9 +200,11 @@ grid-template-columns:
         border-top: 1px solid var(--stroke2);
       }
 
-      .thead .th:last-child, .trow .td:last-child {
-        border-right: none;
-      }
+      .thead .th:last-child,
+.trow .td:last-child {
+  text-align: center;
+}
+
 
       .trow {
         position: relative;
@@ -245,15 +250,6 @@ grid-template-columns:
 }
 
 
-      .chip {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
-        flex: 0 0 auto;
-      }
-
       .statbox {
         border: 1px solid rgba(255, 255, 255, 0.10);
         border-radius: 14px;
@@ -290,13 +286,26 @@ grid-template-columns:
         line-height: 1.1;
       }
 
-      .removeBtn {
-  padding: 6px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 800;
-  background: rgba(0, 0, 0, 0.30);
+.removeBtn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 16px;
+  font-weight: 900;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
 }
+
+
+
+.removeBtn:hover {
+  color: #ff6b6b;
+  transform: scale(1.1);
+}
+
 
 
       .td.min,
@@ -357,6 +366,12 @@ grid-template-columns:
   border-color: #ff6b6b;
   box-shadow: 0 0 0 2px rgba(255,107,107,0.35) inset;
 }
+
+.thead .th:first-child,
+.trow .td:first-child {
+  text-align: center;
+}
+
 
 
 
@@ -428,16 +443,6 @@ grid-template-columns:
           </select>
         </div>
 
-        <div>
-          <div class="hint">opp score</div>
-          <input id="oppScore" value="0" />
-          <div class="btnrow" style="display:flex; gap:8px; margin-top:8px;">
-            <button class="ghost smallbtn" data-oppdelta="-1">-1</button>
-            <button class="ghost smallbtn" data-oppdelta="1">+1</button>
-            <button class="ghost smallbtn" data-oppdelta="2">+2</button>
-            <button class="ghost smallbtn" data-oppdelta="3">+3</button>
-          </div>
-        </div>
 
         <div style="min-width: 260px;">
           <div class="hint">add player</div>
@@ -453,10 +458,19 @@ grid-template-columns:
 
         <button id="addPlayer" class="ghost">add</button>
         <button id="save" class="primary">save game</button>
-        <button id="undo" class="ghost">undo</button>
           <button id="reset" class="ghost">reset</button>
+        <div style="flex-basis: 100%; height: 0;"></div>
          <button id="startBtn" class="ghost clockBtn" onclick="startClock()">start</button>
         <button id="stopBtn" class="ghost clockBtn" onclick="stopClock()">stop</button>
+                    <button class="ghost smallbtn" data-oppdelta="-1">-1</button>
+            <button class="ghost smallbtn" data-oppdelta="1">+1</button>
+            <button class="ghost smallbtn" data-oppdelta="2">+2</button>
+            <button class="ghost smallbtn" data-oppdelta="3">+3</button>
+        <div class="hint">opp score</div>
+          <input id="oppScore" value="0" />
+          <div class="btnrow" style="display:flex; gap:8px; margin-top:8px;">
+          </div>
+        <button id="undo" class="ghost">undo</button>
 
       </div>
 
@@ -1221,7 +1235,7 @@ thLineup.textContent = "lineup";
 head.appendChild(thLineup);
 
 
-    
+
     const thRemove = document.createElement("div");
     thRemove.className = "th";
     thRemove.textContent = "";
@@ -1260,8 +1274,6 @@ head.appendChild(thLineup);
       if (c) {
         row.classList.add("hasColor");
         row.style.setProperty("--rowcolor", c);
-        row.style.borderLeft = "6px solid " + c;
-        row.style.background = "linear-gradient(90deg, " + c + "22 0%, rgba(0,0,0,0) 22%)";
         chip.style.background = c;
       } else {
         chip.style.background = "rgba(255,255,255,0.25)";
@@ -1392,10 +1404,14 @@ row.appendChild(lineupCell);
       // derived: gsc (read-only)
 
       const rm = document.createElement("div");
-      rm.className = "td lineupControls";
-      const btn = document.createElement("button");
-      btn.className = "removeBtn";
-      btn.textContent = "remove";
+rm.className = "td";
+rm.style.textAlign = "center";
+
+const btn = document.createElement("button");
+btn.className = "removeBtn";
+btn.innerHTML = "&times;";
+btn.title = "remove player";
+
       btn.onclick = () => {
         const removed = JSON.parse(JSON.stringify(p));
         const at = idx;
