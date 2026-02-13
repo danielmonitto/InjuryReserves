@@ -761,17 +761,17 @@ function resetOnceFlags(){
 
   function recordShotForTeam(made){ /* disabled */ }
 
-  function recordMakeForPlayer(name, ptsDelta){
+  function recordMakeForPlayer(name, ptsDelta) {
     const now = Date.now();
     const arr = (POP_STATE.bursts[name] ||= []);
-    arr.push({ ts: now, pts: ptsDelta });
+    arr.push({ts: now, pts: ptsDelta});
     const cutoff = now - 90_000;
     while (arr.length && arr[0].ts < cutoff) arr.shift();
-    const sum = arr.reduce((a,e)=>a+e.pts,0);
+    const sum = arr.reduce((a, e) => a + e.pts, 0);
 
-    if (sum >= 6){
+    if (sum >= 6) {
       const last = POP_STATE.lastBurstShown[name] || 0;
-      if (now - last > 30_000){
+      if (now - last > 30_000) {
         POP_STATE.lastBurstShown[name] = now;
         postOverlayEvent({
           title: name,
@@ -784,9 +784,10 @@ function resetOnceFlags(){
 
     POP_STATE.makeStreak[name] = (POP_STATE.makeStreak[name] || 0) + 1;
     const streak = POP_STATE.makeStreak[name];
-    if (streak >= 3){
+
+    if (streak >= 3) {
       const shown = POP_STATE.lastStreakShown[name] || 0;
-      if (streak > shown){
+      if (streak > shown) {
         POP_STATE.lastStreakShown[name] = streak;
         postOverlayEvent({
           title: name,
@@ -797,6 +798,7 @@ function resetOnceFlags(){
       }
     }
   }
+
 
   function recordMissForPlayer(name){
     POP_STATE.makeStreak[name] = 0;
@@ -1342,12 +1344,7 @@ if (key === "FTM"){
           checkAndPostMilestone(p.NAMES, p.PTS || 0);
           checkOtherMilestones(p);
 
-          if (delta === 1){
-            if (key === "2PM"){ recordMakeForPlayer(p.NAMES, 2); recordShotForTeam(true); }
-            if (key === "3PM"){ recordMakeForPlayer(p.NAMES, 3); recordShotForTeam(true); }
-            if (key === "FTM"){ recordMakeForPlayer(p.NAMES, 1); }
-            if (key === "2PA" || key === "3PA"){ recordMissForPlayer(p.NAMES); recordShotForTeam(false); }
-          }
+
 
           if (key === "FTA" && delta === 1){
             await postCareerFtIfAvailable(p.NAMES);
