@@ -29,261 +29,342 @@
       min-height: 100vh;
     }
 
-    .wrap{
-      width: min(1200px, 94vw);
-      margin: 22px auto;
-      padding: 0 0 28px;
-    }
+    .wrap {
+  width: 98vw;
+  max-width: 1600px;
+  margin: 22px auto;
+  padding: 0 0 28px;
+}
 
-    .header{
-      border-radius: 22px;
-      padding: 18px;
-      background: rgba(15,16,22,0.55);
-      border: 1px solid var(--stroke);
-      box-shadow: 0 22px 70px rgba(0,0,0,0.60);
-      backdrop-filter: blur(14px);
-    }
+.header {
+  border-radius: 22px;
+  padding: 18px;
+  background: rgba(15, 16, 22, 0.55);
+  border: 1px solid var(--stroke);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.60);
+  backdrop-filter: blur(14px);
+}
 
-    .title{
-      font-size: 28px;
-      font-weight: 750;
-      margin: 0;
-      letter-spacing: 0.2px;
-    }
 
-    .subtitle{
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
+      .title {
+        font-size: 28px;
+        font-weight: 750;
+        margin: 0;
+        letter-spacing: 0.2px;
+      }
 
-    .panel{
-      margin-top: 14px;
-      border-radius: 22px;
-      padding: 16px;
-      background: var(--panel);
-      border: 1px solid var(--stroke);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
-      backdrop-filter: blur(14px);
-    }
+      .subtitle {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
 
-    .top{
-      display:flex;
-      gap:12px;
-      flex-wrap: wrap;
-      align-items:end;
-    }
+      .panel {
+        margin-top: 14px;
+        border-radius: 22px;
+        padding: 16px;
+        background: var(--panel);
+        border: 1px solid var(--stroke);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(14px);
+      }
 
-    .hint{
-      color: var(--muted);
-      font-size: 12px;
-      margin: 0 0 6px;
-    }
+      .top {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: end;
+      }
 
-    input, select, button{
-      padding: 10px 12px;
-      font-size: 14px;
-      color: var(--text);
-      border-radius: 14px;
-      border: 1px solid var(--stroke);
-      background: rgba(0,0,0,0.35);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-    }
+      .hint {
+        color: var(--muted);
+        font-size: 12px;
+        margin: 0 0 6px;
+      }
 
-    input:disabled{
-      opacity: 0.75;
-      cursor: not-allowed;
-    }
+      input, select, button {
+        padding: 10px 12px;
+        font-size: 14px;
+        color: var(--text);
+        border-radius: 14px;
+        border: 1px solid var(--stroke);
+        background: rgba(0, 0, 0, 0.35);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
 
-    input:focus, select:focus{
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(181,7,40,0.20), 0 10px 30px rgba(0,0,0,0.35);
-    }
+      input:disabled {
+        opacity: 0.75;
+        cursor: not-allowed;
+      }
 
-    button{
-      cursor: pointer;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-    }
+      input:focus, select:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(181, 7, 40, 0.20), 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
 
-    button.primary{
-      background: linear-gradient(180deg, rgba(219,46,46,0.95), rgba(181,7,40,0.85));
-      border-color: rgba(255,255,255,0.14);
-      box-shadow: 0 0 0 2px rgba(181,7,40,0.18) inset, 0 18px 44px rgba(0,0,0,0.45);
-    }
+      button {
+        cursor: pointer;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
 
-    button.ghost{
-      background: rgba(0,0,0,0.28);
-    }
+      button.primary {
+        background: linear-gradient(180deg, rgba(219, 46, 46, 0.95), rgba(181, 7, 40, 0.85));
+        border-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 0 0 2px rgba(181, 7, 40, 0.18) inset, 0 18px 44px rgba(0, 0, 0, 0.45);
+      }
 
-    .smallbtn{
-      padding: 8px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1;
-    }
+      button.ghost {
+        background: rgba(0, 0, 0, 0.28);
+      }
 
-    .small{
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 10px;
-      line-height: 1.4;
-    }
+      .smallbtn {
+        padding: 8px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1;
+      }
 
-    .msg{
-      margin-top: 12px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.35);
-      border: 1px solid var(--stroke);
-      display:none;
-    }
+      .small {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 10px;
+        line-height: 1.4;
+      }
 
-    .msg.danger{
-      border-color: rgba(255,90,90,0.40);
-    }
+      .msg {
+        margin-top: 12px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid var(--stroke);
+        display: none;
+      }
 
-    .table{
-      margin-top: 14px;
-      overflow: auto;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--stroke);
-      background: rgba(0,0,0,0.28);
-      box-shadow: 0 16px 55px rgba(0,0,0,0.55);
-    }
+      .msg.danger {
+        border-color: rgba(255, 90, 90, 0.40);
+      }
 
-    .thead, .trow{
-      display: grid;
-      grid-template-columns:
-        220px
-        repeat(13, 70px)
-        120px;
-      align-items: center;
-    }
+      .table {
+        margin-top: 14px;
+        overflow: auto;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid var(--stroke);
+        background: rgba(0, 0, 0, 0.28);
+        box-shadow: 0 16px 55px rgba(0, 0, 0, 0.55);
+      }
 
-    .thead{
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      background: linear-gradient(180deg, rgba(181,7,40,0.35), rgba(0,0,0,0.85));
-      border-bottom: 1px solid var(--stroke2);
-      backdrop-filter: blur(10px);
-    }
+      .thead, .trow {
+  display: grid;
+grid-template-columns:
+  90px
+  repeat(13, minmax(44px, 1fr))
+  60px
+  90px;
+  align-items: center;
+}
 
-    .th, .td{
-      padding: 12px 10px;
-      border-right: 1px solid var(--stroke2);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-size: 11px;
-      color: rgba(242,242,242,0.85);
-      font-weight: 750;
-      white-space: nowrap;
-    }
 
-    .td{
-      text-transform: none;
-      letter-spacing: 0;
-      font-size: 14px;
-      color: var(--text);
-      font-weight: 650;
-      border-top: 1px solid var(--stroke2);
-    }
 
-    .thead .th:last-child, .trow .td:last-child{ border-right: none; }
+      .thead {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: linear-gradient(180deg, rgba(181, 7, 40, 0.35), rgba(0, 0, 0, 0.85));
+        border-bottom: 1px solid var(--stroke2);
+        backdrop-filter: blur(10px);
+      }
 
-    .trow{ position: relative; }
+      .th, .td {
+        padding: 12px 10px;
+        border-right: 1px solid var(--stroke2);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-size: 11px;
+        color: rgba(242, 242, 242, 0.85);
+        font-weight: 750;
+        white-space: nowrap;
+      }
 
-    .trow > .td{
-      position: relative;
-      z-index: 1;
-    }
+      .td {
+        text-transform: none;
+        letter-spacing: 0;
+        font-size: 14px;
+        color: var(--text);
+        font-weight: 650;
+        border-top: 1px solid var(--stroke2);
+      }
 
-    .trow::before{
-      content:"";
-      position:absolute;
-      left:0;
-      top:0;
-      bottom:0;
-      width:6px;
-      background: var(--rowcolor, transparent);
-      border-radius: 6px 0 0 6px;
-      pointer-events: none;
-    }
+      .thead .th:last-child, .trow .td:last-child {
+        border-right: none;
+      }
 
-    .trow::after{
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: var(--rowcolor);
-      opacity: 0.18;
-      pointer-events: none;
-      z-index: 0;
-    }
+      .trow {
+        position: relative;
+      }
 
-    .trow.hasColor{
-      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(0,0,0,0.0));
-    }
+      .trow > .td {
+        position: relative;
+        z-index: 1;
+      }
 
-    .namecell{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
+      .trow::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        background: var(--rowcolor, transparent);
+        border-radius: 6px 0 0 6px;
+        pointer-events: none;
+      }
 
-    .chip{
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.22);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.45);
-      flex: 0 0 auto;
-    }
+      .trow::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--rowcolor);
+        opacity: 0.18;
+        pointer-events: none;
+        z-index: 0;
+      }
 
-    .statbox{
-      border: 1px solid var(--stroke);
-      border-radius: 14px;
-      padding: 8px 8px;
-      user-select: none;
-      cursor: pointer;
-      text-align: center;
-      background: rgba(0,0,0,0.25);
-    }
+      .trow.hasColor {
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.0));
+      }
 
-    .statbox.readonly{
-      cursor: default;
-      opacity: 0.92;
-      background: rgba(0,0,0,0.18);
-    }
+      .namecell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 800;
+}
 
-    .statlabel{
-      font-size: 10px;
-      color: var(--muted);
-      margin-bottom: 2px;
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
-      font-weight: 800;
-    }
 
-    .statval{
-      font-size: 16px;
-      font-weight: 850;
-      line-height: 1.1;
-    }
+      .chip {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
+        flex: 0 0 auto;
+      }
 
-    .removeBtn{
-      width: 100%;
-      padding: 10px 10px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.30);
-    }
+      .statbox {
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+        transition: all 0.15s ease;
+        width: 100%;
+        padding: 6px 4px;
+      }
 
-    @media (max-width: 1100px){
-      .table{ overflow-x: auto; }
-      .thead, .trow{ min-width: 1250px; }
-    }
+      .statbox:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-1px);
+      }
+
+
+      .statbox.readonly {
+        cursor: default;
+        opacity: 0.92;
+        background: rgba(0, 0, 0, 0.18);
+      }
+
+      .statlabel {
+        font-size: 9px;
+        color: var(--muted);
+        margin-bottom: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        font-weight: 800;
+      }
+
+      .statval {
+        font-size: 14px;
+        font-weight: 850;
+        line-height: 1.1;
+      }
+
+      .removeBtn {
+  padding: 6px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.30);
+}
+
+
+      .td.min,
+      .td.pm {
+        font-variant-numeric: tabular-nums;
+        font-weight: 800;
+        text-align: center;
+        letter-spacing: 0.5px;
+      }
+
+      .td.pm {
+        font-size: 15px;
+      }
+
+      .td.pm.pos {
+        color: #5fe18b;
+      }
+
+      .td.pm.neg {
+        color: #ff6b6b;
+      }
+
+      .lineupControls {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+      }
+
+      .lineupControls button {
+        padding: 6px 8px;
+        font-size: 11px;
+        font-weight: 800;
+        border-radius: 10px;
+      }
+
+      .lineupControls button.inActive {
+        background: #1f6b3b;
+        border-color: #2dbf6b;
+      }
+
+      .lineupControls button.outActive {
+        background: #7a2020;
+        border-color: #ff6b6b;
+      }
+
+      .trow.active {
+        box-shadow: inset 0 0 0 2px rgba(95, 225, 139, 0.6);
+      }
+
+      .clockBtn.active {
+  background: linear-gradient(180deg, #1f6b3b, #14532d);
+  border-color: #2dbf6b;
+  box-shadow: 0 0 0 2px rgba(45,191,107,0.35) inset;
+}
+
+.clockBtn.stopActive {
+  background: linear-gradient(180deg, #7a2020, #4c1010);
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 2px rgba(255,107,107,0.35) inset;
+}
+
+
+
+      @media (max-width: 1100px) {
+        .table {
+          overflow-x: auto;
+        }
+      }
   </style>
 </head>
 
@@ -299,6 +380,7 @@
         <div>
           <div class="hint">season</div>
           <input id="season" value="4" />
+
         </div>
 
         <div>
@@ -372,8 +454,10 @@
         <button id="addPlayer" class="ghost">add</button>
         <button id="save" class="primary">save game</button>
         <button id="undo" class="ghost">undo</button>
-        <button id="config" class="ghost">config</button>
           <button id="reset" class="ghost">reset</button>
+         <button id="startBtn" class="ghost clockBtn" onclick="startClock()">start</button>
+        <button id="stopBtn" class="ghost clockBtn" onclick="stopClock()">stop</button>
+
       </div>
 
       <div class="small">
@@ -836,7 +920,19 @@ function resetOnceFlags(){
       const oppScore = Number(document.getElementById("oppScore").value || 0);
       const oppColor = (document.getElementById("oppColor").value || "#4B5563").toString().trim();
 
-      const players = state.players.map(p => derive({...p}));
+
+const players = state.players.map(p => {
+  const d = derive({...p});
+  const gp = GAME.players[p.NAMES] || { seconds: 0, plusMinus: 0 };
+
+  return {
+    ...d,
+    minutes: getLiveSeconds(p.NAMES),   // ← THIS is the fix
+    plusMinus: gp.plusMinus
+  };
+});
+
+
 
       const injScore = players.reduce((a,p)=>a+(p.PTS||0),0);
       const teamTotals = calcTeamTotals(players);
@@ -876,6 +972,14 @@ function resetOnceFlags(){
     for (const [k] of EDITABLE) p[k] = 0;
     derive(p);
   });
+
+  // reset minutes + plus minus
+GAME.clockSec = 1200;
+GAME.running = false;
+clearInterval(clockInterval);
+GAME.lineup.clear();
+GAME.players = {};
+
 
   // reset milestone + popup/run tracking
   for (const k in MILESTONE_REACHED) delete MILESTONE_REACHED[k];
@@ -959,6 +1063,126 @@ document.getElementById("reset").onclick = (e) => {
 
   let state = { players: [] };
 
+  // =============================
+// LINEUP / MINUTES / +/- ENGINE
+// =============================
+
+let GAME = {
+  clockSec: 1200,       // 20:00 half
+  running: false,
+  lineup: new Set(),    // players currently on court
+  players: {}           // per-player tracking
+};
+
+function ensureGamePlayer(name){
+  if (!GAME.players[name]){
+    GAME.players[name] = {
+      seconds: 0,
+      plusMinus: 0,
+      lastIn: null
+    };
+  }
+}
+
+function formatTime(sec){
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${String(s).padStart(2,"0")}`;
+}
+
+function getLiveSeconds(name){
+  const p = GAME.players[name];
+  if (!p) return 0;
+
+  if (GAME.lineup.has(name)){
+    return p.seconds + (p.lastIn - GAME.clockSec);
+  }
+  return p.seconds;
+}
+
+function subIn(name){
+  ensureGamePlayer(name);
+
+  if (GAME.lineup.has(name)) return;
+  if (GAME.lineup.size >= 5){
+    alert("5 players already on court");
+    return;
+  }
+
+  GAME.lineup.add(name);
+  GAME.players[name].lastIn = GAME.clockSec;
+  renderRows();
+}
+
+function subOut(name){
+  if (!GAME.lineup.has(name)) return;
+
+  const p = GAME.players[name];
+  p.seconds += (p.lastIn - GAME.clockSec);
+  p.lastIn = null;
+
+  GAME.lineup.delete(name);
+  renderRows();
+}
+
+function applyTeamScore(points){
+  for (let name of GAME.lineup){
+    ensureGamePlayer(name);
+    GAME.players[name].plusMinus += points;
+  }
+}
+
+function applyOppScore(points){
+  for (let name of GAME.lineup){
+    ensureGamePlayer(name);
+    GAME.players[name].plusMinus -= points;
+  }
+}
+
+let clockInterval = null;
+
+function updateClockButtons(){
+  const start = document.getElementById("startBtn");
+  const stop  = document.getElementById("stopBtn");
+
+  if (!start || !stop) return;
+
+  start.classList.remove("active");
+  stop.classList.remove("stopActive");
+
+  if (GAME.running){
+    start.classList.add("active");
+  } else {
+    stop.classList.add("stopActive");
+  }
+}
+
+
+function startClock(){
+  if (GAME.running) return;
+  GAME.running = true;
+  updateClockButtons();
+
+  clockInterval = setInterval(() => {
+    if (GAME.clockSec <= 0){
+      stopClock();
+      return;
+    }
+    GAME.clockSec--;
+    renderRows();
+    pushEndgameState();
+  }, 1000);
+}
+
+
+function stopClock(){
+  GAME.running = false;
+  clearInterval(clockInterval);
+  updateClockButtons();
+}
+
+
+
   function showMsg(s, ok=true) {
     const el = document.getElementById("msg");
     el.style.display = "block";
@@ -982,6 +1206,18 @@ document.getElementById("reset").onclick = (e) => {
       head.appendChild(th);
     }
 
+    const thMin = document.createElement("div");
+thMin.className = "th";
+thMin.textContent = "min";
+head.appendChild(thMin);
+
+
+const thLineup = document.createElement("div");
+thLineup.className = "th";
+thLineup.textContent = "lineup";
+head.appendChild(thLineup);
+
+
     
     const thRemove = document.createElement("div");
     thRemove.className = "th";
@@ -989,12 +1225,23 @@ document.getElementById("reset").onclick = (e) => {
     head.appendChild(thRemove);
   }
 
+  function getInitials(name){
+  return name
+    .split(" ")
+    .map(n => n[0])
+    .join("")
+    .toUpperCase();
+}
+
+
   function renderRows() {
     const body = document.getElementById("tbody");
     body.innerHTML = "";
 
     state.players.forEach((p, idx) => {
       derive(p);
+      ensureGamePlayer(p.NAMES);
+
 
       const row = document.createElement("div");
       row.className = "trow";
@@ -1019,7 +1266,9 @@ document.getElementById("reset").onclick = (e) => {
       }
 
       const label = document.createElement("div");
-      label.textContent = p.NAMES;
+label.textContent = getInitials(p.NAMES);
+label.title = p.NAMES; // full name on hover
+
 
       name.appendChild(chip);
       name.appendChild(label);
@@ -1039,10 +1288,31 @@ document.getElementById("reset").onclick = (e) => {
 
           p[key] = clamp0((p[key] || 0) + delta);
 
+          // auto-increment attempts when a make is added
+if (delta === 1) {
+  if (key === "2PM") p["2PA"] = clamp0((p["2PA"] || 0) + 1);
+  if (key === "3PM") p["3PA"] = clamp0((p["3PA"] || 0) + 1);
+  if (key === "FTM") p["FTA"] = clamp0((p["FTA"] || 0) + 1);
+}
+
+
             if (delta === 1){
-            if (key === "FTM") p["FTA"] = clamp0((p["FTA"] || 0) + 1);
-            if (key === "2PM") p["2PA"] = clamp0((p["2PA"] || 0) + 1);
-            if (key === "3PM") p["3PA"] = clamp0((p["3PA"] || 0) + 1);
+            if (key === "3PM"){
+  recordMakeForPlayer(p.NAMES, 3);
+  recordShotForTeam(true);
+  applyTeamScore(3);
+}
+
+if (key === "FTM"){
+  recordMakeForPlayer(p.NAMES, 1);
+  applyTeamScore(1);
+}
+
+            if (key === "2PM"){
+  recordMakeForPlayer(p.NAMES, 2);
+  recordShotForTeam(true);
+  applyTeamScore(2);
+}
             }
 
           derive(p);
@@ -1079,11 +1349,47 @@ document.getElementById("reset").onclick = (e) => {
         cell.appendChild(box);
         row.appendChild(cell);
       }
+      // minutes
+const minCell = document.createElement("div");
+minCell.className = "td";
+minCell.textContent = formatTime(getLiveSeconds(p.NAMES));
+row.appendChild(minCell);
+
+
+// lineup controls
+const lineupCell = document.createElement("div");
+lineupCell.className = "td";
+
+const wrap = document.createElement("div");
+wrap.className = "lineupControls";
+
+const inBtn = document.createElement("button");
+inBtn.textContent = "IN";
+inBtn.className = "ghost smallbtn";
+
+const outBtn = document.createElement("button");
+outBtn.textContent = "OUT";
+outBtn.className = "ghost smallbtn";
+
+if (GAME.lineup.has(p.NAMES)){
+  row.classList.add("active");
+} else {
+  outBtn.classList.add("outActive");
+}
+
+inBtn.onclick = () => subIn(p.NAMES);
+outBtn.onclick = () => subOut(p.NAMES);
+
+wrap.appendChild(inBtn);
+wrap.appendChild(outBtn);
+lineupCell.appendChild(wrap);
+
+row.appendChild(lineupCell);
 
       // derived: gsc (read-only)
 
       const rm = document.createElement("div");
-      rm.className = "td";
+      rm.className = "td lineupControls";
       const btn = document.createElement("button");
       btn.className = "removeBtn";
       btn.textContent = "remove";
@@ -1156,7 +1462,19 @@ document.getElementById("reset").onclick = (e) => {
       return;
     }
 
-    const players = state.players.map(p => derive({...p}));
+
+const players = state.players.map(p => {
+  const d = derive({...p});
+  const gp = GAME.players[p.NAMES] || { seconds: 0, plusMinus: 0 };
+
+  return {
+    ...d,
+    minutes: getLiveSeconds(p.NAMES),  // ← include live running time
+    plusMinus: gp.plusMinus
+  };
+});
+
+
     const oppScore = Number(document.getElementById("oppScore").value || 0);
 
     const payload = {
@@ -1187,29 +1505,8 @@ document.getElementById("reset").onclick = (e) => {
 
   initPlayersDropdown();
   render();
+  updateClockButtons();
 
-  // config dialog
-  const cfgDlg = document.getElementById("cfgDlg");
-  document.getElementById("config").addEventListener("click", (e) => {
-    e.preventDefault();
-    CFG = loadCfg();
-    applyCfgToUi();
-    if (cfgDlg && cfgDlg.showModal) cfgDlg.showModal();
-  });
-
-  document.getElementById("cfgReset").addEventListener("click", () => {
-    CFG = { ...DEFAULT_CFG };
-    applyCfgToUi();
-  });
-
-  document.getElementById("cfgSave").addEventListener("click", () => {
-    CFG = readCfgFromUi();
-    saveCfg(CFG);
-    applyCfgToUi();
-    pushLiveScore();
-    if (cfgDlg && cfgDlg.close) cfgDlg.close();
-    showMsg("config saved");
-  });
 
   // undo
   function undoLast(){
@@ -1278,20 +1575,31 @@ document.getElementById("reset").onclick = (e) => {
   document.getElementById("oppStripe2").addEventListener("input", pushLiveScore);
   document.getElementById("period").addEventListener("change", pushLiveScore);
 
-  document.querySelectorAll("[data-oppdelta]").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const d = Number(btn.getAttribute("data-oppdelta") || 0);
-      const inp = document.getElementById("oppScore");
-      const cur = Number(inp.value || 0);
-      const next = Math.max(0, cur + d);
+document.querySelectorAll("[data-oppdelta]").forEach(btn => {
+  btn.addEventListener("click", function(e){
+    e.preventDefault();
 
-      if (next !== cur) pushUndo({ type: "oppScore", prev: cur, next, pop: snapPopState() });
+    const d = Number(this.getAttribute("data-oppdelta") || 0);
+    const inp = document.getElementById("oppScore");
+    const cur = Number(inp.value || 0);
+    const next = Math.max(0, cur + d);
 
-      inp.value = String(next);
-      pushLiveScore();
-    });
+    if (next !== cur){
+      pushUndo({ type: "oppScore", prev: cur, next, pop: snapPopState() });
+    }
+
+    inp.value = String(next);
+
+    if (d !== 0 && GAME.lineup.size > 0){
+      applyOppScore(d);
+    }
+
+    pushLiveScore();
   });
+});
+
+
+
 </script>
 </body>
 </html>

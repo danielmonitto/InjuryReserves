@@ -383,6 +383,37 @@ def save_game():
     sql = f'insert into InjuryReserves ({sql_cols}) values ({q})'
     cur.executemany(sql, [[r[col] for col in DB_COLS] for r in all_rows])
 
+    # ---- NEW: insert minutes + plus_minus per player ----
+
+    # remove existing rows for this game first (so re-save overwrites)
+    cur.execute(
+        "DELETE FROM game_player_stats WHERE season=? AND game=?",
+        (season, game),
+    )
+
+    for p in players:
+        name = str(p.get("NAMES", "")).strip()
+        if not name:
+            continue
+
+        cur.execute(
+            """
+            INSERT INTO game_player_stats (season, game, type, opp,
+                                           player,
+                                           minutes, plus_minus)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                season,
+                game,
+                gtype,
+                opp,
+                name,
+                int(p.get("minutes", 0) or 0),
+                int(p.get("plusMinus", 0) or 0),
+            ),
+        )
+
     c.commit()
     c.close()
 
