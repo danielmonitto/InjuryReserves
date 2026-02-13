@@ -34,6 +34,7 @@ COLOR_MAP = {
     'James Norrish': '#fc9219',
     "Vince Tomasello": "#63b010",
     "Austin Thorneycroft": "#8858e8",
+    "Aidan Zivkovic": "#d651b3",
     'Injury Reserves': '#DB2E2E',
 }
 
