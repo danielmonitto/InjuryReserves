@@ -32,7 +32,7 @@
 
     .wrap{
       width: 1860px;
-      height: 1040px;
+      height: 100%
       margin: 20px auto;
       padding: 18px;
       background: var(--bg);
@@ -43,12 +43,13 @@
       gap: 14px;
     }
 
-    .top{
-      display:flex;
-      align-items:stretch;
-      gap: 14px;
-      flex: 0 0 auto;
-    }
+.top{
+  display:flex;
+  align-items:stretch;
+  gap: 18px;
+  flex: 0 0 280px;
+}
+
 
     .scorecard{
       flex: 0 0 520px;
@@ -85,7 +86,7 @@
     }
 
     .pts{
-      font-size: 70px;
+      font-size: 92px;
       line-height: 1;
       letter-spacing: -1px;
       font-variant-numeric: tabular-nums;
@@ -154,24 +155,32 @@
     }
 
     .table{
-      flex: 1 1 auto;
+        flex: 1 1 auto;
+  min-height: 600px;
       border: 2px solid var(--stroke);
       background: rgba(0,0,0,0.35);
       overflow: hidden;
       display:flex;
       flex-direction: column;
-      min-height: 0;
     }
 
-    .thead, .row{
-      display:grid;
-      grid-template-columns:
-        340px
-        80px 80px 80px 80px 80px 80px 90px
-        210px 210px 210px 210px
-        90px;
-      align-items:center;
-    }
+.thead, .row{
+  display:grid;
+  grid-template-columns:
+    260px   /* name */
+    80px    /* min */
+    80px    /* +/- */
+    70px 70px 70px 70px 70px 70px 70px
+    170px 170px 170px 120px
+    90px;
+}
+
+.row .td{
+  font-size: 18px;
+  padding: 12px 14px;
+}
+
+
 
     .thead{
       background: rgba(255,255,255,0.06);
@@ -253,6 +262,18 @@
       z-index: 1;
     }
 
+.td.pmpos {
+  color: #5fe18b;
+  font-weight: 900;
+}
+
+.td.pmneg {
+  color: #ff6b6b;
+  font-weight: 900;
+}
+
+
+
     /* hide scrollbar in obs if you want */
     .rows::-webkit-scrollbar{ width: 10px; }
     .rows::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.18); }
@@ -289,20 +310,22 @@
 
     <div class="table">
       <div class="thead">
-        <div class="th">player</div>
-        <div class="th">pts</div>
-        <div class="th">reb</div>
-        <div class="th">ast</div>
-        <div class="th">stl</div>
-        <div class="th">blk</div>
-        <div class="th">tov</div>
-        <div class="th">fouls</div>
-        <div class="th">fg</div>
-        <div class="th">3p</div>
-        <div class="th">ft</div>
-        <div class="th">ts</div>
-        <div class="th">gsc</div>
-      </div>
+  <div class="th">player</div>
+  <div class="th">min</div>
+  <div class="th">+/-</div>
+  <div class="th">pts</div>
+  <div class="th">reb</div>
+  <div class="th">ast</div>
+  <div class="th">stl</div>
+  <div class="th">blk</div>
+  <div class="th">tov</div>
+  <div class="th">fouls</div>
+  <div class="th">fg</div>
+  <div class="th">3p</div>
+  <div class="th">ft</div>
+  <div class="th">ts</div>
+  <div class="th">gsc</div>
+</div>
       <div class="rows" id="rows"></div>
     </div>
   </div>
@@ -406,26 +429,45 @@ async function poll(){
     const {fg, th, ft, ts} = lineFG(p || {});
     const gsc = fmt2(p?.GSC);
 
-    row.innerHTML = `
-      <div class="td name"><span class="pill" style="background:${rowColor}"></span>${p.NAMES || ""}</div>
-      <div class="td">${p.PTS||0}</div>
-      <div class="td">${p.REB||0}</div>
-      <div class="td">${p.AST||0}</div>
-      <div class="td">${p.STL||0}</div>
-      <div class="td">${p.BLK||0}</div>
-      <div class="td">${p.TOV||0}</div>
-      <div class="td">${p.FLS||0}</div>
-      <div class="td">${fg}</div>
-      <div class="td">${th}</div>
-      <div class="td">${ft}</div>
-      <div class="td">${ts}</div>
-      <div class="td">${gsc}</div>
-    `;
+const mins = formatTime(p.minutes);
+const pm = Number(p.plusMinus || 0);
+const pmClass = pm > 0 ? "pmpos" : pm < 0 ? "pmneg" : "";
+
+row.innerHTML = `
+  <div class="td name">
+    <span class="pill" style="background:${rowColor}"></span>
+    ${p.NAMES || ""}
+  </div>
+
+  <div class="td">${mins}</div>
+  <div class="td ${pmClass}">${pm > 0 ? "+"+pm : pm}</div>
+
+  <div class="td">${p.PTS||0}</div>
+  <div class="td">${p.REB||0}</div>
+  <div class="td">${p.AST||0}</div>
+  <div class="td">${p.STL||0}</div>
+  <div class="td">${p.BLK||0}</div>
+  <div class="td">${p.TOV||0}</div>
+  <div class="td">${p.FLS||0}</div>
+  <div class="td">${fg}</div>
+  <div class="td">${th}</div>
+  <div class="td">${ft}</div>
+  <div class="td">${ts}</div>
+  <div class="td">${gsc}</div>
+`;
+
     rows.appendChild(row);
   });
 }
 
 setInterval(poll, 500);
+  function formatTime(sec){
+  sec = Number(sec || 0);
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${String(s).padStart(2,"0")}`;
+}
+
 poll();
 </script>
 </body>
