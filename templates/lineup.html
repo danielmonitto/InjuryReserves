@@ -1,13 +1,18 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8" />
-<title>starting five</title>
-
 <style>
+:root{
+  --ir-red:#DB2E2E;
+  --ir-dark:#b50728;
+}
+
 body {
   margin:0;
-  background: radial-gradient(circle at top, #1a1a1a, #000);
+  background:
+    radial-gradient(1200px 600px at 20% 0%, rgba(219,46,46,0.25), transparent 60%),
+    radial-gradient(900px 500px at 80% 20%, rgba(181,7,40,0.18), transparent 55%),
+    linear-gradient(180deg, #0b0c10, #11131a);
   font-family: system-ui;
   color:white;
   overflow:hidden;
@@ -18,56 +23,139 @@ body {
   height:100vh;
   display:flex;
   flex-direction:column;
-  justify-content:center;
   align-items:center;
+  padding-top:60px;
 }
 
+/* TITLE */
+.title {
+  font-size:54px;
+  font-weight:900;
+  letter-spacing:4px;
+  margin-bottom:40px;
+  text-transform:uppercase;
+  background: linear-gradient(180deg, #fff, #ccc);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  position:relative;
+}
+
+.title::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:-10px;
+  width:220px;
+  height:4px;
+  background:var(--ir-red);
+  box-shadow:0 0 25px var(--ir-red);
+  border-radius:4px;
+}
+
+/* STARTERS GRID */
 .starters {
-  display:flex;
-  gap:60px;
-  margin-bottom:60px;
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap:40px;
+  width:90vw;
+  max-width:1600px;
+  margin-bottom:50px;
 }
 
+/* CARD */
 .card {
   text-align:center;
-  animation: fadeIn 0.6s ease forwards;
+  padding:20px;
+  border-radius:22px;
+  background:rgba(20,20,26,0.65);
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(14px);
+  animation:fadeIn 0.6s ease forwards;
 }
 
 .card img {
-  width:220px;
-  height:220px;
+  width:200px;
+  height:200px;
   object-fit:cover;
-  border-radius:20px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  border-radius:18px;
+  border:3px solid var(--ir-red);
+  box-shadow:
+    0 0 0 3px rgba(219,46,46,0.2),
+    0 20px 60px rgba(0,0,0,0.7);
 }
 
 .name {
-  margin-top:14px;
+  margin-top:16px;
+  font-size:22px;
+  font-weight:900;
+}
+
+.meta {
+  font-size:14px;
+  opacity:0.75;
+  margin-top:4px;
+}
+
+.stats {
+  font-size:14px;
+  margin-top:8px;
+  font-weight:600;
+}
+
+.statsSmall{
+  font-size:12px;
+  opacity:0.65;
+  margin-top:4px;
+}
+
+/* BENCH */
+.benchTitle{
   font-size:22px;
   font-weight:800;
+  margin-bottom:20px;
+  letter-spacing:2px;
+  opacity:0.85;
 }
 
 .bench {
   display:flex;
-  gap:30px;
+  gap:28px;
   flex-wrap:wrap;
   justify-content:center;
-  font-size:18px;
-  opacity:0.8;
+  width:90vw;
+}
+
+.bench .card{
+  padding:14px;
+  opacity:0.85;
+}
+
+.bench img{
+  width:120px;
+  height:120px;
 }
 
 @keyframes fadeIn {
-  from {opacity:0; transform:translateY(30px);}
+  from {opacity:0; transform:translateY(60px);}
   to {opacity:1; transform:translateY(0);}
 }
 </style>
+
 </head>
 
 <body>
 <div class="container">
+
+  <div class="title">STARTING 5</div>
+
   <div class="starters" id="starters"></div>
+
+  <div class="benchTitle">BENCH</div>
   <div class="bench" id="bench"></div>
+
 </div>
+
 
 <script>
 let lastSeq = -1;
@@ -99,20 +187,20 @@ async function load(){
 
     const div = document.createElement("div");
     div.className = "card";
-    div.innerHTML = `
-      <img src="${p.photo}">
-      <div class="name">${p.name}</div>
-      <div>${prof.position || ""} • ${prof.height || ""}</div>
-      <div style="font-size:14px;opacity:0.7;">
-  ${prof.stats.ppg || 0} PPG |
-  ${prof.stats.rpg || 0} RPG |
-  ${prof.stats.apg || 0} APG
-</div>
-<div style="font-size:12px;opacity:0.6;">
-  ${prof.stats.fg_pct || 0}% FG • ${prof.stats.gp || 0} GP
-</div>
+div.innerHTML = `
+  <img src="${p.photo}">
+  <div class="name">${p.name}</div>
+  <div class="meta">${prof.position || ""} • ${prof.height || ""}</div>
+  <div class="stats">
+    ${prof.stats.ppg || 0} PPG •
+    ${prof.stats.rpg || 0} RPG •
+    ${prof.stats.apg || 0} APG
+  </div>
+  <div class="statsSmall">
+    ${prof.stats.fg_pct || 0}% FG • ${prof.stats.gp || 0} GP
+  </div>
+`;
 
-    `;
     startersEl.appendChild(div);
   }
 
@@ -123,18 +211,17 @@ async function load(){
     const div = document.createElement("div");
     div.className = "card";
     div.style.opacity = "0.8";
+div.innerHTML = `
+  <img src="${p.photo}">
+  <div class="name">${p.name}</div>
+  <div class="meta">${prof.position || ""} • ${prof.height || ""}</div>
+  <div class="statsSmall">
+    ${prof.stats.ppg || 0} PPG •
+    ${prof.stats.rpg || 0} RPG •
+    ${prof.stats.apg || 0} APG
+  </div>
+`;
 
-    div.innerHTML = `
-      <img src="${p.photo}" style="width:140px;height:140px;">
-      <div class="name">${p.name}</div>
-      <div>${prof.position || ""} • ${prof.height || ""}</div>
-      <div style="font-size:12px;opacity:0.7;">
-  ${prof.stats.ppg || 0} PPG |
-  ${prof.stats.rpg || 0} RPG |
-  ${prof.stats.apg || 0} APG
-</div>
-
-    `;
 
     benchEl.appendChild(div);
   }
