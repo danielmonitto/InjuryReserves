@@ -128,8 +128,10 @@ def calc_totals(player_data: pd.DataFrame) -> pd.DataFrame:
     cols = [c for c in COLUMNS_SUM if c in player_data.columns]
     totals = player_data.groupby('NAMES').agg({c: 'sum' for c in cols}).reset_index()
     totals = add_percentages(totals)
-    gsc_avg = player_data.groupby('NAMES')['GSC'].mean().reset_index(name='GSC')
+    gsc_avg = player_data.groupby('NAMES')['GSC'].mean().reset_index(name='GSC_AVG')
     totals = totals.merge(gsc_avg, on='NAMES', how='left')
+    totals["GSC"] = totals["GSC_AVG"]
+    totals = totals.drop(columns=["GSC_AVG"])
     games = player_data.groupby('NAMES').size().reset_index(name='GP')
     out = totals.merge(games, on='NAMES', how='left')
     out['rowColor'] = out['NAMES'].map(lambda x: COLOR_MAP.get(x, '#A6C9EC'))
@@ -261,7 +263,7 @@ def main():
 
     # Only keep MIN/PM for season 4+
     base = base.copy()
-    base.loc[base["SEASON"] < 4, ["MIN", "PM"]] = pd.NA
+    base.loc[base["SEASON"] < 4, ["MIN", "PM"]] = 0
 
     # drop columns entirely if no valid values exist
     if base["MIN"].dropna().empty:
@@ -338,6 +340,8 @@ def main():
 
             has_minutes = not gps.empty
 
+            if not has_minutes:
+                players = players.drop(columns=["MIN", "PM"], errors="ignore")
 
             # --- build a synthetic "injury reserves" totals row from players ---
             stat_cols = ["2PM", "2PA", "3PM", "3PA", "FGM", "FGA", "FTM", "FTA", "O REB", "D REB",
