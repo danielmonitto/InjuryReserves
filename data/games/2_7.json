@@ -31,8 +31,6 @@
       "2P%": 0.4444444444444444,
       "3P%": 0.5,
       "GSC": 7.9,
-      "MIN": 0.0,
-      "PM": 0.0,
       "rowColor": "#e36868",
       "FG%_display": "46.15%",
       "TS%_display": "50.81%",
@@ -56,9 +54,7 @@
       "STL_display": "0",
       "TOV_display": "3",
       "FLS_display": "1",
-      "GSC_display": "7.90",
-      "MIN_display": "0:00",
-      "PM_display": "0"
+      "GSC_display": "7.90"
     },
     {
       "NAMES": "Daniel Monitto",
@@ -85,8 +81,6 @@
       "2P%": 0.7,
       "3P%": 0.16666666666666666,
       "GSC": 15.4,
-      "MIN": 0.0,
-      "PM": 0.0,
       "rowColor": "#ebc026",
       "FG%_display": "50.00%",
       "TS%_display": "54.74%",
@@ -110,9 +104,7 @@
       "STL_display": "3",
       "TOV_display": "1",
       "FLS_display": "0",
-      "GSC_display": "15.40",
-      "MIN_display": "0:00",
-      "PM_display": "0"
+      "GSC_display": "15.40"
     },
     {
       "NAMES": "Brooklyn Bulmer",
@@ -139,8 +131,6 @@
       "2P%": 0.0,
       "3P%": 0.0,
       "GSC": 1.9,
-      "MIN": 0.0,
-      "PM": 0.0,
       "rowColor": "#5f99f5",
       "FG%_display": "0.00%",
       "TS%_display": "0.00%",
@@ -164,9 +154,7 @@
       "STL_display": "0",
       "TOV_display": "0",
       "FLS_display": "2",
-      "GSC_display": "1.90",
-      "MIN_display": "0:00",
-      "PM_display": "0"
+      "GSC_display": "1.90"
     },
     {
       "NAMES": "Lachlan Farley",
@@ -193,8 +181,6 @@
       "2P%": 0.4,
       "3P%": 0.2,
       "GSC": 9.7,
-      "MIN": 0.0,
-      "PM": 0.0,
       "rowColor": "#59dea2",
       "FG%_display": "33.33%",
       "TS%_display": "38.78%",
@@ -218,9 +204,7 @@
       "STL_display": "1",
       "TOV_display": "3",
       "FLS_display": "2",
-      "GSC_display": "9.70",
-      "MIN_display": "0:00",
-      "PM_display": "0"
+      "GSC_display": "9.70"
     },
     {
       "NAMES": "James Norrish",
@@ -247,8 +231,6 @@
       "2P%": 0.09090909090909091,
       "3P%": 0.0,
       "GSC": -0.7,
-      "MIN": 0.0,
-      "PM": 0.0,
       "rowColor": "#fc9219",
       "FG%_display": "6.67%",
       "TS%_display": "15.32%",
@@ -272,9 +254,7 @@
       "STL_display": "1",
       "TOV_display": "2",
       "FLS_display": "3",
-      "GSC_display": "-0.70",
-      "MIN_display": "0:00",
-      "PM_display": "0"
+      "GSC_display": "-0.70"
     },
     {
       "NAMES": "Joel Kingdom-Evans",
@@ -301,8 +281,6 @@
       "2P%": 0.0,
       "3P%": 0.3333333333333333,
       "GSC": 2.7,
-      "MIN": 0.0,
-      "PM": 0.0,
       "rowColor": "#99FF66",
       "FG%_display": "25.00%",
       "TS%_display": "37.50%",
@@ -326,9 +304,7 @@
       "STL_display": "0",
       "TOV_display": "0",
       "FLS_display": "0",
-      "GSC_display": "2.70",
-      "MIN_display": "0:00",
-      "PM_display": "0"
+      "GSC_display": "2.70"
     },
     {
       "NAMES": "Injury Reserves",
@@ -355,8 +331,6 @@
       "2P%": 0.3902439024390244,
       "3P%": 0.22727272727272727,
       "GSC": 6.1499999999999995,
-      "MIN": 0.0,
-      "PM": 0.0,
       "rowColor": "#DB2E2E",
       "FG%_display": "33.33%",
       "TS%_display": "39.54%",
@@ -380,9 +354,7 @@
       "STL_display": "5",
       "TOV_display": "9",
       "FLS_display": "8",
-      "GSC_display": "6.15",
-      "MIN_display": "0:00",
-      "PM_display": "0"
+      "GSC_display": "6.15"
     }
   ]
 }
