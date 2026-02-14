@@ -83,6 +83,8 @@
     ]
   },
   "oppColors": {
+    "Sister In Laws": "#f5adff",
+    "backyardballerz": "#000000",
     "PRIME TIME": "#000000",
     "slow motion": "#5c99fa",
     "Goon Squad": "#f5e342",
@@ -106,7 +108,8 @@
     "too drunk to dunk": "#ff4fdf",
     "Jims Ballers": "#6203fc",
     "GRIPP": "#ec9aed",
-    "Billboard Bruisers": "#000000"
+    "Billboard Bruisers": "#000000",
+    "BackyardBallerz": "#000000"
   },
   "defaultOppColor": "#6C757D",
   "rowColors": {

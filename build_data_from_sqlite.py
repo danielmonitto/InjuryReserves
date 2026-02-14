@@ -38,32 +38,7 @@ COLOR_MAP = {
     'Injury Reserves': '#DB2E2E',
 }
 
-OPP_COLOR_MAP = {
-    'PRIME TIME': '#000000',
-    'slow motion': '#5c99fa',
-    'Goon Squad': '#f5e342',
-    'Dirty Magic': '#3a66e8',
-    'Killer Barbies': '#ff73e1',
-    'Sister In-Laws': '#ff73e1',
-    'Ripperz': '#3a66e8',
-    'Park City': '#000000',
-    'Smoove Movers': '#3498eb',
-    'The Warriors': '#000000',
-    'Wolves': '#9638c2',
-    'Disciples': '#000000',
-    'Konoha': '#fc9803',
-    'Mickeylads': '#000000',
-    'Jim Ballers 2': '#6203fc',
-    'Kawhi About It': '#b642f5',
-    'Uncle Brickers': '#1f2a8c',
-    'Monstars': '#c23830',
-    'Non Compliant': '#c23830',
-    'Low Expectations': '#b642f5',
-    'too drunk to dunk': '#ff4fdf',
-    'Jims Ballers': '#6203fc',
-    'GRIPP': '#ec9aed',
-    'Billboard Bruisers': '#000000',
-}
+
 DEFAULT_OPP_COLOR = "#6C757D"
 
 def slugify(s: str) -> str:
@@ -191,7 +166,7 @@ def filter_min_games(df: pd.DataFrame, min_games: int = 3) -> pd.DataFrame:
 def exclude_injury_opp(d: pd.DataFrame) -> pd.DataFrame:
     return d[~d['OPP'].astype(str).str.contains('Injury Reserves', case=False, na=False)].copy()
 
-def load_from_sqlite() -> pd.DataFrame:
+def load_from_sqlite():
     con = sqlite3.connect(DB_PATH)
 
     df = pd.read_sql_query("SELECT * FROM InjuryReserves", con)
@@ -199,6 +174,11 @@ def load_from_sqlite() -> pd.DataFrame:
     gps = pd.read_sql_query("""
         SELECT season, game, player, minutes, plus_minus
         FROM game_player_stats
+    """, con)
+
+    opp_meta = pd.read_sql_query("""
+        SELECT opp, color
+        FROM OpponentMeta
     """, con)
 
     con.close()
@@ -216,7 +196,6 @@ def load_from_sqlite() -> pd.DataFrame:
     df["MIN"] = pd.to_numeric(df["MIN"], errors="coerce").fillna(0)
     df["PM"] = pd.to_numeric(df["PM"], errors="coerce").fillna(0)
 
-    # rename db cols
     df = df.rename(columns={
         "OREB": "O REB",
         "DREB": "D REB",
@@ -232,12 +211,14 @@ def load_from_sqlite() -> pd.DataFrame:
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce").fillna(0)
 
-    return df
+    return df, opp_meta
+
 
 
 
 def main():
-    df = load_from_sqlite()
+    df, opp_meta = load_from_sqlite()
+
 
     if df.empty:
         raise SystemExit("no rows in InjuryReserves")
@@ -261,11 +242,16 @@ def main():
 
         season_teams[str(s)] = sorted(s_df['OPP'].dropna().unique().tolist())
 
+        opp_color_dict = {
+            row["opp"]: row["color"]
+            for _, row in opp_meta.iterrows()
+        }
+
     index = {
         "seasons": [str(s) for s in seasons],
         "seasonGames": {str(k): [int(x) for x in v] for k,v in season_games.items()},
         "seasonTeams": season_teams,
-        "oppColors": OPP_COLOR_MAP,
+        "oppColors": opp_color_dict,
         "defaultOppColor": DEFAULT_OPP_COLOR,
         "rowColors": COLOR_MAP,
     }
@@ -410,7 +396,7 @@ def main():
                 "season": int(s),
                 "game": int(gnum),
                 "opponent": opp,
-                "opponentColor": OPP_COLOR_MAP.get(opp, DEFAULT_OPP_COLOR),
+                "opponentColor": opp_color_dict.get(opp, DEFAULT_OPP_COLOR),
                 "teamScore": float(team_score),
                 "opponentScore": float(opp_score),
                 "players": players.to_dict(orient="records"),
