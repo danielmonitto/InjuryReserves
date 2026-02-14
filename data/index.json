@@ -7,9 +7,10 @@
   ],
   "seasonGames": {
     "4": [
+      -1,
+      -2,
       -3,
-      -4,
-      -5
+      -4
     ],
     "3": [
       7,
@@ -120,6 +121,7 @@
     "James Norrish": "#fc9219",
     "Vince Tomasello": "#63b010",
     "Austin Thorneycroft": "#8858e8",
+    "Aidan Zivkovic": "#d651b3",
     "Injury Reserves": "#DB2E2E"
   }
 }
