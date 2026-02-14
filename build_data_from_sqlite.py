@@ -409,8 +409,10 @@ def main():
             }
             write_json(DATA_DIR / "games" / f"{s}_{int(gnum)}.json", payload)
 
-    for t in ["PRE","REG","FINAL"]:
-        t_df = exclude_injury_opp(df[(df["TYPE"] == t) & (df["GAME"] > 0)].copy())
+    for t in ["PRE", "REG", "FINAL"]:
+        t_df = exclude_injury_opp(
+            df[df["TYPE"].astype(str).str.strip().str.upper() == t].copy()
+        )
         if t_df.empty:
             continue
         write_json(DATA_DIR / "aggregates" / f"by_type_{t}.json", calc_averages(t_df).to_dict(orient="records"))
