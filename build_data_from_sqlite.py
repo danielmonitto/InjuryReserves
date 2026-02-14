@@ -117,12 +117,36 @@ def format_fields(d: pd.DataFrame, kind: str) -> pd.DataFrame:
 
 def calc_averages(player_data: pd.DataFrame) -> pd.DataFrame:
     cols = [c for c in COLUMNS_AVG if c in player_data.columns]
+
+    # normal averages
     g = player_data.groupby('NAMES')[cols].mean().reset_index()
-    g = add_percentages(g)
+
+    # total games
     games = player_data.groupby('NAMES').size().reset_index(name='GP')
+
     out = g.merge(games, on='NAMES', how='left')
+
+    # ---- special handling for MIN and PM ----
+    for special in ["MIN", "PM"]:
+        if special in player_data.columns:
+            tracked = (
+                player_data[player_data[special] != 0]
+                .groupby("NAMES")[special]
+                .mean()
+                .reset_index(name=f"{special}_true_avg")
+            )
+
+            out = out.merge(tracked, on="NAMES", how="left")
+
+            # overwrite the normal average with tracked-only average
+            out[special] = out[f"{special}_true_avg"].fillna(0)
+            out = out.drop(columns=[f"{special}_true_avg"])
+
+    out = add_percentages(out)
     out['rowColor'] = out['NAMES'].map(lambda x: COLOR_MAP.get(x, '#A6C9EC'))
+
     return format_fields(out, "avg")
+
 
 def calc_totals(player_data: pd.DataFrame) -> pd.DataFrame:
     cols = [c for c in COLUMNS_SUM if c in player_data.columns]
