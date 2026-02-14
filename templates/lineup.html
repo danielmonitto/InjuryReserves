@@ -72,8 +72,13 @@ body {
 <script>
 let lastSeq = -1;
 
+async function getProfile(name){
+  const r = await fetch(`http://127.0.0.1:5001/api/player_profile?name=${encodeURIComponent(name)}`);
+  return await r.json();
+}
+
 async function load(){
-  const res = await fetch("/api/lineup_state?ts="+Date.now());
+  const res = await fetch("http://127.0.0.1:5001/api/lineup_state?ts="+Date.now());
   const j = await res.json();
   if (!j.ok) return;
 
@@ -88,25 +93,56 @@ async function load(){
   startersEl.innerHTML = "";
   benchEl.innerHTML = "";
 
-  s.starters.forEach(p => {
+  // STARTERS
+  for (const p of s.starters){
+    const prof = await getProfile(p.name);
+
     const div = document.createElement("div");
     div.className = "card";
     div.innerHTML = `
       <img src="${p.photo}">
       <div class="name">${p.name}</div>
+      <div>${prof.position || ""} • ${prof.height || ""}</div>
+      <div style="font-size:14px;opacity:0.7;">
+  ${prof.stats.ppg || 0} PPG |
+  ${prof.stats.rpg || 0} RPG |
+  ${prof.stats.apg || 0} APG
+</div>
+<div style="font-size:12px;opacity:0.6;">
+  ${prof.stats.fg_pct || 0}% FG • ${prof.stats.gp || 0} GP
+</div>
+
     `;
     startersEl.appendChild(div);
-  });
+  }
 
-  s.bench.forEach(p => {
-    const span = document.createElement("div");
-    span.textContent = `${p.name} – ${p.height}`;
-    benchEl.appendChild(span);
-  });
+  // BENCH (with images now)
+  for (const p of s.bench){
+    const prof = await getProfile(p.name);
+
+    const div = document.createElement("div");
+    div.className = "card";
+    div.style.opacity = "0.8";
+
+    div.innerHTML = `
+      <img src="${p.photo}" style="width:140px;height:140px;">
+      <div class="name">${p.name}</div>
+      <div>${prof.position || ""} • ${prof.height || ""}</div>
+      <div style="font-size:12px;opacity:0.7;">
+  ${prof.stats.ppg || 0} PPG |
+  ${prof.stats.rpg || 0} RPG |
+  ${prof.stats.apg || 0} APG
+</div>
+
+    `;
+
+    benchEl.appendChild(div);
+  }
 }
 
 setInterval(load, 1000);
 load();
+
 </script>
 </body>
 </html>

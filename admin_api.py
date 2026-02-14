@@ -225,6 +225,82 @@ def overlay_event():
     }
     return jsonify({"ok": True, "seq": LIVE_STATE["eventSeq"]})
 
+
+@app.get("/api/player_profile")
+def player_profile():
+    name = request.args.get("name", "").strip()
+    if not name:
+        return {"ok": False}
+
+    c = con()
+    cur = c.cursor()
+
+    # career totals excluding team row
+    cur.execute("""
+        SELECT
+            COUNT(*) as gp,
+            SUM(PTS),
+            SUM(REB),
+            SUM(AST),
+            SUM(STL),
+            SUM(BLK),
+            SUM(FGM),
+            SUM(FGA)
+        FROM InjuryReserves
+        WHERE NAMES=?
+          AND NAMES != 'Injury Reserves'
+    """, (name,))
+
+    r = cur.fetchone()
+    gp = r[0] or 0
+
+    stats = {
+        "gp": gp,
+        "ppg": 0,
+        "rpg": 0,
+        "apg": 0,
+        "spg": 0,
+        "bpg": 0,
+        "fg_pct": 0
+    }
+
+    if gp > 0:
+        pts = r[1] or 0
+        reb = r[2] or 0
+        ast = r[3] or 0
+        stl = r[4] or 0
+        blk = r[5] or 0
+        fgm = r[6] or 0
+        fga = r[7] or 0
+
+        stats = {
+            "gp": gp,
+            "ppg": round(pts / gp, 1),
+            "rpg": round(reb / gp, 1),
+            "apg": round(ast / gp, 1),
+            "spg": round(stl / gp, 1),
+            "bpg": round(blk / gp, 1),
+            "fg_pct": round((fgm / fga) * 100, 1) if fga else 0
+        }
+
+    # height + position
+    cur.execute("""
+        SELECT height, position
+        FROM player_bio
+        WHERE name=?
+    """, (name,))
+    bio = cur.fetchone()
+
+    c.close()
+
+    return {
+        "ok": True,
+        "name": name,
+        "height": bio[0] if bio else None,
+        "position": bio[1] if bio else None,
+        "stats": stats
+    }
+
 @app.get("/api/overlay_event")
 def overlay_event_get():
     return jsonify({"ok": True, "seq": int(LIVE_STATE.get("eventSeq", 0) or 0), "event": LIVE_STATE.get("event")})
