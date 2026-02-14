@@ -261,6 +261,8 @@ def main():
 
     base = exclude_injury_opp(df[df['GAME'] > 0].copy())
 
+    base = base.drop(columns=["MIN", "PM"], errors="ignore")
+
     # Only keep MIN/PM for season 4+
     base = base.copy()
     base.loc[base["SEASON"] < 4, ["MIN", "PM"]] = 0
