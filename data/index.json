@@ -7,6 +7,7 @@
   ],
   "seasonGames": {
     "4": [
+      1,
       -1,
       -2,
       -3,
@@ -55,7 +56,9 @@
     ]
   },
   "seasonTeams": {
-    "4": [],
+    "4": [
+      "Bundy Bears"
+    ],
     "3": [
       "Disciples",
       "Konoha",
@@ -109,7 +112,8 @@
     "Jims Ballers": "#6203fc",
     "GRIPP": "#ec9aed",
     "Billboard Bruisers": "#000000",
-    "BackyardBallerz": "#000000"
+    "BackyardBallerz": "#000000",
+    "Bundy Bears": "#cfc33a"
   },
   "defaultOppColor": "#6C757D",
   "rowColors": {

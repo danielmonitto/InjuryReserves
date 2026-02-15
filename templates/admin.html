@@ -997,7 +997,7 @@ const players = state.players.map(p => {
   });
 
   // reset minutes + plus minus
-GAME.clockSec = 1200;
+GAME.clockSec = 2400;
 GAME.running = false;
 clearInterval(clockInterval);
 GAME.lineup.clear();
@@ -1091,7 +1091,7 @@ document.getElementById("reset").onclick = (e) => {
 // =============================
 
 let GAME = {
-  clockSec: 1200,       // 20:00 half
+  clockSec: 2400,       // 20:00 half
   running: false,
   lineup: new Set(),    // players currently on court
   players: {}           // per-player tracking
