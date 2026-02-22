@@ -1309,32 +1309,40 @@ label.title = p.NAMES; // full name on hover
 
           p[key] = clamp0((p[key] || 0) + delta);
 
-          // auto-increment attempts when a make is added
+// increment attempts automatically for makes
 if (delta === 1) {
   if (key === "2PM") p["2PA"] = clamp0((p["2PA"] || 0) + 1);
   if (key === "3PM") p["3PA"] = clamp0((p["3PA"] || 0) + 1);
 }
 
+// ===== STREAK LOGIC =====
+if (delta === 1) {
 
-            if (delta === 1){
-            if (key === "3PM"){
-  recordMakeForPlayer(p.NAMES, 3);
-  recordShotForTeam(true);
-  applyTeamScore(3);
+  // made field goals (only these count)
+  if (key === "2PM") {
+    recordMakeForPlayer(p.NAMES, 2);
+    applyTeamScore(2);
+  }
+
+  if (key === "3PM") {
+    recordMakeForPlayer(p.NAMES, 3);
+    applyTeamScore(3);
+  }
+
+  // free throws DO NOT affect streak
+  if (key === "FTM") {
+    applyTeamScore(1);
+  }
+
+  // missed field goals reset streak
+  if (key === "2PA") {
+    recordMissForPlayer(p.NAMES);
+  }
+
+  if (key === "3PA") {
+    recordMissForPlayer(p.NAMES);
+  }
 }
-
-if (key === "FTM"){
-  recordMakeForPlayer(p.NAMES, 1);
-  applyTeamScore(1);
-}
-
-            if (key === "2PM"){
-  recordMakeForPlayer(p.NAMES, 2);
-  recordShotForTeam(true);
-  applyTeamScore(2);
-}
-            }
-
           derive(p);
 
 
