@@ -7,6 +7,7 @@
   ],
   "seasonGames": {
     "4": [
+      2,
       1,
       -1,
       -2,
@@ -57,6 +58,7 @@
   },
   "seasonTeams": {
     "4": [
+      "B Grade MIsfits",
       "Bundy Bears"
     ],
     "3": [
@@ -113,7 +115,8 @@
     "GRIPP": "#ec9aed",
     "Billboard Bruisers": "#000000",
     "BackyardBallerz": "#000000",
-    "Bundy Bears": "#cfc33a"
+    "Bundy Bears": "#cfc33a",
+    "B Grade MIsfits": "#af2bd4"
   },
   "defaultOppColor": "#6C757D",
   "rowColors": {
