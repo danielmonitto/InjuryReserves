@@ -259,6 +259,9 @@ grid-template-columns:
         width: 100%;
         padding: 6px 4px;
         box-sizing: border-box;
+        position: relative;
+        z-index: 5;
+        pointer-events: auto;
       }
 
       .statbox:hover {
@@ -1180,6 +1183,20 @@ function updateClockButtons(){
   }
 }
 
+function updateMinutesOnly(){
+  document.querySelectorAll(".trow").forEach((row, i) => {
+    const p = state.players[i];
+    if (!p) return;
+
+    const minCell = row.children[EDITABLE.length + 1];
+    // +1 for name column
+
+    if (minCell){
+      minCell.textContent = formatTime(getLiveSeconds(p.NAMES));
+    }
+  });
+}
+
 
 function startClock(){
   if (GAME.running) return;
@@ -1192,7 +1209,7 @@ function startClock(){
       return;
     }
     GAME.clockSec--;
-    renderRows();
+    updateMinutesOnly();
     pushEndgameState();
   }, 1000);
 }
