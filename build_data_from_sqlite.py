@@ -472,10 +472,16 @@ def main():
             tot["NAMES"] = "Injury Reserves"
 
             if "MIN" in players.columns:
-                tot["MIN"] = float(players["MIN"].sum())
+                tot["MIN"] = 2400
 
             if "PM" in players.columns:
-                tot["PM"] = float(players["PM"].sum())
+                team_score = players["PTS"].sum()
+
+                opp_score = g_df[
+                    (g_df["OPP"].astype(str).str.lower() == "injury reserves")
+                ]["PTS"].sum()
+
+                tot["PM"] = float(team_score - opp_score)
 
             totals_row = pd.DataFrame([tot])
 
