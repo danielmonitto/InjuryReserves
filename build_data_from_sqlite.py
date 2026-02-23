@@ -283,13 +283,69 @@ def main():
     }
     write_json(DATA_DIR / "index.json", index)
 
-    base = exclude_injury_opp(df[df['GAME'] > 0].copy())
+    base = df[df['GAME'] > 0].copy()
 
-    base = base.drop(columns=["MIN", "PM"], errors="ignore")
+    # remove mirror opponent rows
+    base = base[
+        ~(base["OPP"].astype(str).str.lower() == "injury reserves")
+    ].copy()
 
-    # Only keep MIN/PM for season 4+
-    base = base.copy()
-    base.loc[base["SEASON"] < 4, ["MIN", "PM"]] = 0
+    # remove existing fake Injury Reserves rows
+    base = base[
+        ~(base["NAMES"].astype(str).str.lower() == "injury reserves")
+    ].copy()
+
+    def build_team_rows(d):
+        stat_cols = [
+            "2PM", "2PA", "3PM", "3PA", "FGM", "FGA", "FTM", "FTA",
+            "O REB", "D REB", "PTS", "REB", "AST", "BLK", "STL",
+            "TOV", "FLS", "GSC", "MIN", "PM"
+        ]
+
+        team_rows = []
+
+        for (season, game), g in d.groupby(["SEASON", "GAME"]):
+
+            # only real player rows
+            players = g[
+                (~g["NAMES"].astype(str).str.contains("Injury Reserves", case=False, na=False))
+            ].copy()
+
+            if players.empty:
+                continue
+
+            opp_name = players["OPP"].mode()[0]
+
+            row = {
+                "SEASON": season,
+                "GAME": game,
+                "NAMES": "Injury Reserves",
+                "OPP": opp_name
+            }
+
+            for c in stat_cols:
+                if c not in players.columns:
+                    continue
+                if c == "GSC":
+                    row[c] = players[c].mean()
+                else:
+                    row[c] = players[c].sum()
+
+            team_rows.append(row)
+
+        if team_rows:
+            return pd.concat([d, pd.DataFrame(team_rows)], ignore_index=True)
+
+        return d
+
+    base = build_team_rows(base)
+
+    # Only keep real MIN / PM from season 4+
+    if "MIN" in base.columns:
+        base.loc[base["SEASON"] < 4, "MIN"] = 0
+
+    if "PM" in base.columns:
+        base.loc[base["SEASON"] < 4, "PM"] = 0
 
     # drop columns entirely if no valid values exist
     if base["MIN"].dropna().empty:
@@ -309,7 +365,20 @@ def main():
     opp_names_all = set(df['OPP'].dropna().unique().tolist())
 
     for s in seasons:
-        s_df = exclude_injury_opp(df[(df['SEASON'] == s) & (df['GAME'] > 0)].copy())
+        s_df = df[(df['SEASON'] == s) & (df['GAME'] > 0)].copy()
+
+        # remove mirror rows
+        s_df = s_df[
+            ~(s_df["OPP"].astype(str).str.lower() == "injury reserves")
+        ].copy()
+
+        # remove stored fake team rows
+        s_df = s_df[
+            ~(s_df["NAMES"].astype(str).str.lower() == "injury reserves")
+        ].copy()
+
+        # rebuild real team rows
+        s_df = build_team_rows(s_df)
 
         if int(s) < 4:
             s_df = s_df.drop(columns=["MIN", "PM"], errors="ignore")
@@ -318,9 +387,23 @@ def main():
         write_json(DATA_DIR / "aggregates" / f"totals_by_season_{s}.json", calc_totals(s_df).to_dict(orient="records"))
         write_json(DATA_DIR / "aggregates" / f"highs_by_season_{s}.json", calc_highs(s_df).drop(columns=['GP'], errors='ignore').to_dict(orient="records"))
 
-        s_all = exclude_injury_opp(df[df['SEASON']==s].copy())
+        s_all = df[df['SEASON'] == s].copy()
+
+        # remove mirror opponent rows
+        s_all = s_all[
+            ~(s_all["OPP"].astype(str).str.lower() == "injury reserves")
+        ].copy()
+
+        # remove stored fake team rows
+        s_all = s_all[
+            ~(s_all["NAMES"].astype(str).str.lower() == "injury reserves")
+        ].copy()
+
+        # rebuild real team rows
+        s_all = build_team_rows(s_all)
+
         for opp in season_teams[str(s)]:
-            t_df = s_all[(s_all['OPP']==opp) & (s_all['GAME'] > 0)].copy()
+            t_df = s_all[(s_all['OPP'] == opp) & (s_all['GAME'] > 0)].copy()
             if t_df.empty:
                 continue
             avg = calc_averages(t_df)
