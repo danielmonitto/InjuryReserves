@@ -472,7 +472,7 @@ def main():
             tot["NAMES"] = "Injury Reserves"
 
             if "MIN" in players.columns:
-                tot["MIN"] = 2400
+                tot["MIN"] = float(players["MIN"].max())
 
             if "PM" in players.columns:
                 team_score = players["PTS"].sum()

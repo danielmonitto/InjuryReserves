@@ -355,7 +355,7 @@
       "2P%": 0.3125,
       "3P%": 0.07407407407407407,
       "GSC": -1.4802973661668753e-16,
-      "MIN": 2400.0,
+      "MIN": 2275.0,
       "PM": -31.0,
       "rowColor": "#DB2E2E",
       "FG%_display": "17.54%",
@@ -381,7 +381,7 @@
       "TOV_display": "6",
       "FLS_display": "7",
       "GSC_display": "-0.00",
-      "MIN_display": "40:00",
+      "MIN_display": "37:55",
       "PM_display": "-31"
     }
   ]
