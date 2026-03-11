@@ -1,59 +1,64 @@
-import json, re
-from pathlib import Path
 import pandas as pd
+import json
+import re
+from pathlib import Path
 
 FILE_PATH = "InjuryReserves.xlsm"
 OUT_ROOT = Path("..")
 DATA_DIR = OUT_ROOT / "data"
 
-COLUMNS_AVG = ['2PM','2PA','3PM','3PA','FGM','FGA','FTM','FTA','O REB','D REB',
-               'PTS','REB','AST','BLK','STL','TOV','FLS','GSC']
-COLUMNS_SUM = ['2PM','2PA','3PM','3PA','FGM','FGA','FTM','FTA',
-               'O REB','D REB','PTS','REB','AST','BLK','STL','TOV','FLS']
+COLUMNS_AVG = [
+    "2PM", "2PA", "3PM", "3PA", "FGM", "FGA", "FTM", "FTA", "O REB", "D REB",
+    "PTS", "REB", "AST", "BLK", "STL", "TOV", "FLS", "GSC",
+]
+COLUMNS_SUM = [
+    "2PM", "2PA", "3PM", "3PA", "FGM", "FGA", "FTM", "FTA",
+    "O REB", "D REB", "PTS", "REB", "AST", "BLK", "STL", "TOV", "FLS",
+]
 
 COLOR_MAP = {
-    'Hayden Cromberge': '#e36868',
-    'Joel Kingdom-Evans': '#99FF66',
-    'Brooklyn Bulmer': '#5f99f5',
-    'Adrian Monitto': '#be60f7',
-    'Daniel Monitto': '#ebc026',
-    'Jack Groves': '#FF99CC',
-    'Zack Johnston': '#5364b0',
-    'Lachlan Farley': '#59dea2',
-    'James Norrish': '#fc9219',
-    'Injury Reserves': '#DB2E2E',
+    "Hayden Cromberge": "#e36868",
+    "Joel Kingdom-Evans": "#99FF66",
+    "Brooklyn Bulmer": "#5f99f5",
+    "Adrian Monitto": "#be60f7",
+    "Daniel Monitto": "#ebc026",
+    "Jack Groves": "#FF99CC",
+    "Zack Johnston": "#5364b0",
+    "Lachlan Farley": "#59dea2",
+    "James Norrish": "#fc9219",
+    "Injury Reserves": "#DB2E2E",
 }
 
 OPP_COLOR_MAP = {
-    'PRIME TIME': '#000000',
-    'slow motion': '#5c99fa',
-    'Goon Squad': '#f5e342',
-    'Dirty Magic': '#3a66e8',
-    'Killer Barbies': '#ff73e1',
-    'Sister In-Laws': '#ff73e1',
-    'Ripperz': '#3a66e8',
-    'Park City': '#000000',
-    'Smoove Movers': '#3498eb',
-    'The Warriors': '#000000',
-    'Wolves': '#9638c2',
-    'Disciples': '#000000',
-    'Konoha': '#fc9803',
-    'Mickeylads': '#000000',
-    'Jim Ballers 2': '#6203fc',
-    'Kawhi About It': '#b642f5',
-    'Uncle Brickers': '#1f2a8c',
-    'Monstars': '#c23830',
-    'Non Compliant': '#c23830',
-    'Low Expectations': '#b642f5',
-    'too drunk to dunk': '#ff4fdf',
-    'Jims Ballers': '#6203fc',
+    "PRIME TIME": "#000000",
+    "slow motion": "#5c99fa",
+    "Goon Squad": "#f5e342",
+    "Dirty Magic": "#3a66e8",
+    "Killer Barbies": "#ff73e1",
+    "Sister In-Laws": "#ff73e1",
+    "Ripperz": "#3a66e8",
+    "Park City": "#000000",
+    "Smoove Movers": "#3498eb",
+    "The Warriors": "#000000",
+    "Wolves": "#9638c2",
+    "Disciples": "#000000",
+    "Konoha": "#fc9803",
+    "Mickeylads": "#000000",
+    "Jim Ballers 2": "#6203fc",
+    "Kawhi About It": "#b642f5",
+    "Uncle Brickers": "#1f2a8c",
+    "Monstars": "#c23830",
+    "Non Compliant": "#c23830",
+    "Low Expectations": "#b642f5",
+    "too drunk to dunk": "#ff4fdf",
+    "Jims Ballers": "#6203fc",
 }
 DEFAULT_OPP_COLOR = "#6C757D"
 
 def slugify(s: str) -> str:
     s = str(s).strip().lower()
-    s = re.sub(r'[^a-z0-9]+', '_', s)
-    s = re.sub(r'_+', '_', s).strip('_')
+    s = re.sub(r"[^a-z0-9]+", "_", s)
+    s = re.sub(r"_+", "_", s).strip("_")
     return s or "team"
 
 def filter_min_games(df: pd.DataFrame, min_games: int = 3) -> pd.DataFrame:

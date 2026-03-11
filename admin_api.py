@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-import sqlite3
-from pathlib import Path
-from flask import Flask, request, jsonify, render_template
-import subprocess, sys
 import time
+import sqlite3
+import subprocess
+import sys
+from pathlib import Path
+
+from flask import Flask, jsonify, render_template, request
 
 DB_PATH = Path("ir_stats.db")
 
@@ -20,7 +22,7 @@ LIVE_STATE = {
 
     # new: stripe colors
     "injStripe1": "rgba(255,255,255,0.95)",  # white
-    "injStripe2": "rgba(181,7,40,0.95)",     # red
+    "injStripe2": "rgba(181,7,40,0.95)",  # red
     "oppStripe1": "rgba(255,255,255,0.85)",
     "oppStripe2": "rgba(255,255,255,0.25)",
 
@@ -32,12 +34,11 @@ LIVE_STATE = {
     # transient overlay event for scoreboard popups
     "eventSeq": 0,
     "event": None,
-
 }
 
 LINEUP_STATE = {
     "seq": 0,
-    "state": None
+    "state": None,
 }
 
 
@@ -50,6 +51,7 @@ ENDGAME_STATE = {
 
 def con():
     return sqlite3.connect(DB_PATH)
+
 
 def ensure_meta_tables():
     c = con()
@@ -64,6 +66,7 @@ def ensure_meta_tables():
     )
     c.commit()
     c.close()
+
 
 def set_opp_color(opp: str, color: str) -> None:
     if not opp:
@@ -81,6 +84,7 @@ def set_opp_color(opp: str, color: str) -> None:
     )
     c.commit()
     c.close()
+
 
 def get_opp_color(opp: str) -> str | None:
     if not opp:
@@ -126,9 +130,6 @@ def rebuild_json():
     # keep your existing pipeline
     subprocess.check_call([sys.executable, "build_data_from_sqlite.py"])
 
-
-
-
 @app.post("/api/live_score")
 def live_score():
     body = request.get_json(force=True) or {}
@@ -144,7 +145,7 @@ def live_score():
     if opp_color:
         LIVE_STATE["oppColor"] = opp_color
 
-    period = str(body.get("period", LIVE_STATE.get("period","1ST")) or "").strip()
+    period = str(body.get("period", LIVE_STATE.get("period", "1ST")) or "").strip()
     if period:
         LIVE_STATE["period"] = period
 
@@ -167,12 +168,14 @@ def live_score():
 
     return {"ok": True}
 
+
 @app.post("/api/lineup_state")
 def set_lineup_state():
     body = request.get_json(force=True) or {}
     LINEUP_STATE["seq"] += 1
     LINEUP_STATE["state"] = body.get("state")
     return jsonify({"ok": True, "seq": LINEUP_STATE["seq"]})
+
 
 @app.get("/api/lineup_state")
 def get_lineup_state():
@@ -181,6 +184,7 @@ def get_lineup_state():
         "seq": LINEUP_STATE["seq"],
         "state": LINEUP_STATE["state"]
     })
+
 
 @app.get("/lineup")
 def lineup_page():
@@ -191,11 +195,13 @@ def lineup_page():
 def scoreboard_live():
     return jsonify(LIVE_STATE)
 
+
 @app.get("/api/player_career_ft")
 def player_career_ft():
     name = str(request.args.get("name", "") or "").strip()
     pct = career_ft_pct(name)
     return jsonify({"ok": True, "name": name, "pct": pct})
+
 
 @app.post("/api/overlay_event")
 def overlay_event():
@@ -301,9 +307,11 @@ def player_profile():
         "stats": stats
     }
 
+
 @app.get("/api/overlay_event")
 def overlay_event_get():
     return jsonify({"ok": True, "seq": int(LIVE_STATE.get("eventSeq", 0) or 0), "event": LIVE_STATE.get("event")})
+
 
 @app.get("/api/opponent_meta")
 def opponent_meta():
@@ -321,13 +329,16 @@ def opponent_meta():
 def ui():
     return render_template("admin.html")
 
+
 @app.get("/scoreboard")
 def scoreboard_page():
     return render_template("scoreboard.html")
 
+
 @app.get("/endgame")
 def endgame_page():
     return render_template("endgame.html")
+
 
 @app.post("/api/endgame_state")
 def set_endgame_state():
@@ -336,6 +347,7 @@ def set_endgame_state():
     ENDGAME_STATE["seq"] = int(ENDGAME_STATE.get("seq", 0) or 0) + 1
     ENDGAME_STATE["state"] = state
     return jsonify({"ok": True, "seq": ENDGAME_STATE["seq"]})
+
 
 @app.get("/api/endgame_state")
 def get_endgame_state():
@@ -374,6 +386,7 @@ def scoreboard_db():
             score["away"] = pts
 
     return jsonify(score)
+
 
 @app.get("/api/health")
 def health():

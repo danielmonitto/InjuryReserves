@@ -10,8 +10,8 @@ const state = {
 
 async function loadJSON(path){
   const res = await fetch(path, { cache: "no-store" });
-  if(!res.ok) throw new Error(`failed to load ${path}`);
-  return await res.json();
+  if (!res.ok) throw new Error(`failed to load ${path}`);
+  return res.json();
 }
 
 const GAME_VIDEOS = {
@@ -88,16 +88,16 @@ const GAME_VIDEOS = {
 
 };
 
-function sortByGamesPlayed(rows){
-  if(!rows || !rows.length) return rows;
-  if(!("GP" in rows[0])) return rows;
+function sortByGamesPlayed(rows) {
+  if (!rows || !rows.length) return rows;
+  if (!("GP" in rows[0])) return rows;
   return [...rows].sort((a, b) => (b.GP ?? 0) - (a.GP ?? 0));
 }
 
 
-function el(tag, attrs={}, children=[]){
+function el(tag, attrs = {}, children = []) {
   const n = document.createElement(tag);
-  Object.entries(attrs).forEach(([k,v])=>{
+  Object.entries(attrs).forEach(([k, v]) => {
     if(k === "class") n.className = v;
     else if(k === "html") n.innerHTML = v;
     else if(k.startsWith("on")) n.addEventListener(k.slice(2).toLowerCase(), v);
@@ -107,28 +107,28 @@ function el(tag, attrs={}, children=[]){
   return n;
 }
 
-function setActiveTab(){
-  document.querySelectorAll("#tabs button").forEach(b=>{
+function setActiveTab() {
+  document.querySelectorAll("#tabs button").forEach(b => {
     b.classList.toggle("active", b.dataset.page === state.page);
   });
 }
 
-function renderControls(){
+function renderControls() {
   const c = document.getElementById("controls");
   c.innerHTML = "";
 
   const seasons = state.index.seasons;
-  if(!state.season) state.season = seasons[0];
+  if (!state.season) state.season = seasons[0];
 
   const games = state.index.seasonGames[state.season] || [];
-  if(state.page === "game" && (state.game === null || !games.includes(Number(state.game)))) {
+  if (state.page === "game" && (state.game === null || !games.includes(Number(state.game)))) {
     state.game = games[0];
   }
 
   const addSelect = (label, value, options, onChange) => {
-    const sel = el("select", { onChange: (e)=>onChange(e.target.value) }, options.map(o=>{
+    const sel = el("select", { onChange: (e) => onChange(e.target.value) }, options.map(o => {
       const opt = el("option", { value: o }, [String(o)]);
-      if(String(o) === String(value)) opt.selected = true;
+      if (String(o) === String(value)) opt.selected = true;
       return opt;
     }));
     c.appendChild(el("div", { class:"control" }, [
@@ -140,35 +140,35 @@ function renderControls(){
   const addCheckbox = (label, checked, onChange) => {
     const inp = el("input", { type:"checkbox" });
     inp.checked = checked;
-    inp.addEventListener("change", ()=>onChange(inp.checked));
+    inp.addEventListener("change", () => onChange(inp.checked));
     c.appendChild(el("div", { class:"control" }, [
       el("label", {}, [label]),
       inp
     ]));
   };
 
-  if(state.page === "game"){
-    addSelect("season", state.season, seasons, (v)=>{ state.season=v; state.game = (state.index.seasonGames[v]||[])[0]; refresh(); });
-    addSelect("game", state.game, games, (v)=>{ state.game = Number(v); refresh(); });
+  if (state.page === "game") {
+    addSelect("season", state.season, seasons, (v) => { state.season = v; state.game = (state.index.seasonGames[v] || [])[0]; refresh(); });
+    addSelect("game", state.game, games, (v) => { state.game = Number(v); refresh(); });
   }
 
-  if(state.page === "avg" || state.page === "tot" || state.page === "highs"){
-    addCheckbox("all-time", state.allTime, (v)=>{ state.allTime=v; refresh(); });
-    if(!state.allTime){
-      addSelect("season", state.season, seasons, (v)=>{ state.season=v; refresh(); });
+  if (state.page === "avg" || state.page === "tot" || state.page === "highs") {
+    addCheckbox("all-time", state.allTime, (v) => { state.allTime = v; refresh(); });
+    if (!state.allTime) {
+      addSelect("season", state.season, seasons, (v) => { state.season = v; refresh(); });
     }
   }
 
-  if(state.page === "type"){
-    addSelect("game type", state.gameType, ["PRE","REG","FINAL"], (v)=>{ state.gameType=v; refresh(); });
+  if (state.page === "type") {
+    addSelect("game type", state.gameType, ["PRE", "REG", "FINAL"], (v) => { state.gameType = v; refresh(); });
   }
 
-  if(state.page === "vs"){
-    addSelect("season", state.season, seasons, (v)=>{ state.season=v; state.vsOpponentSlug=null; refresh(); });
+  if (state.page === "vs") {
+    addSelect("season", state.season, seasons, (v) => { state.season = v; state.vsOpponentSlug = null; refresh(); });
     const teams = state.index.seasonTeams[state.season] || [];
     const opts = teams.map(t => ({ name:t, slug: slugify(t) }));
-    if(!state.vsOpponentSlug && opts.length) state.vsOpponentSlug = opts[0].slug;
-    addSelect("opponent", state.vsOpponentSlug, opts.map(o=>o.slug), (v)=>{ state.vsOpponentSlug=v; refresh(); });
+    if (!state.vsOpponentSlug && opts.length) state.vsOpponentSlug = opts[0].slug;
+    addSelect("opponent", state.vsOpponentSlug, opts.map(o => o.slug), (v) => { state.vsOpponentSlug = v; refresh(); });
   }
 }
 
@@ -176,11 +176,12 @@ function slugify(s){
   return String(s).trim().toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'') || 'team';
 }
 
-function splitTeam(rows){
+function splitTeam(rows) {
   const team = rows.filter(r => !String(r.NAMES).includes("Injury Reserves"));
   const pan = rows.filter(r => String(r.NAMES).includes("Injury Reserves"));
   return { team, pan };
 }
+
 const SUMMARY_COLS = [
   "NAMES",
   "MIN",
@@ -206,91 +207,89 @@ const SUMMARY_LABELS = {
   "FT%":"ft",
   "TS%":"ts",
   "GSC":"gsc",
-
 };
 
-function selectCols(rows, cols){
-  if(!rows || !rows.length) return [];
+function selectCols(rows, cols) {
+  if (!rows || !rows.length) return [];
   const available = new Set(Object.keys(rows[0]));
   return cols.filter(c => available.has(c));
 }
 
-function appendTeamPanTables(content, rows){
+function appendTeamPanTables(content, rows) {
   // game statistics should stay unsorted
   const isGamePage = state.page === "game";
 
   const sorted = isGamePage ? rows : sortByGamesPlayed(rows);
   const { team, pan } = splitTeam(sorted);
 
-
   /* ===== MAIN STATS ===== */
 
   // players – main stats
-  if(team.length || pan.length){
+  if (team.length || pan.length) {
     content.appendChild(el("h3", {}, ["Quick Stats"]));
   }
 
-  if(team.length){
+  if (team.length) {
     const summaryCols = selectCols(team, SUMMARY_COLS);
     content.appendChild(buildTable(team, true, summaryCols, SUMMARY_LABELS));
   }
 
   // injury reserves – main stats
-  if(pan.length){
+  if (pan.length) {
     content.appendChild(el("div", { style:"height:10px" }, []));
     const summaryCols = selectCols(pan, SUMMARY_COLS);
     content.appendChild(buildTable(pan, true, summaryCols, SUMMARY_LABELS));
   }
 
   /* ===== ADVANCED STATS TITLE ===== */
-  if(team.length || pan.length){
+  if (team.length || pan.length) {
     content.appendChild(el("h3", {}, ["Advanced Stats"]));
   }
 
   /* ===== ADVANCED / FULL STATS ===== */
 
   // players – advanced stats
-  if(team.length){
+  if (team.length) {
     content.appendChild(buildTable(team, true));
   }
 
   // injury reserves – advanced stats
-  if(pan.length){
+  if (pan.length) {
     content.appendChild(el("div", { style:"height:10px" }, []));
     content.appendChild(buildTable(pan, true));
   }
 }
 
 
-function buildTable(rows, preferDisplay=true, columnsOverride=null, labelMap=null){
-  if(!rows || rows.length === 0) return el("div", { class:"note" }, ["no data"]);
+function buildTable(rows, preferDisplay = true, columnsOverride = null, labelMap = null) {
+  if (!rows || rows.length === 0) return el("div", { class:"note" }, ["no data"]);
 
   const autoKeys = Object.keys(rows[0])
-  .filter(k => k !== "rowColor")
-  .map(k => k.replace("_display", ""))
-  .filter((v, i, a) => a.indexOf(v) === i);
+    .filter(k => k !== "rowColor")
+    .map(k => k.replace("_display", ""))
+    .filter((v, i, a) => a.indexOf(v) === i);
 
- let columns = (Array.isArray(columnsOverride) && columnsOverride.length)
-  ? columnsOverride
-  : autoKeys;
+  let columns = (Array.isArray(columnsOverride) && columnsOverride.length)
+    ? columnsOverride
+    : autoKeys;
 
-// hide MIN / PM in aggregate pages if entire column is zero
-if (state.page !== "game") {
-  const allZero = (key) => {
-    return rows.every(r => {
-      const v = Number(r[key] ?? 0);
-      return !v || v === 0;
-    });
-  };
+  // hide MIN / PM in aggregate pages if entire column is zero
+  if (state.page !== "game") {
+    const allZero = (key) => {
+      return rows.every(r => {
+        const v = Number(r[key] ?? 0);
+        return !v || v === 0;
+      });
+    };
 
-  if (columns.includes("MIN") && allZero("MIN")) {
-    columns = columns.filter(c => c !== "MIN");
+    if (columns.includes("MIN") && allZero("MIN")) {
+      columns = columns.filter(c => c !== "MIN");
+    }
+
+    if (columns.includes("PM") && allZero("PM")) {
+      columns = columns.filter(c => c !== "PM");
+    }
   }
-
-  if (columns.includes("PM") && allZero("PM")) {
-    columns = columns.filter(c => c !== "PM");
-  }
-}
 
 
   const toNumber = (x) => {
@@ -311,27 +310,27 @@ if (state.page !== "game") {
       return r[dispKey];
     }
     // format minutes (stored as seconds)
-if (k === "MIN"){
-  const sec = Number(r[k] || 0);
+    if (k === "MIN") {
+      const sec = Number(r[k] || 0);
 
-  // game page → show actual game minutes
-  if (state.page === "game"){
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return `${m}:${String(s).padStart(2,"0")}`;
-  }
+      // game page → show actual game minutes
+      if (state.page === "game") {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return `${m}:${String(s).padStart(2,"0")}`;
+      }
 
-  // aggregate pages → convert total seconds to per-game average
-  const gp = Number(r.GP || 0);
-  if (gp > 0){
-    const avgSec = Math.floor(sec / gp);
-    const m = Math.floor(avgSec / 60);
-    const s = avgSec % 60;
-    return `${m}:${String(s).padStart(2,"0")}`;
-  }
+      // aggregate pages → convert total seconds to per-game average
+      const gp = Number(r.GP || 0);
+      if (gp > 0) {
+        const avgSec = Math.floor(sec / gp);
+        const m = Math.floor(avgSec / 60);
+        const s = avgSec % 60;
+        return `${m}:${String(s).padStart(2,"0")}`;
+      }
 
-  return "0:00";
-}
+      return "0:00";
+    }
 
 
 
@@ -347,12 +346,12 @@ if (k === "MIN"){
   };
 
   const headerText = (k) => {
-  if (state.page === "game") {
-    if (k === "PM") return "+/-";
-    if (k === "MIN") return "MP";
-  }
-  return (labelMap && labelMap[k]) ? labelMap[k] : k;
-};
+    if (state.page === "game") {
+      if (k === "PM") return "+/-";
+      if (k === "MIN") return "MP";
+    }
+    return (labelMap && labelMap[k]) ? labelMap[k] : k;
+  };
 
 
   const thead = el("thead", {}, [el("tr", {}, columns.map(k => el("th", {}, [headerText(k)])))]);
@@ -362,29 +361,26 @@ if (k === "MIN"){
       const v = formatCell(k, r);
       const td = el("td", { style:`background:${bg};` }, [String(v ?? "")]);
 
-if (k === "PM"){
-  const val = Number(r[k] || 0);
+      if (k === "PM") {
+        const val = Number(r[k] || 0);
 
-  td.style.color = "#000";
-  td.style.fontWeight = "800";
-  td.style.textAlign = "center";
-  td.style.borderRadius = "6px";
-  td.style.padding = "4px 8px";
+        td.style.color = "#000";
+        td.style.fontWeight = "800";
+        td.style.textAlign = "center";
+        td.style.borderRadius = "6px";
+        td.style.padding = "4px 8px";
 
-  if (val > 0){
-    td.style.border = "2px solid #27ae60";
-    td.innerText = `+${val}`;
-  }
-  else if (val < 0){
-    td.style.border = "2px solid #e74c3c";
-  }
-  else {
-    td.style.border = "2px solid rgba(0,0,0,0.2)";
-  }
-}
+        if (val > 0) {
+          td.style.border = "2px solid #27ae60";
+          td.innerText = `+${val}`;
+        } else if (val < 0) {
+          td.style.border = "2px solid #e74c3c";
+        } else {
+          td.style.border = "2px solid rgba(0,0,0,0.2)";
+        }
+      }
 
-
-return td;
+      return td;
 
     }));
   }));
@@ -400,16 +396,16 @@ async function renderGame(){
 
   // opponent colour fallback (when game json doesn't include opponentColor)
   let oppColor = payload.opponentColor;
-  if(!oppColor && payload.opponent){
+  if (!oppColor && payload.opponent) {
     try{
       const metaRes = await fetch(`/api/opponent_meta?opp=${encodeURIComponent(payload.opponent)}`, { cache:"no-store" });
-      if(metaRes.ok){
+      if (metaRes.ok) {
         const meta = await metaRes.json();
-        if(meta && meta.color) oppColor = meta.color;
+        if (meta && meta.color) oppColor = meta.color;
       }
-    }catch(e){}
+    } catch (e) {}
   }
-  if(!oppColor) oppColor = "#4B5563";
+  if (!oppColor) oppColor = "#4B5563";
 
   content.appendChild(el("h2", {}, [`Season ${payload.season} Game ${payload.game} Stats`]));
 
@@ -426,54 +422,52 @@ async function renderGame(){
   content.appendChild(cards);
 
   // clone so we don't mutate original
-const rows = JSON.parse(JSON.stringify(payload.players));
+  const rows = JSON.parse(JSON.stringify(payload.players));
 
-// find team totals row
-const teamRow = rows.find(r => String(r.NAMES).includes("Injury Reserves"));
+  // find team totals row
+  const teamRow = rows.find(r => String(r.NAMES).includes("Injury Reserves"));
 
-if (teamRow){
+  if (teamRow) {
+    // TEAM +/- = teamScore - opponentScore
+    teamRow.PM = Number(payload.teamScore || 0) - Number(payload.opponentScore || 0);
 
-  // 1️⃣ TEAM +/- = teamScore - opponentScore
-  teamRow.PM = Number(payload.teamScore || 0) - Number(payload.opponentScore || 0);
-
-  // 2️⃣ TEAM MIN = average minutes of real players
-  const realPlayers = rows.filter(r => !String(r.NAMES).includes("Injury Reserves"));
-  if (realPlayers.length){
-    const totalSeconds = realPlayers.reduce((sum, r) => sum + Number(r.MIN || 0), 0);
-    teamRow.MIN = Math.floor(totalSeconds / realPlayers.length);
-    delete teamRow.MIN_display;
+    // TEAM MIN = average minutes of real players
+    const realPlayers = rows.filter(r => !String(r.NAMES).includes("Injury Reserves"));
+    if (realPlayers.length) {
+      const totalSeconds = realPlayers.reduce((sum, r) => sum + Number(r.MIN || 0), 0);
+      teamRow.MIN = Math.floor(totalSeconds / realPlayers.length);
+      delete teamRow.MIN_display;
+    }
   }
-}
 
-appendTeamPanTables(content, rows);
-
+  appendTeamPanTables(content, rows);
 
   // ===== GAME VIDEOS =====
-const videoKey = `${payload.season}_${payload.game}`;
-const videos = GAME_VIDEOS[videoKey];
+  const videoKey = `${payload.season}_${payload.game}`;
+  const videos = GAME_VIDEOS[videoKey];
 
-if (videos) {
-  content.appendChild(el("div", { style: "margin-top:24px" }, [
-    el("h3", {}, ["Game Footage"]),
-    el("div", { class: "video-links" }, [
-      videos.highlights
-        ? el("a", {
-            href: videos.highlights,
-            target: "_blank",
-            class: "video-link"
-          }, ["▶ Watch Highlights"])
-        : null,
+  if (videos) {
+    content.appendChild(el("div", { style: "margin-top:24px" }, [
+      el("h3", {}, ["Game Footage"]),
+      el("div", { class: "video-links" }, [
+        videos.highlights
+          ? el("a", {
+              href: videos.highlights,
+              target: "_blank",
+              class: "video-link"
+            }, ["▶ Watch Highlights"])
+          : null,
 
-      videos.full
-        ? el("a", {
-            href: videos.full,
-            target: "_blank",
-            class: "video-link"
-          }, ["▶ Watch Full Game"])
-        : null
-    ].filter(Boolean))
-  ]));
-}
+        videos.full
+          ? el("a", {
+              href: videos.full,
+              target: "_blank",
+              class: "video-link"
+            }, ["▶ Watch Full Game"])
+          : null
+      ].filter(Boolean))
+    ]));
+  }
 
 }
 

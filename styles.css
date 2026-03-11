@@ -39,15 +39,15 @@ body{
 /* ===== header ===== */
 .header{
   position:relative;
-  border-radius:18px;
-  padding:16px;
+  border-radius:22px;
+  padding:18px;
   margin-top:14px;
 
   background:
     linear-gradient(135deg, rgba(181,7,40,0.22), rgba(0,0,0,0) 55%),
     linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
   border:1px solid var(--line);
-  box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.60);
   overflow:hidden;
 }
 
@@ -81,8 +81,8 @@ body{
 
 .brand-text h1{
   margin:0;
-  font-size:26px;
-  letter-spacing:0.4px;
+  font-size:28px;
+  letter-spacing:0.2px;
   text-transform:none;
 }
 
@@ -90,6 +90,7 @@ body{
   margin:6px 0 0;
   color:var(--muted);
   font-size:13px;
+  opacity:0.85;
 }
 
 /* ===== tabs ===== */
@@ -97,21 +98,23 @@ body{
   position:relative;
   z-index:1;
   display:flex;
-  gap:8px;
+  gap:10px;
   flex-wrap:wrap;
   margin-top:14px;
 }
 
 .tabs button{
   border:1px solid rgba(255,255,255,0.12);
-  background:rgba(10,10,12,0.70);
+  background:rgba(0,0,0,0.28);
   color:var(--text);
-  padding:9px 11px;
+  padding:10px 14px;
   border-radius:999px;
   cursor:pointer;
-  font-weight:750;
+  font-weight:650;
   letter-spacing:0.2px;
   text-transform:none;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
 
 .tabs button:hover{
@@ -120,10 +123,9 @@ body{
 }
 
 .tabs button.active{
-  border-color: rgba(241, 41, 74, 0.75);
-  background:
-    linear-gradient(180deg, rgba(181,7,40,0.35), rgba(10,10,12,0.55));
-  box-shadow: 0 0 0 2px rgba(181,7,40,0.18) inset;
+  border-color: rgba(255,255,255,0.14);
+  background: linear-gradient(180deg, rgba(219,46,46,0.95), rgba(181,7,40,0.85));
+  box-shadow: 0 0 0 2px rgba(181,7,40,0.18) inset, 0 18px 44px rgba(0,0,0,0.45);
 }
 
 /* ===== panel ===== */
@@ -250,14 +252,6 @@ table{
   table-layout:auto;
 }
 
-table,
-thead th,
-tbody td {
-  font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  letter-spacing: 0.2px;
-}
-
-
 thead th{
   position:sticky;
   top:0;
@@ -337,46 +331,4 @@ tbody td:first-child{
 .video-link:hover{
   transform:translateY(-2px);
   box-shadow:0 10px 22px rgba(0,0,0,0.45);
-}
-
-/* ===== polish pass overrides (append at end of file) ===== */
-
-.header{
-  border-radius: 22px;
-  padding: 18px;
-  box-shadow: 0 22px 70px rgba(0,0,0,0.60);
-}
-
-.brand-row{
-  gap: 14px;
-}
-
-.brand-text h1{
-  font-size: 28px;
-  letter-spacing: 0.2px;
-}
-
-.subtitle{
-  opacity: 0.85;
-}
-
-.tabs{
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.tabs button{
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 650;
-  letter-spacing: 0.2px;
-  background: rgba(0,0,0,0.28);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-}
-
-.tabs button.active{
-  background: linear-gradient(180deg, rgba(219,46,46,0.95), rgba(181,7,40,0.85));
-  border-color: rgba(255,255,255,0.14);
-  box-shadow: 0 0 0 2px rgba(181,7,40,0.18) inset, 0 18px 44px rgba(0,0,0,0.45);
 }

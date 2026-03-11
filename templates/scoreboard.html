@@ -44,20 +44,19 @@
     }
 
     .bar{
-  width: 750px;
-  height: 70px;           /* scoreboard stays 70px */
-  display:flex;
-  align-items:stretch;
-  overflow:hidden;
-  border-radius: 0;
-  border: 2px solid var(--stroke);
+      width: 750px;
+      height: 70px; /* scoreboard stays 70px */
+      display:flex;
+      align-items:stretch;
+      overflow:hidden;
+      border-radius: 0;
+      border: 2px solid var(--stroke);
       border-color: silver;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;              /* locks it to the bottom */
-}
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0; /* locks it to the bottom */
+    }
 
 
     .team{
@@ -117,8 +116,7 @@
     /* inj side: anchored left, points toward abbr */
     .team.inj .midstripes{ left: 170px; }
 
-    /* opp side: anchored right, still points toward its abbr */
-/* opp side: anchored right, flip it */
+    /* opp side: anchored right, flip it */
     .team.opp .midstripes{
       left: auto;
       right: 170px; /* adjust if you want closer/further from abbr */
@@ -194,72 +192,64 @@
       text-shadow: 0 6px 18px rgba(0,0,0,0.55);
     }
 
-.toast{
-  position: absolute;
-  left: 10px;
+    .toast{
+      position: absolute;
+      left: 10px;
+      transform: translateY(14px);
+      bottom: 70px; /* sits above the 70px bar */
+      margin-bottom: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px;
+      height: auto; /* fit content */
+      width: max-content; /* fit text */
+      max-width: 720px; /* safety */
+      background: rgba(0,0,0,0.88);
+      border: 2px solid rgba(255,255,255,0.18);
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      transition:
+        transform 160ms cubic-bezier(.2,.9,.2,1),
+        opacity 160ms ease;
+      z-index: 100;
+    }
 
-  transform: translateY(14px);
+    .toast.show{
+      transform: translateY(0);
+      opacity: 1;
+    }
 
-  bottom: 70px;          /* sits above the 70px bar */
-  margin-bottom: 6px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 6px 14px;
-  height: auto;          /* fit content */
-  width: max-content;    /* fit text */
-  max-width: 720px;      /* safety */
-
-  background: rgba(0,0,0,0.88);
-  border: 2px solid rgba(255,255,255,0.18);
-
-
-  overflow: hidden;
-  pointer-events: none;
-
-  opacity: 0;
-  transition:
-    transform 160ms cubic-bezier(.2,.9,.2,1),
-    opacity 160ms ease;
-  z-index: 100;
-}
-
-.toast.show{
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.toast,
-.toast .title,
-.toast .line{
-  color: #ffffff;
-}
+    .toast,
+    .toast .title,
+    .toast .line{
+      color: #ffffff;
+    }
 
 
-.toast .t{
-  display:flex;
-  align-items:baseline;
-  gap:10px;
-  white-space: nowrap;
-  overflow: hidden;
-}
+    .toast .t{
+      display:flex;
+      align-items:baseline;
+      gap:10px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
 
-.toast .title{
-  font-size: 18px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
+    .toast .title{
+      font-size: 18px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
-.toast .line{
-  font-size: 18px;
-  letter-spacing: 1px;
-  color: rgba(255,255,255,0.92);
-}
+    .toast .line{
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.92);
+    }
 
 
-*{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    *{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   </style>
 </head>
 
