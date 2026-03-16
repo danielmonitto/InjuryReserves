@@ -1,0 +1,144 @@
+{
+  "players": [
+    {
+      "name": "Adrian Monitto",
+      "slug": "adrian_monitto",
+      "height": "6'2",
+      "position": "SF/PF",
+      "rowColor": "#be60f7"
+    },
+    {
+      "name": "Aidan Zivkovic",
+      "slug": "aidan_zivkovic",
+      "height": "6'2",
+      "position": "SF/PF",
+      "rowColor": "#d651b3"
+    },
+    {
+      "name": "Ashton Moon",
+      "slug": "ashton_moon",
+      "height": "",
+      "position": "",
+      "rowColor": "#A6C9EC"
+    },
+    {
+      "name": "Austin Thorneycroft",
+      "slug": "austin_thorneycroft",
+      "height": "6'3",
+      "position": "C/PF",
+      "rowColor": "#8858e8"
+    },
+    {
+      "name": "Bailey Moon",
+      "slug": "bailey_moon",
+      "height": "",
+      "position": "",
+      "rowColor": "#A6C9EC"
+    },
+    {
+      "name": "Brodie Reardon",
+      "slug": "brodie_reardon",
+      "height": "",
+      "position": "",
+      "rowColor": "#A6C9EC"
+    },
+    {
+      "name": "Brooklyn Bulmer",
+      "slug": "brooklyn_bulmer",
+      "height": "5'9",
+      "position": "PG/SG",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "name": "Chris Juelg",
+      "slug": "chris_juelg",
+      "height": "",
+      "position": "",
+      "rowColor": "#A6C9EC"
+    },
+    {
+      "name": "Daniel Monitto",
+      "slug": "daniel_monitto",
+      "height": "5'11",
+      "position": "SG/PG",
+      "rowColor": "#ebc026"
+    },
+    {
+      "name": "Drew Killender-Strachan",
+      "slug": "drew_killender_strachan",
+      "height": "",
+      "position": "",
+      "rowColor": "#A6C9EC"
+    },
+    {
+      "name": "Hayden Cromberge",
+      "slug": "hayden_cromberge",
+      "height": "6'0",
+      "position": "SF/PF",
+      "rowColor": "#e36868"
+    },
+    {
+      "name": "Jack Groves",
+      "slug": "jack_groves",
+      "height": "6'2",
+      "position": "PF/C",
+      "rowColor": "#FF99CC"
+    },
+    {
+      "name": "James Aquilina",
+      "slug": "james_aquilina",
+      "height": "",
+      "position": "",
+      "rowColor": "#A6C9EC"
+    },
+    {
+      "name": "James Norrish",
+      "slug": "james_norrish",
+      "height": "6'5",
+      "position": "PF/C",
+      "rowColor": "#fc9219"
+    },
+    {
+      "name": "Joel Kingdom-Evans",
+      "slug": "joel_kingdom_evans",
+      "height": "5'8",
+      "position": "SG/PG",
+      "rowColor": "#99FF66"
+    },
+    {
+      "name": "Lachlan Farley",
+      "slug": "lachlan_farley",
+      "height": "6'3",
+      "position": "SF/PF",
+      "rowColor": "#59dea2"
+    },
+    {
+      "name": "Matthew Bayly",
+      "slug": "matthew_bayly",
+      "height": "",
+      "position": "",
+      "rowColor": "#A6C9EC"
+    },
+    {
+      "name": "Patreek Sharma",
+      "slug": "patreek_sharma",
+      "height": "",
+      "position": "",
+      "rowColor": "#A6C9EC"
+    },
+    {
+      "name": "Vince Tomasello",
+      "slug": "vince_tomasello",
+      "height": "5'11",
+      "position": "SG/SF",
+      "rowColor": "#63b010"
+    },
+    {
+      "name": "Zack Johnston",
+      "slug": "zack_johnston",
+      "height": "6'3",
+      "position": "C",
+      "rowColor": "#5364b0"
+    }
+  ]
+}

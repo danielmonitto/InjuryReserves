@@ -212,6 +212,11 @@ def load_from_sqlite():
         FROM OpponentMeta
     """, con)
 
+    player_bio = pd.read_sql_query("""
+        SELECT name, height, position
+        FROM player_bio
+    """, con)
+
     con.close()
 
     gps = gps.rename(columns={
@@ -242,12 +247,83 @@ def load_from_sqlite():
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce").fillna(0)
 
-    return df, opp_meta
+    return df, opp_meta, player_bio
+
+
+def build_player_profiles(df: pd.DataFrame, bio: pd.DataFrame) -> None:
+    players_df = df[df["GAME"] > 0].copy()
+    players_df = players_df[
+        ~(players_df["OPP"].astype(str).str.lower() == "injury reserves")
+    ].copy()
+    players_df = players_df[
+        ~(players_df["NAMES"].astype(str).str.lower() == "injury reserves")
+    ].copy()
+
+    players_df["rowColor"] = players_df["NAMES"].map(lambda x: COLOR_MAP.get(x, "#A6C9EC"))
+    players_df = add_percentages(players_df)
+    players_fmt = format_fields(players_df, "game")
+
+    bio_map = {
+        str(r["name"]): {
+            "height": r.get("height", ""),
+            "position": r.get("position", ""),
+        }
+        for _, r in bio.iterrows()
+    }
+
+    players = sorted(players_df["NAMES"].dropna().unique().tolist())
+    index = []
+    for name in players:
+        b = bio_map.get(name, {})
+        index.append({
+            "name": name,
+            "slug": slugify(name),
+            "height": b.get("height", ""),
+            "position": b.get("position", ""),
+            "rowColor": COLOR_MAP.get(name, "#A6C9EC"),
+        })
+
+    write_json(DATA_DIR / "players" / "index.json", {"players": index})
+
+    best_cols = [
+        "SEASON", "GAME", "OPP", "TYPE",
+        "PTS", "REB", "AST", "GSC", "STL", "BLK", "TOV",
+        "MIN", "PM", "FG%", "3P%", "FT%", "TS%",
+    ]
+
+    averages_all = calc_averages(players_df)
+    totals_all = calc_totals(players_df)
+    highs_all = calc_highs(players_df)
+
+    for name in players:
+        b = bio_map.get(name, {})
+        player_rows = players_fmt[players_fmt["NAMES"] == name].copy()
+        top_games = player_rows.sort_values("GSC", ascending=False).head(5)
+        display_cols = [f"{c}_display" for c in best_cols if f"{c}_display" in top_games.columns]
+        top_games = top_games[[c for c in best_cols if c in top_games.columns] + display_cols]
+
+        avg_row = averages_all[averages_all["NAMES"] == name]
+        tot_row = totals_all[totals_all["NAMES"] == name]
+        high_row = highs_all[highs_all["NAMES"] == name]
+
+        profile = {
+            "name": name,
+            "slug": slugify(name),
+            "height": b.get("height", ""),
+            "position": b.get("position", ""),
+            "rowColor": COLOR_MAP.get(name, "#A6C9EC"),
+            "averages": avg_row.to_dict(orient="records")[:1],
+            "totals": tot_row.to_dict(orient="records")[:1],
+            "highs": high_row.to_dict(orient="records")[:1],
+            "bestGames": top_games.to_dict(orient="records"),
+        }
+
+        write_json(DATA_DIR / "players" / f"{slugify(name)}.json", profile)
 
 
 def main():
     global opp_color_dict
-    df, opp_meta = load_from_sqlite()
+    df, opp_meta, player_bio = load_from_sqlite()
 
     if df.empty:
         raise SystemExit("no rows in InjuryReserves")
@@ -540,6 +616,8 @@ def main():
         if t_df.empty:
             continue
         write_json(DATA_DIR / "aggregates" / f"by_type_{t}.json", calc_averages(t_df).to_dict(orient="records"))
+
+    build_player_profiles(df, player_bio)
 
     print("ok: rebuilt data/ from sqlite")
 
