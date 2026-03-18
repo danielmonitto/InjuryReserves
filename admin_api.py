@@ -6,7 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, redirect, render_template, request
 
 DB_PATH = Path("ir_stats.db")
 
@@ -368,7 +368,12 @@ def opponent_meta():
 
 @app.get("/")
 def ui():
-    return render_template("admin.html")
+    return redirect("/admin-v2", code=302)
+
+
+@app.get("/admin")
+def admin_redirect():
+    return redirect("/admin-v2", code=302)
 
 
 @app.get("/admin-v2")
