@@ -400,18 +400,19 @@ tbody td:first-child{
 }
 
 .profile-avatar{
-  width:72px;
-  height:72px;
-  border-radius:18px;
+  width:108px;
+  height:108px;
+  border-radius:22px;
   display:flex;
   align-items:center;
   justify-content:center;
   color:#111;
   font-weight:800;
-  font-size:22px;
+  font-size:30px;
   box-shadow:0 10px 20px rgba(0,0,0,0.35);
   overflow:hidden;
   position:relative;
+  flex:0 0 auto;
 }
 
 .profile-photo{

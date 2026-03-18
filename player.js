@@ -112,7 +112,9 @@ function renderProfile(profile) {
         el("th", {}, ["pts"]),
         el("th", {}, ["reb"]),
         el("th", {}, ["ast"]),
-        el("th", {}, ["min"])
+        el("th", {}, ["stl"]),
+        el("th", {}, ["blk"]),
+        el("th", {}, ["ts%"]),
       ])]),
       el("tbody", {}, best.map(r => {
         const gsc = r.GSC_display ?? r.GSC;
@@ -128,7 +130,9 @@ function renderProfile(profile) {
           el("td", { style:`background:${profile.rowColor || "#A6C9EC"};` }, [String(r.PTS_display ?? r.PTS ?? "")]),
           el("td", { style:`background:${profile.rowColor || "#A6C9EC"};` }, [String(r.REB_display ?? r.REB ?? "")]),
           el("td", { style:`background:${profile.rowColor || "#A6C9EC"};` }, [String(r.AST_display ?? r.AST ?? "")]),
-          el("td", { style:`background:${profile.rowColor || "#A6C9EC"};` }, [String(r.MIN_display ?? r.MIN ?? "")]),
+          el("td", { style:`background:${profile.rowColor || "#A6C9EC"};` }, [String(r.STL_display ?? r.STL ?? "")]),
+          el("td", { style:`background:${profile.rowColor || "#A6C9EC"};` }, [String(r.BLK_display ?? r.BLK ?? "")]),
+          el("td", { style:`background:${profile.rowColor || "#A6C9EC"};` }, [String(r["TS%_display"] ?? r["TS%"] ?? "")]),
         ]);
       }))
     ])
