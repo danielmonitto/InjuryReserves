@@ -6,43 +6,56 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Injury Reserves Stats</title>
-  <link rel="stylesheet" href="styles.css?v=20260318b" />
+  <meta name="description" content="Public stats archive for Injury Reserves, with game breakdowns, player profiles, season leaders, and assist-link tracking." />
+  <meta name="theme-color" content="#07070a" />
+  <title>Injury Reserves Basketball Stats</title>
+  <link rel="stylesheet" href="styles.css?v=20260318c" />
 </head>
 <body>
   <div class="container">
     <header class="header">
-      <div class="brand">
-        <div class="brand-row">
-          <img class="logo" src="logo.png" alt="Injury Reserves logo" />
-          <div class="brand-text">
-            <h1>Injury Reserves</h1>
-            <p class="subtitle">Melton Basketball League • Run by Daniel Monitto</p>
+      <div class="header-shell">
+        <div class="brand">
+          <div class="eyebrow">Public Stats Archive</div>
+          <div class="brand-row">
+            <img class="logo" src="logo.png" alt="Injury Reserves logo" />
+            <div class="brand-text">
+              <h1>Injury Reserves</h1>
+              <p class="subtitle">A public home for Injury Reserves statistics, game film links, player profiles, season leaders, and matchup history across the Melton Basketball League archive.</p>
+              <div class="header-actions">
+                <a class="hero-link" href="player.html">Player Profiles</a>
+                <a class="hero-link hero-link-ghost" href="#tabs">Explore Stats</a>
+              </div>
+            </div>
           </div>
+          <p class="header-note">Updated from the team archive with searchable season views, single-game breakdowns, and career tracking in one place.</p>
         </div>
       </div>
 
+      <div class="header-summary" id="header-summary"></div>
+
       <nav class="tabs" id="tabs">
-        <button data-page="game">Game Statistics</button>
-        <button data-page="avg">Player Averages</button>
-        <button data-page="tot">Player Totals</button>
+        <button data-page="overview">Overview</button>
+        <button data-page="game">Game Center</button>
+        <button data-page="avg">Averages</button>
+        <button data-page="tot">Totals</button>
         <button data-page="highs">Career Highs</button>
-        <button data-page="vs">Averages vs. Teams</button>
-        <button data-page="type">By Game Type</button>
+        <button data-page="vs">Matchups</button>
+        <button data-page="type">Game Types</button>
         <button data-page="assists">Assist Links</button>
       </nav>
     </header>
 
-    <section class="panel">
+    <section class="panel panel-main">
       <div class="controls" id="controls"></div>
       <div id="content"></div>
     </section>
 
     <footer class="footer">
-      <span class="muted"></span>
+      <span class="muted">Injury Reserves public statistics archive</span>
     </footer>
   </div>
 
-  <script src="app.js?v=20260318b"></script>
+  <script src="app.js?v=20260318c"></script>
 </body>
 </html>

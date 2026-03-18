@@ -7,25 +7,36 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Player Profile • Injury Reserves Stats</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=20260318c" />
 </head>
 <body>
   <div class="container">
     <header class="header">
-      <div class="brand">
-        <div class="brand-row">
-          <a href="index.html" class="logo-link">
-            <img class="logo" src="logo.png" alt="Injury Reserves logo" />
-          </a>
-          <div class="brand-text">
-            <h1>Player Profile</h1>
-            <p class="subtitle">Injury Reserves • Stats & Bio</p>
+      <div class="header-shell">
+        <div class="brand">
+          <div class="eyebrow">Player Profile</div>
+          <div class="brand-row">
+            <a href="/?page=overview" class="logo-link">
+              <img class="logo" src="logo.png" alt="Injury Reserves logo" />
+            </a>
+            <div class="brand-text">
+              <h1>Player Profile</h1>
+              <p class="subtitle">Career production, best games, and profile details in the same site theme as the main stats hub.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card hero-card-small">
+          <div class="hero-card-label">Quick Nav</div>
+          <div class="hero-card-title">Move between profiles without losing the main context</div>
+          <div class="hero-card-actions">
+            <a class="hero-link" id="back-to-hub" href="/?page=overview">Back To Hub</a>
           </div>
         </div>
       </div>
     </header>
 
-    <section class="panel">
+    <section class="panel panel-main">
       <div class="controls">
         <div class="control">
           <label>player</label>
@@ -37,10 +48,10 @@
     </section>
 
     <footer class="footer">
-      <span class="muted"></span>
+      <span class="muted">Injury Reserves player archive</span>
     </footer>
   </div>
 
-  <script src="player.js"></script>
+  <script src="player.js?v=20260318c"></script>
 </body>
 </html>

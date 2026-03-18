@@ -1,5 +1,5 @@
 const state = {
-  page: "game",
+  page: "overview",
   index: null,
   season: null,
   game: null,
@@ -10,10 +10,55 @@ const state = {
   highsLinkCache: {},
 };
 
+const PAGE_META = {
+  overview: {
+    title: "Overview",
+    description: "The fastest read on the latest season, recent game context, and player leaders."
+  },
+  game: {
+    title: "Game Center",
+    description: "Single-game scoreboard, player box score, advanced stats, play-by-play, and footage."
+  },
+  avg: {
+    title: "Player Averages",
+    description: "Per-game production with quick and advanced tables."
+  },
+  tot: {
+    title: "Player Totals",
+    description: "Volume totals across the selected season or across the full archive."
+  },
+  highs: {
+    title: "Career Highs",
+    description: "Best marks for each player, with links back to the game where they happened."
+  },
+  vs: {
+    title: "Matchups",
+    description: "How the roster performs against a specific opponent in a chosen season."
+  },
+  type: {
+    title: "Game Types",
+    description: "Split team and player production by preseason, regular season, or finals."
+  },
+  assists: {
+    title: "Assist Links",
+    description: "Assister-to-scorer chemistry totals built from saved event-level data."
+  }
+};
+
 async function loadJSON(path){
   const res = await fetch(path, { cache: "no-store" });
   if (!res.ok) throw new Error(`failed to load ${path}`);
   return res.json();
+}
+
+async function loadOptionalJSON(path, fallback){
+  try {
+    const res = await fetch(path, { cache: "no-store" });
+    if (!res.ok) return fallback;
+    return res.json();
+  } catch (_) {
+    return fallback;
+  }
 }
 
 const GAME_VIDEOS = {
@@ -105,7 +150,10 @@ function el(tag, attrs = {}, children = []) {
     else if(k.startsWith("on")) n.addEventListener(k.slice(2).toLowerCase(), v);
     else n.setAttribute(k, v);
   });
-  children.forEach(c => n.appendChild(typeof c === "string" ? document.createTextNode(c) : c));
+  const kids = Array.isArray(children) ? children : [children];
+  kids
+    .filter(c => c !== null && c !== undefined && c !== false)
+    .forEach(c => n.appendChild(typeof c === "string" ? document.createTextNode(c) : c));
   return n;
 }
 
@@ -113,6 +161,84 @@ function setActiveTab() {
   document.querySelectorAll("#tabs button").forEach(b => {
     b.classList.toggle("active", b.dataset.page === state.page);
   });
+}
+
+function syncURL() {
+  const params = new URLSearchParams();
+  if (state.page && state.page !== "overview") params.set("page", state.page);
+
+  if (state.page === "game") {
+    params.set("season", String(state.season));
+    params.set("game", String(state.game));
+  }
+
+  if (state.page === "avg" || state.page === "tot" || state.page === "highs" || state.page === "assists") {
+    if (state.allTime) {
+      params.set("allTime", "true");
+    } else if (state.season) {
+      params.set("season", String(state.season));
+    }
+  }
+
+  if (state.page === "type") {
+    params.set("type", state.gameType);
+  }
+
+  if (state.page === "vs") {
+    if (state.season) params.set("season", String(state.season));
+    if (state.vsOpponentSlug) params.set("opponent", state.vsOpponentSlug);
+  }
+
+  const qs = params.toString();
+  const next = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+  history.replaceState({}, "", next);
+}
+
+function renderHeaderSummary() {
+  const mount = document.getElementById("header-summary");
+  if (!mount || !state.index) return;
+
+  const totalGames = Object.values(state.index.seasonGames || {}).reduce((sum, games) => sum + games.length, 0);
+  const totalTeams = Object.values(state.index.seasonTeams || {}).reduce((sum, teams) => sum + teams.length, 0);
+  const trackedPlayers = Object.keys(state.index.rowColors || {}).filter(name => name !== "Injury Reserves").length;
+  const latestSeason = state.index.seasons?.[0] || "-";
+
+  mount.innerHTML = "";
+  [
+    { label: "Latest Season", value: latestSeason },
+    { label: "Tracked Games", value: String(totalGames) },
+    { label: "Tracked Players", value: String(trackedPlayers) },
+    { label: "Opponents Logged", value: String(totalTeams) }
+  ].forEach(item => {
+    mount.appendChild(el("div", { class: "summary-chip" }, [
+      el("div", { class: "summary-chip-label" }, [item.label]),
+      el("div", { class: "summary-chip-value" }, [item.value])
+    ]));
+  });
+}
+
+function buildPageIntro(title, description, actions = []) {
+  return el("section", { class: "page-intro" }, [
+    el("div", { class: "page-intro-copy" }, [
+      el("div", { class: "page-kicker" }, ["Injury Reserves Stats"]),
+      el("h2", {}, [title]),
+      description ? el("p", { class: "page-description" }, [description]) : null
+    ]),
+    actions.length
+      ? el("div", { class: "page-intro-actions" }, actions)
+      : null
+  ]);
+}
+
+function buildSection(title, description, children = []) {
+  const body = Array.isArray(children) ? children.filter(Boolean) : [children].filter(Boolean);
+  return el("section", { class: "content-section" }, [
+    el("div", { class: "section-head" }, [
+      el("h3", {}, [title]),
+      description ? el("p", { class: "section-copy" }, [description]) : null
+    ]),
+    ...body
+  ]);
 }
 
 function renderControls() {
@@ -129,8 +255,10 @@ function renderControls() {
 
   const addSelect = (label, value, options, onChange) => {
     const sel = el("select", { onChange: (e) => onChange(e.target.value) }, options.map(o => {
-      const opt = el("option", { value: o }, [String(o)]);
-      if (String(o) === String(value)) opt.selected = true;
+      const optionValue = typeof o === "object" ? o.value : o;
+      const optionLabel = typeof o === "object" ? o.label : o;
+      const opt = el("option", { value: optionValue }, [String(optionLabel)]);
+      if (String(optionValue) === String(value)) opt.selected = true;
       return opt;
     }));
     c.appendChild(el("div", { class:"control" }, [
@@ -159,7 +287,13 @@ function renderControls() {
     ]));
   };
 
-  addSearch("search", state.search, (v) => { state.search = v; refreshContent(); });
+  if (state.page !== "overview") {
+    addSearch("search", state.search, (v) => { state.search = v; refreshContent(); });
+  }
+
+  if (state.page === "overview") {
+    addSelect("season", state.season, seasons, (v) => { state.season = v; refresh(); });
+  }
 
   if (state.page === "game") {
     addSelect("season", state.season, seasons, (v) => { state.season = v; state.game = (state.index.seasonGames[v] || [])[0]; refresh(); });
@@ -182,7 +316,7 @@ function renderControls() {
     const teams = state.index.seasonTeams[state.season] || [];
     const opts = teams.map(t => ({ name:t, slug: slugify(t) }));
     if (!state.vsOpponentSlug && opts.length) state.vsOpponentSlug = opts[0].slug;
-    addSelect("opponent", state.vsOpponentSlug, opts.map(o => o.slug), (v) => { state.vsOpponentSlug = v; refresh(); });
+    addSelect("opponent", state.vsOpponentSlug, opts.map(o => ({ value: o.slug, label: o.name })), (v) => { state.vsOpponentSlug = v; refresh(); });
   }
 
 }
@@ -284,54 +418,43 @@ function selectCols(rows, cols) {
 }
 
 function appendTeamPanTables(content, rows) {
-  // game statistics should stay unsorted
   const isGamePage = state.page === "game";
-
   const sorted = isGamePage ? rows : sortByGamesPlayed(rows);
   const { team, pan } = splitTeam(sorted);
   const teamFiltered = filterRowsBySearch(team);
   const panFiltered = filterRowsBySearch(pan);
 
-  /* ===== MAIN STATS ===== */
-
-  // players – main stats
-  if (teamFiltered.length || panFiltered.length) {
-    content.appendChild(el("h3", {}, ["Quick Stats"]));
+  if (!teamFiltered.length && !panFiltered.length) {
+    content.appendChild(el("div", { class:"note" }, ["no matches"]));
+    return;
   }
+
+  const quickChildren = [];
+  const advancedChildren = [];
 
   if (teamFiltered.length) {
     const summaryCols = selectCols(teamFiltered, SUMMARY_COLS);
-    content.appendChild(buildTable(teamFiltered, true, summaryCols, SUMMARY_LABELS, { highsLinkMap: state.highsLinkMap }));
+    quickChildren.push(buildTable(teamFiltered, true, summaryCols, SUMMARY_LABELS, { highsLinkMap: state.highsLinkMap }));
+    advancedChildren.push(buildTable(teamFiltered, true, null, null, { highsLinkMap: state.highsLinkMap }));
   }
 
-  // injury reserves – main stats
   if (panFiltered.length) {
-    content.appendChild(el("div", { style:"height:10px" }, []));
     const summaryCols = selectCols(panFiltered, SUMMARY_COLS);
-    content.appendChild(buildTable(panFiltered, true, summaryCols, SUMMARY_LABELS, { highsLinkMap: state.highsLinkMap }));
+    quickChildren.push(buildTable(panFiltered, true, summaryCols, SUMMARY_LABELS, { highsLinkMap: state.highsLinkMap }));
+    advancedChildren.push(buildTable(panFiltered, true, null, null, { highsLinkMap: state.highsLinkMap }));
   }
 
-  /* ===== ADVANCED STATS TITLE ===== */
-  if (teamFiltered.length || panFiltered.length) {
-    content.appendChild(el("h3", {}, ["Advanced Stats"]));
-  }
+  content.appendChild(buildSection(
+    "Quick Stats",
+    "The fastest-read table for points, rebounding, playmaking, efficiency, and game score.",
+    quickChildren
+  ));
 
-  /* ===== ADVANCED / FULL STATS ===== */
-
-  // players – advanced stats
-  if (teamFiltered.length) {
-    content.appendChild(buildTable(teamFiltered, true, null, null, { highsLinkMap: state.highsLinkMap }));
-  }
-
-  // injury reserves – advanced stats
-  if (panFiltered.length) {
-    content.appendChild(el("div", { style:"height:10px" }, []));
-    content.appendChild(buildTable(panFiltered, true, null, null, { highsLinkMap: state.highsLinkMap }));
-  }
-
-  if (!teamFiltered.length && !panFiltered.length) {
-    content.appendChild(el("div", { class:"note" }, ["no matches"]));
-  }
+  content.appendChild(buildSection(
+    "Advanced Stats",
+    "Full stat lines with the same player colors and sortable columns where it makes sense.",
+    advancedChildren
+  ));
 }
 
 
@@ -575,6 +698,194 @@ function buildCompactPlayByPlay(rows) {
   return wrap;
 }
 
+function pickLeader(rows, key) {
+  return [...rows]
+    .filter(r => r.NAMES && !String(r.NAMES).includes("Injury Reserves"))
+    .sort((a, b) => Number(b[key] || 0) - Number(a[key] || 0))[0] || null;
+}
+
+function statDisplay(row, key) {
+  if (!row) return "-";
+  return row[`${key}_display`] ?? row[key] ?? "-";
+}
+
+async function renderOverview() {
+  const content = document.getElementById("content");
+  content.innerHTML = "";
+  state.highsLinkMap = null;
+
+  const latestSeason = state.season || state.index.seasons[0];
+  const latestGame = (state.index.seasonGames[latestSeason] || [])[0];
+  const seasonGames = state.index.seasonGames[latestSeason] || [];
+  const countedSeasonGames = seasonGames.filter(game => Number(game) > 0);
+  const totalTeams = (state.index.seasonTeams[latestSeason] || []).length;
+
+  const [gamePayload, averages, totals, assistRows, seasonPayloads, manualRecordData] = await Promise.all([
+    latestGame !== undefined ? loadJSON(`data/games/${latestSeason}_${latestGame}.json`) : null,
+    loadJSON(`data/aggregates/averages_by_season_${latestSeason}.json`),
+    loadJSON("data/aggregates/totals_all.json"),
+    loadJSON("data/assists/assists_all.json"),
+    Promise.all(countedSeasonGames.map(game => loadJSON(`data/games/${latestSeason}_${game}.json`))),
+    loadOptionalJSON("data/manual_records.json", {})
+  ]);
+
+  const teamAverages = averages.filter(r => !String(r.NAMES).includes("Injury Reserves"));
+  const teamTotals = totals.filter(r => !String(r.NAMES).includes("Injury Reserves"));
+  const scoringLeader = pickLeader(teamAverages, "PTS");
+  const reboundLeader = pickLeader(teamAverages, "REB");
+  const assistLeader = pickLeader(teamAverages, "AST");
+  const gameScoreLeader = pickLeader(teamAverages, "GSC");
+  const volumeLeader = pickLeader(teamTotals, "PTS");
+  const topLink = [...assistRows].sort((a, b) => Number(b.AST || 0) - Number(a.AST || 0))[0] || null;
+  const manualSeasonRecord = manualRecordData?.[String(latestSeason)] || {};
+  const manualWins = Number(manualSeasonRecord.wins || 0);
+  const manualLosses = Number(manualSeasonRecord.losses || 0);
+  const manualDraws = Number(manualSeasonRecord.draws || 0);
+  const seasonRecord = seasonPayloads.reduce((record, game) => {
+    const diff = Number(game.teamScore || 0) - Number(game.opponentScore || 0);
+    if (diff > 0) record.wins += 1;
+    else if (diff < 0) record.losses += 1;
+    else record.draws += 1;
+    return record;
+  }, { wins: manualWins, losses: manualLosses, draws: manualDraws });
+  const recordText = seasonRecord.draws
+    ? `${seasonRecord.wins}-${seasonRecord.losses}-${seasonRecord.draws}`
+    : `${seasonRecord.wins}-${seasonRecord.losses}`;
+  const manualGames = manualWins + manualLosses + manualDraws;
+  const countedGames = seasonPayloads.length;
+  const totalCountedGames = countedGames + manualGames;
+  const recordDetail = !totalCountedGames
+    ? "Only grading games logged so far"
+    : manualGames
+      ? `${totalCountedGames} counted games (${countedGames} tracked + ${manualGames} manual)`
+      : seasonRecord.draws
+        ? `${countedGames} counted games including ${seasonRecord.draws} draw${seasonRecord.draws === 1 ? "" : "s"}`
+        : `${countedGames} counted games`;
+
+  content.appendChild(buildPageIntro(
+    PAGE_META.overview.title,
+    PAGE_META.overview.description,
+    [
+      el("button", { class: "hero-link button-link", onClick: () => { state.page = "game"; refresh(); } }, ["Open Game Center"]),
+      el("a", { class: "hero-link hero-link-ghost", href: "player.html" }, ["Browse Players"])
+    ]
+  ));
+
+  content.appendChild(el("section", { class: "overview-grid" }, [
+    el("div", { class: "overview-card overview-card-metric" }, [
+      el("div", { class: "overview-label" }, ["Current season"]),
+      el("div", { class: "overview-value" }, [String(latestSeason)]),
+      el("div", { class: "overview-copy" }, [`${totalTeams} opponents logged`])
+    ]),
+    el("div", { class: "overview-card overview-card-metric" }, [
+      el("div", { class: "overview-label" }, ["Season record"]),
+      el("div", { class: "overview-value" }, [recordText]),
+      el("div", { class: "overview-copy" }, [recordDetail])
+    ]),
+    el("div", { class: "overview-card overview-card-metric" }, [
+      el("div", { class: "overview-label" }, ["Season scoring leader"]),
+      el("div", { class: "overview-value overview-value-small" }, [scoringLeader ? scoringLeader.NAMES : "-"]),
+      el("div", { class: "overview-copy" }, [`${statDisplay(scoringLeader, "PTS")} ppg`])
+    ]),
+    el("div", { class: "overview-card overview-card-metric" }, [
+      el("div", { class: "overview-label" }, ["Top assist link"]),
+      el("div", { class: "overview-value overview-value-small" }, [topLink ? `${topLink.ASSISTER} -> ${topLink.SCORER}` : "No links yet"]),
+      el("div", { class: "overview-copy" }, [topLink ? `${topLink.AST} assists saved` : "Event data builds this view"])
+    ])
+  ]));
+
+  if (gamePayload) {
+    const diff = Number(gamePayload.teamScore || 0) - Number(gamePayload.opponentScore || 0);
+    const resultText = diff > 0 ? "Win" : diff < 0 ? "Loss" : "Draw";
+    content.appendChild(buildSection(
+      "Latest Game Snapshot",
+      "A quick read on the most recent game in the selected season.",
+      el("div", { class: "feature-grid" }, [
+        el("div", { class: "feature-card feature-card-score" }, [
+          el("div", { class: "feature-eyebrow" }, [`Season ${gamePayload.season} • Game ${gamePayload.game}`]),
+          el("div", { class: "feature-title" }, [String(gamePayload.opponent)]),
+          el("div", { class: "feature-score-row" }, [
+            el("div", { class: "feature-score-block is-team" }, [
+              el("span", { class: "feature-score-label" }, ["Injury Reserves"]),
+              el("strong", { class: "feature-score-value" }, [String(gamePayload.teamScore)])
+            ]),
+            el("div", { class: "feature-score-sep" }, ["-"]),
+            el("div", { class: "feature-score-block" }, [
+              el("span", { class: "feature-score-label" }, ["Opponent"]),
+              el("strong", { class: "feature-score-value" }, [String(gamePayload.opponentScore)])
+            ])
+          ]),
+          el("div", { class: "feature-copy" }, [`${resultText} by ${Math.abs(diff)} points`]),
+          el("button", { class: "hero-link button-link", onClick: () => goToGame(gamePayload.season, gamePayload.game) }, ["Open full game"])
+        ]),
+        el("div", { class: "feature-card" }, [
+          el("div", { class: "feature-eyebrow" }, ["What to check next"]),
+          el("div", { class: "feature-list" }, [
+            el("div", { class: "feature-list-item" }, [`${gamePayload.playByPlay?.length || 0} play-by-play events saved`]),
+            el("div", { class: "feature-list-item" }, [gamePayload.players?.length ? `${gamePayload.players.length - 1} player rows tracked` : "Player rows available"]),
+            el("div", { class: "feature-list-item" }, ["Jump into player profiles for best games and career snapshots"])
+          ])
+        ])
+      ])
+    ));
+  }
+
+  content.appendChild(buildSection(
+    "Season Leaders",
+    "Top current-season production at a glance.",
+    el("div", { class: "leader-grid" }, [
+      el("div", { class: "leader-card" }, [
+        el("div", { class: "leader-label" }, ["Points"]),
+        el("div", { class: "leader-name" }, [scoringLeader ? scoringLeader.NAMES : "-"]),
+        el("div", { class: "leader-value" }, [`${statDisplay(scoringLeader, "PTS")} ppg`])
+      ]),
+      el("div", { class: "leader-card" }, [
+        el("div", { class: "leader-label" }, ["Rebounds"]),
+        el("div", { class: "leader-name" }, [reboundLeader ? reboundLeader.NAMES : "-"]),
+        el("div", { class: "leader-value" }, [`${statDisplay(reboundLeader, "REB")} rpg`])
+      ]),
+      el("div", { class: "leader-card" }, [
+        el("div", { class: "leader-label" }, ["Assists"]),
+        el("div", { class: "leader-name" }, [assistLeader ? assistLeader.NAMES : "-"]),
+        el("div", { class: "leader-value" }, [`${statDisplay(assistLeader, "AST")} apg`])
+      ]),
+      el("div", { class: "leader-card" }, [
+        el("div", { class: "leader-label" }, ["Game Score"]),
+        el("div", { class: "leader-name" }, [gameScoreLeader ? gameScoreLeader.NAMES : "-"]),
+        el("div", { class: "leader-value" }, [String(statDisplay(gameScoreLeader, "GSC"))])
+      ]),
+      el("div", { class: "leader-card" }, [
+        el("div", { class: "leader-label" }, ["All-time points"]),
+        el("div", { class: "leader-name" }, [volumeLeader ? volumeLeader.NAMES : "-"]),
+        el("div", { class: "leader-value" }, [`${statDisplay(volumeLeader, "PTS")} total`])
+      ])
+    ])
+  ));
+
+  content.appendChild(buildSection(
+    "Shortcuts",
+    "The main areas people actually need during normal use.",
+    el("div", { class: "action-grid" }, [
+      el("button", { class: "action-card", onClick: () => { state.page = "game"; refresh(); } }, [
+        el("span", { class: "action-title" }, ["Game Center"]),
+        el("span", { class: "action-copy" }, ["Open a single game, scoreboard, box score, and play-by-play."])
+      ]),
+      el("button", { class: "action-card", onClick: () => { state.page = "avg"; refresh(); } }, [
+        el("span", { class: "action-title" }, ["Averages"]),
+        el("span", { class: "action-copy" }, ["Per-game leaders and sortable team tables."])
+      ]),
+      el("button", { class: "action-card", onClick: () => { state.page = "highs"; refresh(); } }, [
+        el("span", { class: "action-title" }, ["Career Highs"]),
+        el("span", { class: "action-copy" }, ["Best single-game marks with links back to the source game."])
+      ]),
+      el("button", { class: "action-card", onClick: () => { state.page = "assists"; refresh(); } }, [
+        el("span", { class: "action-title" }, ["Assist Links"]),
+        el("span", { class: "action-copy" }, ["Review chemistry trends built from event-level data."])
+      ])
+    ])
+  ));
+}
+
 async function renderGame(){
   const content = document.getElementById("content");
   content.innerHTML = "";
@@ -595,7 +906,10 @@ async function renderGame(){
   }
   if (!oppColor) oppColor = "#4B5563";
 
-  content.appendChild(el("h2", {}, [`Season ${payload.season} Game ${payload.game} Stats`]));
+  content.appendChild(buildPageIntro(
+    PAGE_META.game.title,
+    `Season ${payload.season} Game ${payload.game} vs ${payload.opponent}. ${PAGE_META.game.description}`
+  ));
 
   const cards = el("div", { class:"cards" }, [
     el("div", { class:"card", style:`background:#db2e2e; color:white;` }, [
@@ -631,17 +945,18 @@ async function renderGame(){
   appendTeamPanTables(content, rows);
 
   if (payload.playByPlay && payload.playByPlay.length) {
-    content.appendChild(el("h3", {}, ["Play-by-Play"]));
-    content.appendChild(buildCompactPlayByPlay(payload.playByPlay));
+    content.appendChild(buildSection(
+      "Play-by-Play",
+      "Compact preview first, with expansion when you want the full sequence.",
+      buildCompactPlayByPlay(payload.playByPlay)
+    ));
   }
 
-  // ===== GAME VIDEOS =====
   const videoKey = `${payload.season}_${payload.game}`;
   const videos = GAME_VIDEOS[videoKey];
 
   if (videos) {
-    content.appendChild(el("div", { style: "margin-top:24px" }, [
-      el("h3", {}, ["Game Footage"]),
+    content.appendChild(buildSection("Game Footage", "Jump straight to highlights or the full game upload when available.", [
       el("div", { class: "video-links" }, [
         videos.highlights
           ? el("a", {
@@ -670,7 +985,11 @@ async function renderAggregate(kind){
   state.highsLinkMap = null;
 
   const titleMap = { averages:"Player Averages", totals:"Player Totals", highs:"Career Highs" };
-  content.appendChild(el("h2", {}, [titleMap[kind] || kind]));
+  const metaKey = kind === "averages" ? "avg" : kind === "totals" ? "tot" : "highs";
+  content.appendChild(buildPageIntro(
+    titleMap[kind] || kind,
+    PAGE_META[metaKey]?.description || ""
+  ));
 
   let path;
   if(state.allTime){
@@ -691,7 +1010,10 @@ async function renderType(){
   content.innerHTML = "";
   state.highsLinkMap = null;
 
-  content.appendChild(el("h2", {}, [`Stats By Game Type (${state.gameType})`]));
+  content.appendChild(buildPageIntro(
+    PAGE_META.type.title,
+    `${PAGE_META.type.description} Current filter: ${state.gameType}.`
+  ));
   const rows = await loadJSON(`data/aggregates/by_type_${state.gameType}.json`);
   appendTeamPanTables(content, rows);
 }
@@ -703,7 +1025,10 @@ async function renderVs(){
 
   const teams = state.index.seasonTeams[state.season] || [];
   const name = teams.find(t => slugify(t) === state.vsOpponentSlug) || state.vsOpponentSlug;
-  content.appendChild(el("h2", {}, [`Averages vs ${String(name).toLowerCase()} (season ${state.season})`]));
+  content.appendChild(buildPageIntro(
+    PAGE_META.vs.title,
+    `Season ${state.season} matchup breakdown vs ${String(name)}.`
+  ));
 
   const payload = await loadJSON(`data/vs/vs_${state.season}_${state.vsOpponentSlug}.json`);
   const rows = payload.rows || [];
@@ -716,7 +1041,7 @@ async function renderAssists(){
   state.highsLinkMap = null;
 
   const title = state.allTime ? "Assist Links (All-Time)" : `Assist Links (Season ${state.season})`;
-  content.appendChild(el("h2", {}, [title]));
+  content.appendChild(buildPageIntro(title, PAGE_META.assists.description));
 
   const path = state.allTime
     ? "data/assists/assists_all.json"
@@ -728,21 +1053,27 @@ async function renderAssists(){
     return;
   }
 
-  content.appendChild(buildTable(
-    rows,
-    false,
-    ["ASSISTER", "SCORER", "AST"],
-    { ASSISTER:"assister", SCORER:"scorer", AST:"ast" }
+  content.appendChild(buildSection(
+    "Assist Relationships",
+    "Only event-level assists saved through the new workflow appear here.",
+    buildTable(
+      rows,
+      false,
+      ["ASSISTER", "SCORER", "AST"],
+      { ASSISTER:"assister", SCORER:"scorer", AST:"ast" }
+    )
   ));
 }
 
 async function refresh(){
   setActiveTab();
+  syncURL();
   renderControls();
   return renderCurrentPage();
 }
 
 function renderCurrentPage(){
+  if(state.page === "overview") return renderOverview();
   if(state.page === "game") return renderGame();
   if(state.page === "avg") return renderAggregate("averages");
   if(state.page === "tot") return renderAggregate("totals");
@@ -759,6 +1090,7 @@ function refreshContent(){
 async function init(){
   state.index = await loadJSON("data/index.json");
   const params = new URLSearchParams(window.location.search);
+  renderHeaderSummary();
 
   document.querySelectorAll("#tabs button").forEach(b=>{
     b.addEventListener("click", ()=>{
@@ -782,6 +1114,8 @@ async function init(){
   if (allTimeParam !== null) state.allTime = allTimeParam === "true";
   const typeParam = params.get("type");
   if (typeParam) state.gameType = typeParam;
+  const opponentParam = params.get("opponent");
+  if (opponentParam) state.vsOpponentSlug = opponentParam;
   refresh();
 }
 

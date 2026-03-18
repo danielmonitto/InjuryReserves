@@ -22,7 +22,7 @@ function el(tag, attrs = {}, children = []) {
     else n.setAttribute(k, v);
   });
   const kids = Array.isArray(children) ? children : [children];
-  kids.filter(c => c !== null && c !== undefined).forEach(c => {
+  kids.filter(c => c !== null && c !== undefined && c !== false).forEach(c => {
     n.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
   });
   return n;
@@ -37,6 +37,33 @@ function setPlayerInQuery(slug) {
   const q = new URLSearchParams(window.location.search);
   q.set("player", slug);
   history.replaceState({}, "", `${window.location.pathname}?${q.toString()}`);
+}
+
+function setBackToHubLink() {
+  const backLink = document.getElementById("back-to-hub");
+  if (!backLink) return;
+
+  const hubRoot = `${window.location.origin}/`;
+  const fallback = `${hubRoot}?page=overview`;
+
+  try {
+    const referrer = document.referrer ? new URL(document.referrer, window.location.origin) : null;
+    const isSameOrigin = referrer && referrer.origin === window.location.origin;
+    const isHubPage = isSameOrigin && /\/(?:index\.html)?$/.test(referrer.pathname);
+
+    if (!isHubPage) {
+      backLink.href = fallback;
+      return;
+    }
+
+    const hasExplicitHubState = Boolean(referrer.search || referrer.hash);
+    const referrerPath = /\/index\.html$/.test(referrer.pathname) ? "/" : referrer.pathname;
+    backLink.href = hasExplicitHubState
+      ? `${window.location.origin}${referrerPath}${referrer.search}${referrer.hash}`
+      : fallback;
+  } catch {
+    backLink.href = fallback;
+  }
 }
 
 function renderProfile(profile) {
@@ -147,6 +174,7 @@ function renderProfile(profile) {
 }
 
 async function init(){
+  setBackToHubLink();
   state.index = await loadJSON("data/players/index.json");
   const sel = document.getElementById("player-select");
 
