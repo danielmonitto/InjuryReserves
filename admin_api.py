@@ -10,6 +10,22 @@ from flask import Flask, jsonify, render_template, request
 
 DB_PATH = Path("ir_stats.db")
 
+PLAYER_COLOR_MAP = {
+    "Hayden Cromberge": "#e36868",
+    "Joel Kingdom-Evans": "#99FF66",
+    "Brooklyn Bulmer": "#5f99f5",
+    "Adrian Monitto": "#be60f7",
+    "Daniel Monitto": "#ebc026",
+    "Jack Groves": "#FF99CC",
+    "Zack Johnston": "#5364b0",
+    "Lachlan Farley": "#59dea2",
+    "James Norrish": "#fc9219",
+    "Vince Tomasello": "#63b010",
+    "Austin Thorneycroft": "#8858e8",
+    "Aidan Zivkovic": "#d651b3",
+    "Injury Reserves": "#DB2E2E",
+}
+
 app = Flask(__name__)
 
 LIVE_STATE = {
@@ -61,6 +77,31 @@ def ensure_meta_tables():
         create table if not exists OpponentMeta (
             opp text primary key,
             color text
+        )
+        """
+    )
+    c.commit()
+    c.close()
+
+
+def ensure_event_tables():
+    c = con()
+    cur = c.cursor()
+    cur.execute(
+        """
+        create table if not exists game_events (
+            id integer primary key autoincrement,
+            season integer not null,
+            game integer not null,
+            type text,
+            opp text,
+            period text,
+            clock text,
+            event_kind text not null,
+            player text,
+            other_player text,
+            code text,
+            points integer default 0
         )
         """
     )
@@ -330,6 +371,11 @@ def ui():
     return render_template("admin.html")
 
 
+@app.get("/admin-v2")
+def ui_v2():
+    return render_template("admin_v2.html")
+
+
 @app.get("/scoreboard")
 def scoreboard_page():
     return render_template("scoreboard.html")
@@ -392,6 +438,91 @@ def scoreboard_db():
 def health():
     return {"ok": True, "db_exists": DB_PATH.exists()}
 
+
+@app.get("/api/admin_v2/bootstrap")
+def admin_v2_bootstrap():
+    c = con()
+    cur = c.cursor()
+
+    cur.execute(
+        """
+        SELECT name, height, position
+        FROM player_bio
+        ORDER BY name COLLATE NOCASE
+        """
+    )
+    bios = [
+        {
+            "name": row[0],
+            "height": row[1],
+            "position": row[2],
+            "color": PLAYER_COLOR_MAP.get(row[0], "#A6C9EC"),
+        }
+        for row in cur.fetchall()
+        if row and row[0]
+    ]
+
+    cur.execute(
+        """
+        SELECT DISTINCT NAMES
+        FROM InjuryReserves
+        WHERE NAMES IS NOT NULL
+          AND TRIM(NAMES) <> ''
+          AND NAMES <> 'Injury Reserves'
+          AND OPP <> 'Injury Reserves'
+        ORDER BY NAMES COLLATE NOCASE
+        """
+    )
+    player_names = [row[0] for row in cur.fetchall() if row and row[0]]
+
+    cur.execute(
+        """
+        SELECT opp, color
+        FROM OpponentMeta
+        ORDER BY opp COLLATE NOCASE
+        """
+    )
+    opponents = [
+        {"opp": row[0], "color": row[1]}
+        for row in cur.fetchall()
+        if row and row[0]
+    ]
+
+    cur.execute(
+        """
+        SELECT season, game, opp, type
+        FROM InjuryReserves
+        WHERE NAMES = 'Injury Reserves'
+          AND OPP <> 'Injury Reserves'
+        ORDER BY season DESC, game DESC
+        LIMIT 1
+        """
+    )
+    latest = cur.fetchone()
+    c.close()
+
+    unique_players = []
+    seen = set()
+    for name in player_names + [b["name"] for b in bios]:
+        key = (name or "").strip().lower()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        unique_players.append(name)
+
+    return jsonify({
+        "ok": True,
+        "players": unique_players,
+        "bios": bios,
+        "opponents": opponents,
+        "latestGame": {
+            "season": latest[0],
+            "game": latest[1],
+            "opp": latest[2],
+            "type": latest[3],
+        } if latest else None,
+    })
+
 # ---- save game ----
 
 # the columns your db already has
@@ -407,6 +538,7 @@ def save_game():
     body = request.get_json(force=True)
     meta = body["meta"]
     players = body["players"]
+    events = body.get("events", [])
 
     season = int(meta["season"])
     game = int(meta["game"])
@@ -479,6 +611,7 @@ def save_game():
 
     c = con()
     cur = c.cursor()
+    ensure_event_tables()
 
     cur.execute(
         """
@@ -527,6 +660,38 @@ def save_game():
                 name,
                 int(p.get("minutes", 0) or 0),
                 int(p.get("plusMinus", 0) or 0),
+            ),
+        )
+
+    cur.execute(
+        "DELETE FROM game_events WHERE season=? AND game=?",
+        (season, game),
+    )
+
+    for ev in events:
+        kind = str(ev.get("kind", "") or "").strip()
+        if not kind:
+            continue
+        cur.execute(
+            """
+            INSERT INTO game_events (
+                season, game, type, opp, period, clock,
+                event_kind, player, other_player, code, points
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                season,
+                game,
+                gtype,
+                opp,
+                str(ev.get("period", "") or "").strip(),
+                str(ev.get("clock", "") or "").strip(),
+                kind,
+                str(ev.get("player", "") or "").strip() or None,
+                str(ev.get("toPlayer", ev.get("otherPlayer", "")) or "").strip() or None,
+                str(ev.get("code", ev.get("action", "")) or "").strip() or None,
+                int(ev.get("points", 0) or 0),
             ),
         )
 

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>injury reserves - admin v2</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin_v2.css') }}" />
+</head>
+<body>
+  <div class="shell">
+    <section class="panel topbar">
+      <div class="title-block">
+        <p class="eyebrow">Stat Tracking V2</p>
+        <h1>Event Scorekeeper</h1>
+      </div>
+
+      <div class="meta-row">
+        <label><span>Season</span><input id="seasonInput" type="number" min="1" step="1" /></label>
+        <label><span>Game</span><input id="gameInput" type="number" min="1" step="1" /></label>
+        <label class="wide"><span>Opponent</span><input id="oppInput" list="opponentsList" placeholder="Opponent name" /></label>
+        <datalist id="opponentsList"></datalist>
+        <label><span>Type</span><select id="typeInput"><option value="REG">REG</option><option value="PRE">PRE</option><option value="FINAL">FINAL</option></select></label>
+        <label><span>Period</span><select id="periodInput"><option value="1ST">1ST</option><option value="2ND">2ND</option><option value="3RD">3RD</option><option value="4TH">4TH</option><option value="OT">OT</option></select></label>
+        <label><span>Clock</span><input id="clockInput" type="text" value="40:00" /></label>
+        <label class="wide">
+          <span>Opp Colors</span>
+          <div class="color-row">
+            <input id="oppColorInput" type="color" value="#4B5563" />
+            <input id="oppStripe1Input" type="color" value="#ffffff" />
+            <input id="oppStripe2Input" type="color" value="#9CA3AF" />
+          </div>
+        </label>
+      </div>
+
+      <div class="action-row">
+        <div class="score-strip">
+          <div class="score-card"><span>IR</span><strong id="teamScoreSummary">0</strong></div>
+          <div class="score-card"><span>OPP</span><strong id="oppScoreSummary">0</strong></div>
+          <div class="score-card"><span>Clock</span><strong id="clockSummary">40:00</strong></div>
+          <div class="score-card"><span>On Court</span><strong id="lineupCount">0</strong></div>
+        </div>
+
+        <div class="command-buttons">
+          <button id="clockStartBtn" class="btn btn-ghost" type="button">Start</button>
+          <button id="clockStopBtn" class="btn btn-ghost" type="button">Stop</button>
+          <button id="undoBtn" class="btn btn-ghost" type="button">Undo</button>
+          <button id="showLineupBtn" class="btn btn-ghost" type="button">Push Lineup</button>
+          <button id="saveGameBtn" class="btn btn-primary" type="button">Save</button>
+          <button id="resetGameBtn" class="btn" type="button">Reset</button>
+          <span id="saveStatus" class="status-pill">idle</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel roster-panel">
+      <div class="roster-toolbar">
+        <label>
+          <span>Player</span>
+          <select id="playerSelect">
+            <option value="">Select player...</option>
+          </select>
+        </label>
+        <label>
+          <span>Custom</span>
+          <input id="customPlayerInput" type="text" placeholder="New player name" />
+        </label>
+        <button id="addPlayerBtn" class="btn btn-primary" type="button">Add</button>
+        <button id="addCoreBtn" class="btn" type="button">Core 7</button>
+      </div>
+
+      <div id="playerStrip" class="player-strip"></div>
+    </section>
+
+    <main class="main-layout">
+      <section class="panel console-panel">
+        <div class="console-groups">
+          <div class="console-group">
+            <h3>Scoring</h3>
+            <div id="scoringActions" class="action-grid"></div>
+          </div>
+
+          <div class="console-group">
+            <h3>Other Stats</h3>
+            <div id="otherActions" class="action-grid"></div>
+          </div>
+
+          <div class="console-group">
+            <h3>Opponent</h3>
+            <div class="action-grid opp-grid">
+              <button class="btn event-btn" data-opp-delta="1" type="button"><strong>+1</strong><span>opp ft</span></button>
+              <button class="btn event-btn" data-opp-delta="2" type="button"><strong>+2</strong><span>opp fg</span></button>
+              <button class="btn event-btn" data-opp-delta="3" type="button"><strong>+3</strong><span>opp 3pt</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-head selected-summary">
+          <div>
+            <p class="eyebrow">Selected Player</p>
+            <h2 id="selectedPlayerName">No player selected</h2>
+          </div>
+          <div class="selected-meta">
+            <span id="selectedPlayerMeta">Select a player above</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel side-panel">
+        <div class="side-block">
+          <div class="panel-head tight">
+            <h3>Event Log</h3>
+            <span class="status-pill">latest 5</span>
+          </div>
+          <div id="eventLog" class="event-log"></div>
+        </div>
+
+        <div class="side-block">
+          <div class="panel-head tight">
+            <h3>Live Box</h3>
+            <span id="playerCountSummary" class="status-pill">0 players</span>
+          </div>
+          <div id="liveBox" class="live-box"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="promptOverlay" class="prompt-overlay" hidden>
+    <div id="promptPanel" class="prompt-modal">
+      <div class="prompt-head">
+        <h3 id="promptTitle">Follow-up</h3>
+        <button id="promptCancelBtn" class="btn btn-ghost" type="button">Cancel</button>
+      </div>
+      <p id="promptBody" class="prompt-copy"></p>
+      <div id="promptChoices" class="prompt-choices"></div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='admin_v2.js') }}"></script>
+</body>
+</html>
