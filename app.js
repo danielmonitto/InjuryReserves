@@ -166,7 +166,7 @@ function renderControls() {
     addSelect("game", state.game, games, (v) => { state.game = Number(v); refresh(); });
   }
 
-  if (state.page === "avg" || state.page === "tot" || state.page === "highs") {
+  if (state.page === "avg" || state.page === "tot" || state.page === "highs" || state.page === "assists") {
     addCheckbox("all-time", state.allTime, (v) => { state.allTime = v; refresh(); });
     if (!state.allTime) {
       addSelect("season", state.season, seasons, (v) => { state.season = v; refresh(); });
@@ -536,6 +536,45 @@ function buildTable(rows, preferDisplay = true, columnsOverride = null, labelMap
   return el("div", { class:"table-wrap" }, [el("table", {}, [thead, tbody])]);
 }
 
+function buildCompactPlayByPlay(rows) {
+  const wrap = el("div", { class:"pbp-wrap" }, []);
+  const list = el("div", { class:"pbp-list" }, []);
+  const previewCount = 5;
+  let expanded = false;
+
+  const renderList = () => {
+    list.innerHTML = "";
+    const visible = expanded ? rows : rows.slice(0, previewCount);
+    visible.forEach(r => {
+      const item = el("div", { class:"pbp-item", style:`border-left:4px solid ${r.rowColor || "#A6C9EC"};` }, [
+        el("div", { class:"pbp-meta" }, [`${String(r.PERIOD || "").toLowerCase()} • ${String(r.CLOCK || "")}`]),
+        el("div", { class:"pbp-main" }, [
+          el("span", { class:"pbp-player" }, [String(r.PLAYER || "").toLowerCase()]),
+          el("span", { class:"pbp-play" }, [String(r.PLAY || "").toLowerCase()])
+        ])
+      ]);
+      list.appendChild(item);
+    });
+  };
+
+  renderList();
+  wrap.appendChild(list);
+
+  if (rows.length > previewCount) {
+    const toggle = el("button", {
+      class:"pbp-toggle",
+      onClick: () => {
+        expanded = !expanded;
+        toggle.textContent = expanded ? "show less" : `show all ${rows.length} plays`;
+        renderList();
+      }
+    }, [`show all ${rows.length} plays`]);
+    wrap.appendChild(toggle);
+  }
+
+  return wrap;
+}
+
 async function renderGame(){
   const content = document.getElementById("content");
   content.innerHTML = "";
@@ -590,6 +629,11 @@ async function renderGame(){
   }
 
   appendTeamPanTables(content, rows);
+
+  if (payload.playByPlay && payload.playByPlay.length) {
+    content.appendChild(el("h3", {}, ["Play-by-Play"]));
+    content.appendChild(buildCompactPlayByPlay(payload.playByPlay));
+  }
 
   // ===== GAME VIDEOS =====
   const videoKey = `${payload.season}_${payload.game}`;
@@ -666,6 +710,32 @@ async function renderVs(){
   appendTeamPanTables(content, rows);
 }
 
+async function renderAssists(){
+  const content = document.getElementById("content");
+  content.innerHTML = "";
+  state.highsLinkMap = null;
+
+  const title = state.allTime ? "Assist Links (All-Time)" : `Assist Links (Season ${state.season})`;
+  content.appendChild(el("h2", {}, [title]));
+
+  const path = state.allTime
+    ? "data/assists/assists_all.json"
+    : `data/assists/assists_by_season_${state.season}.json`;
+  const rows = await loadJSON(path);
+
+  if (!rows || !rows.length) {
+    content.appendChild(el("div", { class:"note" }, ["no assist links found"]));
+    return;
+  }
+
+  content.appendChild(buildTable(
+    rows,
+    false,
+    ["ASSISTER", "SCORER", "AST"],
+    { ASSISTER:"assister", SCORER:"scorer", AST:"ast" }
+  ));
+}
+
 async function refresh(){
   setActiveTab();
   renderControls();
@@ -679,6 +749,7 @@ function renderCurrentPage(){
   if(state.page === "highs") return renderAggregate("highs");
   if(state.page === "type") return renderType();
   if(state.page === "vs") return renderVs();
+  if(state.page === "assists") return renderAssists();
 }
 
 function refreshContent(){

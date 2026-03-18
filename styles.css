@@ -382,6 +382,64 @@ tbody td:first-child{
   box-shadow:0 10px 22px rgba(0,0,0,0.45);
 }
 
+.pbp-wrap{
+  display:grid;
+  gap:10px;
+}
+
+.pbp-list{
+  display:grid;
+  gap:8px;
+}
+
+.pbp-item{
+  padding:10px 12px;
+  border-radius:12px;
+  background:rgba(10,10,12,0.55);
+  border:1px solid rgba(255,255,255,0.10);
+}
+
+.pbp-meta{
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:4px;
+  text-transform:uppercase;
+  letter-spacing:0.4px;
+}
+
+.pbp-main{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.pbp-player{
+  font-weight:800;
+  color:var(--text);
+}
+
+.pbp-play{
+  color:rgba(255,255,255,0.9);
+}
+
+.pbp-toggle{
+  justify-self:start;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(0,0,0,0.28);
+  color:var(--text);
+  padding:8px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:650;
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+}
+
+.pbp-toggle:hover{
+  border-color:rgba(255,255,255,0.20);
+  transform:translateY(-1px);
+}
+
 .player-link{
   color:#111;
   font-weight:800;

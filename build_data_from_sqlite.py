@@ -217,6 +217,19 @@ def load_from_sqlite():
         FROM player_bio
     """, con)
 
+    try:
+        game_events = pd.read_sql_query("""
+            SELECT season, game, type, opp, period, clock,
+                   event_kind, player, other_player, code, points, id
+            FROM game_events
+            ORDER BY id ASC
+        """, con)
+    except Exception:
+        game_events = pd.DataFrame(columns=[
+            "season", "game", "type", "opp", "period", "clock",
+            "event_kind", "player", "other_player", "code", "points", "id"
+        ])
+
     con.close()
 
     gps = gps.rename(columns={
@@ -247,7 +260,36 @@ def load_from_sqlite():
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors="coerce").fillna(0)
 
-    return df, opp_meta, player_bio
+    return df, opp_meta, player_bio, game_events
+
+
+def build_assist_links(events: pd.DataFrame, seasons: list[int]) -> None:
+    assists = events[events["event_kind"].astype(str) == "assist"].copy()
+    if assists.empty:
+        write_json(DATA_DIR / "assists" / "assists_all.json", [])
+        for s in seasons:
+          write_json(DATA_DIR / "assists" / f"assists_by_season_{s}.json", [])
+        return
+
+    assists["season"] = pd.to_numeric(assists["season"], errors="coerce").fillna(0).astype(int)
+
+    def build_rows(d: pd.DataFrame):
+        if d.empty:
+            return []
+        grouped = (
+            d.groupby(["player", "other_player"])
+            .size()
+            .reset_index(name="AST")
+            .sort_values(["AST", "player", "other_player"], ascending=[False, True, True])
+        )
+        grouped["ASSISTER"] = grouped["player"]
+        grouped["SCORER"] = grouped["other_player"]
+        grouped["rowColor"] = grouped["ASSISTER"].map(lambda x: COLOR_MAP.get(x, "#A6C9EC"))
+        return grouped[["ASSISTER", "SCORER", "AST", "rowColor"]].to_dict(orient="records")
+
+    write_json(DATA_DIR / "assists" / "assists_all.json", build_rows(assists))
+    for s in seasons:
+        write_json(DATA_DIR / "assists" / f"assists_by_season_{s}.json", build_rows(assists[assists["season"] == int(s)]))
 
 
 def build_player_profiles(df: pd.DataFrame, bio: pd.DataFrame) -> None:
@@ -323,7 +365,7 @@ def build_player_profiles(df: pd.DataFrame, bio: pd.DataFrame) -> None:
 
 def main():
     global opp_color_dict
-    df, opp_meta, player_bio = load_from_sqlite()
+    df, opp_meta, player_bio, game_events = load_from_sqlite()
 
     if df.empty:
         raise SystemExit("no rows in InjuryReserves")
@@ -606,7 +648,56 @@ def main():
                 "teamScore": float(team_score),
                 "opponentScore": float(opp_score),
                 "players": players.to_dict(orient="records"),
+                "playByPlay": [],
             }
+
+            game_event_rows = game_events[
+                (pd.to_numeric(game_events["season"], errors="coerce").fillna(-1).astype(int) == int(s))
+                & (pd.to_numeric(game_events["game"], errors="coerce").fillna(-1).astype(int) == int(gnum))
+            ].copy()
+
+            if not game_event_rows.empty:
+                def event_play_text(row):
+                    kind = str(row.get("event_kind", "") or "")
+                    player = str(row.get("player", "") or "")
+                    other = str(row.get("other_player", "") or "")
+                    code = str(row.get("code", "") or "")
+                    points = int(row.get("points", 0) or 0)
+                    if kind == "assist":
+                        return {"PLAYER": player, "PLAY": f"assist to {other}", "rowColor": COLOR_MAP.get(player, "#A6C9EC")}
+                    if kind == "opp":
+                        label = "free throw" if points == 1 else "field goal" if points == 2 else "three ball"
+                        return {"PLAYER": opp.lower(), "PLAY": label, "rowColor": opp_color_dict.get(opp, DEFAULT_OPP_COLOR)}
+                    if kind == "sub":
+                        if code == "IN FOR" and other:
+                            return {"PLAYER": player, "PLAY": f"in for {other}", "rowColor": COLOR_MAP.get(player, "#A6C9EC")}
+                        return {"PLAYER": player, "PLAY": str(code or "sub").lower(), "rowColor": COLOR_MAP.get(player, "#A6C9EC")}
+                    event_labels = {
+                        "2PM": "made 2",
+                        "2PA": "missed 2",
+                        "3PM": "made 3",
+                        "3PA": "missed 3",
+                        "FTM": "made ft",
+                        "FTA": "missed ft",
+                        "OREB": "offensive rebound",
+                        "DREB": "defensive rebound",
+                        "STL": "steal",
+                        "BLK": "block",
+                        "TOV": "turnover",
+                        "FLS": "foul",
+                    }
+                    return {"PLAYER": player, "PLAY": event_labels.get(code, code.lower()), "rowColor": COLOR_MAP.get(player, "#A6C9EC")}
+
+                play_rows = []
+                for _, row in game_event_rows.iloc[::-1].iterrows():
+                    event_row = event_play_text(row)
+                    play_rows.append({
+                        "PERIOD": str(row.get("period", "") or ""),
+                        "CLOCK": str(row.get("clock", "") or ""),
+                        **event_row,
+                    })
+                payload["playByPlay"] = play_rows
+
             write_json(DATA_DIR / "games" / f"{s}_{int(gnum)}.json", payload)
 
     for t in ["PRE", "REG", "FINAL"]:
@@ -618,6 +709,7 @@ def main():
         write_json(DATA_DIR / "aggregates" / f"by_type_{t}.json", calc_averages(t_df).to_dict(orient="records"))
 
     build_player_profiles(df, player_bio)
+    build_assist_links(game_events, seasons)
 
     print("ok: rebuilt data/ from sqlite")
 
