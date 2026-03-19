@@ -1,127 +1,178 @@
+# Injury Reserves
 
----
+Basketball stats archive and game-day toolkit for Injury Reserves.
 
-# injury reserves basketball statistics
+This repo now contains two related surfaces:
 
-a static basketball statistics website generated from an excel workbook and deployed with github pages.
-the site is fast, public, and requires no backend server.
+- A public stats website built from generated JSON files.
+- A Flask admin and overlay app used to enter games, drive scoreboard graphics, and regenerate the public data.
 
----
+## What is in here
 
-## overview
+### Public site
 
-this project converts `melton basketball.xlsm` into structured json using python, then renders the data with a static frontend (html, css, javascript).
+The public site is a static frontend powered by `index.html`, `player.html`, `styles.css`, and `app.js`.
 
-workflow:
+It includes:
 
-update excel → rebuild data → commit → site updates automatically.
+- season overview cards and leaders
+- game center pages with box score and video links
+- player averages, totals, and career highs
+- matchup splits by opponent
+- game-type splits
+- assist-link data from saved events
+- player profile pages
+- mobile-friendly layouts for phone browsers
 
----
+### Admin and overlays
 
-## features
+The Flask app in [admin_api.py](/home/danielmonitto/PycharmProjects/InjuryReserves/admin_api.py) powers:
 
-* game statistics with team scorecards
-* player averages and player totals
-* career highs (includes lowest gsc, rounded to 2 decimals)
-* averages vs teams
-* stats by game type
-* summary stats table + advanced stats table
-* games played (gp) included where relevant
-* all-time stats automatically exclude players with gp < 3
-* youtube links for highlights and full games per match
+- `/admin-v2` for game entry and management
+- `/scoreboard` for the live scoreboard overlay
+- `/lineup` for the pre-tip lineup graphic
+- `/endgame` for the endgame graphic
+- JSON APIs for score state, player profile lookups, overlay events, opponent colors, and save-game actions
 
----
+Saving a game through the admin app writes to SQLite and then rebuilds the JSON used by the public site.
 
-## project structure
+## Data flow
 
-```
+The current workflow is:
+
+1. Game data lives in `ir_stats.db`.
+2. The admin UI saves games into SQLite through `/api/save_game`.
+3. [build_data_from_sqlite.py](/home/danielmonitto/PycharmProjects/InjuryReserves/build_data_from_sqlite.py) regenerates the `data/` JSON files.
+4. The public site reads those JSON files directly in the browser.
+
+This means the public site is static, but the authoring workflow is backed by Flask + SQLite.
+
+## Project structure
+
+```text
 .
-├── index.html
-├── styles.css
+├── admin_api.py
 ├── app.js
-├── build_data.py
-├── requirements.txt
-├── melton basketball.xlsm
-└── data/
-    ├── games/
-    └── aggregates/
+├── build_data_from_sqlite.py
+├── data/
+│   ├── aggregates/
+│   ├── assists/
+│   ├── games/
+│   ├── players/
+│   └── vs/
+├── index.html
+├── ir_stats.db
+├── player.html
+├── player.js
+├── static/
+│   ├── admin_v2.css
+│   ├── admin_v2.js
+│   └── photos/
+├── styles.css
+└── templates/
+    ├── admin_v2.html
+    ├── endgame.html
+    ├── lineup.html
+    └── scoreboard.html
 ```
 
----
+## Requirements
 
-## requirements
+- Python 3.11+ recommended
+- SQLite database file: `ir_stats.db`
 
-* python 3.9+
-
-install dependencies:
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
+`requirements.txt` currently includes:
 
-## building / updating data
+- `Flask`
+- `numpy`
+- `pandas`
+- `openpyxl`
 
-whenever the excel file changes, rebuild the site data:
+## Running locally
 
-```bash
-python build_data.py
-```
+### Public stats site
 
-this regenerates all json files inside `/data`.
-
-commit and push the changes:
-
-```bash
-git add data
-git commit -m "update stats data"
-git push
-```
-
----
-
-## running locally
-
-from the project root:
+Serve the repo root with a simple static server:
 
 ```bash
 python -m http.server 8000
 ```
 
-open in a browser:
+Then open:
 
-```
-http://localhost:8000
-```
+- `http://localhost:8000/`
+- `http://localhost:8000/player.html`
 
-note: do not open `index.html` using `file://` — some features rely on a local server.
+Do not open the HTML files with `file://`; the frontend fetches JSON files and expects an HTTP server.
 
----
+### Admin and overlays
 
-## github pages deployment
+Run the Flask app:
 
-1. push the repository to github
-2. go to repository **settings → pages**
-3. configure:
-
-   * source: deploy from a branch
-   * branch: `main`
-   * folder: `/ (root)`
-
-the site will be available at:
-
-```
-https://<username>.github.io/<repository-name>/
+```bash
+python admin_api.py
 ```
 
----
+Default local routes:
 
-## youtube game links
+- `http://localhost:5001/admin-v2`
+- `http://localhost:5001/scoreboard`
+- `http://localhost:5001/lineup`
+- `http://localhost:5001/endgame`
 
-youtube videos are configured in `app.js` using the `GAME_VIDEOS` object.
+Note: the Flask root route `/` currently redirects to `/admin-v2`. The public site is still served separately as static files unless you add your own web server integration.
 
-format:
+## Rebuilding public data
+
+To regenerate all JSON from SQLite manually:
+
+```bash
+python build_data_from_sqlite.py
+```
+
+This rebuilds:
+
+- `data/index.json`
+- `data/games/*.json`
+- `data/aggregates/*.json`
+- `data/players/*.json`
+- `data/vs/*.json`
+- `data/assists/*.json`
+
+The admin save flow already triggers this rebuild automatically after a successful `/api/save_game`.
+
+## Main files
+
+- [index.html](/home/danielmonitto/PycharmProjects/InjuryReserves/index.html): public stats homepage
+- [player.html](/home/danielmonitto/PycharmProjects/InjuryReserves/player.html): player profile page
+- [styles.css](/home/danielmonitto/PycharmProjects/InjuryReserves/styles.css): shared public-site styling, including mobile responsiveness
+- [app.js](/home/danielmonitto/PycharmProjects/InjuryReserves/app.js): public homepage rendering, tables, filters, and routing state
+- [player.js](/home/danielmonitto/PycharmProjects/InjuryReserves/player.js): player profile rendering
+- [admin_api.py](/home/danielmonitto/PycharmProjects/InjuryReserves/admin_api.py): Flask app, APIs, and save-game pipeline
+- [build_data_from_sqlite.py](/home/danielmonitto/PycharmProjects/InjuryReserves/build_data_from_sqlite.py): SQLite to JSON build script
+
+## Public site features
+
+- Overview page with latest season summary cards
+- Game Center with team scorecards, box score data, and optional YouTube links
+- Averages, totals, and career highs tables
+- Matchup splits by opponent
+- Game type splits for preseason, regular season, and finals
+- Assist relationship totals from event data
+- Player profile pages with career blocks and best games
+- Responsive behavior tuned for desktop and phone browsers
+
+## YouTube links
+
+Game video links live in [app.js](/home/danielmonitto/PycharmProjects/InjuryReserves/app.js) inside `GAME_VIDEOS`.
+
+Format:
 
 ```js
 "SEASON_GAME": {
@@ -130,37 +181,33 @@ format:
 }
 ```
 
-example:
+If a link is empty, it is not shown.
 
-```js
-"2_7": {
-  highlights: "https://www.youtube.com/watch?v=abc123",
-  full: "https://www.youtube.com/watch?v=xyz789"
-}
-```
+## Admin API highlights
 
-if a link is empty or missing, it will not be displayed.
+Important routes in the Flask app include:
 
----
+- `POST /api/save_game`
+- `GET /api/admin_v2/bootstrap`
+- `POST /api/live_score`
+- `GET /api/scoreboard`
+- `POST /api/overlay_event`
+- `GET /api/overlay_event`
+- `POST /api/lineup_state`
+- `GET /api/lineup_state`
+- `POST /api/endgame_state`
+- `GET /api/endgame_state`
+- `GET /api/player_profile`
+- `GET /api/player_career_ft`
+- `GET /api/opponent_meta`
+- `GET /api/health`
 
-## customisation
+## Notes
 
-* site title and text: `index.html`
-* colours, layout, fonts: `styles.css`
-* frontend behaviour and tables: `app.js`
-* stat rules, calculations, filters: `build_data.py`
-* logo: replace `logo.png`
+- There are existing generated assets under `data/` committed to the repo.
+- `__pycache__/` is local runtime output and should not be treated as source.
+- Some older files remain in `old/` as historical reference only.
 
----
+## Author
 
-## author
-
-daniel monitto
-
----
-
-if you want, i can also:
-
-* add screenshots section
-* add badges (python / github pages)
-* make it more “portfolio-ready” for recruiters
+Daniel Monitto
