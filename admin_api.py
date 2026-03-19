@@ -291,6 +291,7 @@ def player_profile():
             SUM(AST),
             SUM(STL),
             SUM(BLK),
+            SUM(TOV),
             SUM(FGM),
             SUM(FGA)
         FROM InjuryReserves
@@ -306,6 +307,7 @@ def player_profile():
         "ppg": 0,
         "rpg": 0,
         "apg": 0,
+        "tov": 0,
         "spg": 0,
         "bpg": 0,
         "fg_pct": 0
@@ -317,14 +319,16 @@ def player_profile():
         ast = r[3] or 0
         stl = r[4] or 0
         blk = r[5] or 0
-        fgm = r[6] or 0
-        fga = r[7] or 0
+        tov = r[6] or 0
+        fgm = r[7] or 0
+        fga = r[8] or 0
 
         stats = {
             "gp": gp,
             "ppg": round(pts / gp, 1),
             "rpg": round(reb / gp, 1),
             "apg": round(ast / gp, 1),
+            "tov": round(tov / gp, 1),
             "spg": round(stl / gp, 1),
             "bpg": round(blk / gp, 1),
             "fg_pct": round((fgm / fga) * 100, 1) if fga else 0

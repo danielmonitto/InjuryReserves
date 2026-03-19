@@ -1,237 +1,751 @@
 <!doctype html>
 <html>
 <head>
+<meta charset="utf-8" />
+<title>Pre-Tip Lineup Graphic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700;800&family=Russo+One&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ir-red:#DB2E2E;
-  --ir-dark:#b50728;
+  --bg:#08090d;
+  --panel:#12161d;
+  --panel-soft:#181d25;
+  --line:rgba(255,255,255,0.10);
+  --line-soft:rgba(255,255,255,0.06);
+  --text:#f5f7fb;
+  --muted:rgba(245,247,251,0.72);
+  --muted-soft:rgba(245,247,251,0.52);
+  --red:#db2e2e;
+  --red-dark:#85111e;
+  --gold:#f3c969;
 }
 
-body {
+html,
+body{
   margin:0;
-  background:
-    radial-gradient(1200px 600px at 20% 0%, rgba(219,46,46,0.25), transparent 60%),
-    radial-gradient(900px 500px at 80% 20%, rgba(181,7,40,0.18), transparent 55%),
-    linear-gradient(180deg, #0b0c10, #11131a);
-  font-family: system-ui;
-  color:white;
+  width:1920px;
+  height:1080px;
   overflow:hidden;
+  background:
+    radial-gradient(1200px 700px at 10% 0%, rgba(219,46,46,0.26), transparent 58%),
+    radial-gradient(900px 520px at 88% 12%, rgba(133,17,30,0.28), transparent 56%),
+    linear-gradient(180deg, #07080c 0%, #0b0e14 55%, #08090d 100%);
+  color:var(--text);
+  font-family:"IBM Plex Sans", system-ui, sans-serif;
 }
 
-.container {
-  width:100vw;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;   /* vertical centering */
-  text-align:center;
-}
-
-
-/* TITLE */
-.title {
-  font-size:54px;
-  font-weight:900;
-  letter-spacing:4px;
-  margin-bottom:40px;
-  text-transform:uppercase;
-  background: linear-gradient(180deg, #fff, #ccc);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+.frame{
+  width:1920px;
+  height:1080px;
+  padding:40px 44px 34px;
+  box-sizing:border-box;
+  display:grid;
+  grid-template-rows:180px auto 190px;
+  gap:14px;
+  align-content:start;
   position:relative;
 }
 
-.title::after{
+.frame::before{
   content:"";
   position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:-10px;
-  width:220px;
-  height:4px;
-  background:var(--ir-red);
-  box-shadow:0 0 25px var(--ir-red);
-  border-radius:4px;
+  inset:18px;
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:32px;
+  pointer-events:none;
 }
 
-/* STARTERS GRID */
-.starters {
+.header{
   display:grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap:40px;
-  width:90vw;
-  max-width:1600px;
-  margin-bottom:50px;
+  grid-template-columns:1.2fr 420px;
+  gap:18px;
+  align-items:stretch;
+  min-height:0;
 }
 
-/* CARD */
-.card {
-  text-align:center;
-  padding:20px;
-  border-radius:22px;
-  background:rgba(20,20,26,0.65);
-  border:1px solid rgba(255,255,255,0.08);
-  backdrop-filter:blur(14px);
-  animation:fadeIn 0.6s ease forwards;
+.hero{
+  border-radius:28px;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgba(219,46,46,0.14), rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.01)),
+    rgba(10,12,18,0.84);
+  padding:22px 26px;
+  box-sizing:border-box;
+  display:grid;
+  align-content:center;
 }
 
-.card img {
-  width:200px;
-  height:200px;
-  object-fit:cover;
-  border-radius:18px;
-  border:3px solid var(--ir-red);
-  box-shadow:
-    0 0 0 3px rgba(219,46,46,0.2),
-    0 20px 60px rgba(0,0,0,0.7);
-}
-
-.name {
-  margin-top:16px;
-  font-size:22px;
-  font-weight:900;
-}
-
-.meta {
+.kicker{
   font-size:14px;
-  opacity:0.75;
-  margin-top:4px;
+  font-weight:800;
+  letter-spacing:0.34em;
+  text-transform:uppercase;
+  color:var(--muted-soft);
 }
 
-.stats {
-  font-size:14px;
+.title{
   margin-top:8px;
-  font-weight:600;
+  font-family:"Russo One", sans-serif;
+  font-size:64px;
+  line-height:0.92;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
 }
 
-.statsSmall{
+.subtitle{
+  margin-top:14px;
+  font-size:15px;
+  line-height:1.35;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.summary-panel{
+  border-radius:28px;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+    rgba(10,12,18,0.90);
+  padding:14px;
+  box-sizing:border-box;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:8px;
+  align-items:stretch;
+}
+
+.summary-card{
+  border-radius:18px;
+  border:1px solid var(--line-soft);
+  background:var(--panel-soft);
+  padding:12px 10px;
+  box-sizing:border-box;
+  min-width:0;
+}
+
+.summary-label{
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--muted-soft);
+}
+
+.summary-value{
+  margin-top:8px;
+  font-size:26px;
+  line-height:0.95;
+  font-weight:800;
+}
+
+.summary-copy{
+  margin-top:6px;
+  font-size:9px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.main{
+  display:block;
+  min-height:0;
+  align-self:start;
+}
+
+.feature{
+  border-radius:18px;
+  border:1px solid var(--line-soft);
+  background:var(--panel-soft);
+  padding:14px 16px;
+}
+
+.feature-title{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--muted-soft);
+}
+
+.feature-value{
+  margin-top:8px;
+  font-size:24px;
+  line-height:1;
+  font-weight:800;
+}
+
+.feature-note{
+  margin-top:6px;
   font-size:12px;
-  opacity:0.65;
-  margin-top:4px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.08em;
 }
 
-/* BENCH */
-.benchTitle{
+.starter-stage{
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  grid-template-rows:1fr 1fr;
+  gap:14px;
+  min-height:0;
+}
+
+.starter-card{
+  border-radius:28px;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03)),
+    var(--panel);
+  padding:18px 20px;
+  box-sizing:border-box;
+  display:grid;
+  grid-template-columns:108px 1fr;
+  gap:14px;
+  align-items:center;
+  min-width:0;
+  overflow:hidden;
+}
+
+.starter-card.top{
+  min-height:220px;
+}
+
+.starter-card.bottom{
+  min-height:208px;
+}
+
+.starter-card.slot-1,
+.starter-card.slot-2,
+.starter-card.slot-3{
+  grid-column:span 4;
+}
+
+.starter-card.slot-4,
+.starter-card.slot-5{
+  grid-column:span 6;
+}
+
+.starter-photo{
+  width:108px;
+  height:108px;
+  border-radius:20px;
+  border:2px solid rgba(219,46,46,0.65);
+  background:#0d1016;
+  object-fit:cover;
+  object-position:center 20%;
+}
+
+.starter-info{
+  min-width:0;
+  display:grid;
+  gap:10px;
+}
+
+.starter-head{
+  display:grid;
+  gap:4px;
+}
+
+.starter-slot{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--gold);
+}
+
+.starter-name{
+  font-size:22px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+}
+
+.starter-meta{
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.starter-metrics{
+  display:grid;
+  grid-template-columns:110px 1fr;
+  gap:10px;
+  align-items:stretch;
+}
+
+.lead-metric{
+  border-radius:18px;
+  border:1px solid var(--line-soft);
+  background:rgba(219,46,46,0.10);
+  padding:10px 12px;
+  display:grid;
+  align-content:center;
+}
+
+.lead-metric-label{
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--muted-soft);
+}
+
+.lead-metric-value{
+  margin-top:6px;
+  font-size:30px;
+  line-height:0.95;
+  font-weight:800;
+}
+
+.support-metrics{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:8px;
+}
+
+.support-metric{
+  border-radius:16px;
+  border:1px solid var(--line-soft);
+  background:var(--panel-soft);
+  padding:10px 6px;
+  text-align:center;
+}
+
+.support-label{
+  font-size:10px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--muted-soft);
+}
+
+.support-value{
+  margin-top:6px;
+  font-size:18px;
+  line-height:1;
+  font-weight:800;
+}
+
+.starter-footer{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.chip{
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid var(--line-soft);
+  background:rgba(255,255,255,0.04);
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.10em;
+  color:var(--muted);
+}
+
+.bottom-row{
+  display:grid;
+  grid-template-columns:1.2fr 0.8fr;
+  gap:18px;
+  min-height:0;
+  align-self:start;
+}
+
+.notes-panel,
+.bench-section{
+  border-radius:28px;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
+    rgba(10,12,18,0.90);
+  padding:18px 20px;
+  box-sizing:border-box;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  gap:14px;
+}
+
+.notes-panel{
+  padding:18px 20px;
+}
+
+.notes-header{
+  display:grid;
+  gap:4px;
+}
+
+.notes-title{
   font-size:22px;
   font-weight:800;
-  margin-bottom:20px;
-  letter-spacing:2px;
-  opacity:0.85;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
 }
 
-.bench {
+.notes-copy{
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--muted-soft);
+}
+
+.notes-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:10px;
+}
+
+.bench-header{
   display:flex;
-  gap:28px;
-  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.bench-title{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+}
+
+.bench-count{
+  font-size:13px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.bench-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:12px;
+  min-height:0;
+}
+
+.bench-card{
+  border-radius:22px;
+  border:1px solid var(--line-soft);
+  background:var(--panel-soft);
+  padding:12px;
+  box-sizing:border-box;
+  display:grid;
+  grid-template-columns:84px 1fr;
+  gap:10px;
+  align-items:center;
+  min-width:0;
+}
+
+.bench-photo{
+  width:84px;
+  height:84px;
+  border-radius:16px;
+  border:2px solid rgba(219,46,46,0.55);
+  background:#0d1016;
+  object-fit:cover;
+  object-position:center 20%;
+}
+
+.bench-copy{
+  min-width:0;
+}
+
+.bench-name{
+  font-size:16px;
+  line-height:1.02;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.bench-meta{
+  margin-top:6px;
+  font-size:10px;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.bench-line{
+  margin-top:8px;
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  font-weight:700;
+}
+
+.empty{
+  border-radius:24px;
+  border:1px dashed rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.03);
+  display:flex;
+  align-items:center;
   justify-content:center;
-  width:90vw;
-}
-
-.bench .card{
-  padding:14px;
-  opacity:0.85;
-}
-
-.bench img{
-  width:120px;
-  height:120px;
-}
-
-@keyframes fadeIn {
-  from {opacity:0; transform:translateY(60px);}
-  to {opacity:1; transform:translateY(0);}
+  color:var(--muted);
+  font-size:18px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
 }
 </style>
-
 </head>
-
 <body>
-<div class="container">
+<div class="frame">
+  <div class="header">
+    <div class="hero">
+      <div class="kicker">Game Night Lineup</div>
+      <div class="title">Starting Five</div>
+      <div class="subtitle">Pre-tip slate built for stream, venue, and intro graphics.</div>
+    </div>
+    <div class="summary-panel">
+      <div class="summary-card">
+        <div class="summary-label">Depth</div>
+        <div class="summary-value" id="summary-depth">0</div>
+        <div class="summary-copy">Total lineup players</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Experience</div>
+        <div class="summary-value" id="summary-gp">0</div>
+        <div class="summary-copy">Average games played</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">View</div>
+        <div class="summary-value">5</div>
+        <div class="summary-copy">Projected starters featured</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Refresh</div>
+        <div class="summary-value">Live</div>
+        <div class="summary-copy">Auto polling active</div>
+      </div>
+    </div>
+  </div>
 
-  <div class="title">STARTING 5</div>
+  <div class="main">
+    <div class="starter-stage" id="starters"></div>
+  </div>
 
-  <div class="starters" id="starters"></div>
+  <div class="bottom-row">
+    <div class="notes-panel">
+      <div class="notes-header">
+        <div class="notes-title">Team Stats</div>
+        <div class="notes-copy">Primary lineup numbers</div>
+      </div>
+      <div class="notes-grid">
+        <div class="feature">
+          <div class="feature-title">Starter Scoring</div>
+          <div class="feature-value" id="notes-lineup-ppg">0.0</div>
+          <div class="feature-note">Combined season points</div>
+        </div>
+        <div class="feature">
+          <div class="feature-title">Starter Rebounding</div>
+          <div class="feature-value" id="lineup-rpg">0.0</div>
+          <div class="feature-note">Combined season boards</div>
+        </div>
+        <div class="feature">
+          <div class="feature-title">Starter Playmaking</div>
+          <div class="feature-value" id="notes-lineup-apg">0.0</div>
+          <div class="feature-note">Combined season assists</div>
+        </div>
+        <div class="feature">
+          <div class="feature-title">Starter FG%</div>
+          <div class="feature-value" id="notes-lineup-fg">0.0%</div>
+          <div class="feature-note">Average season efficiency</div>
+        </div>
+        <div class="feature">
+          <div class="feature-title">Turnovers</div>
+          <div class="feature-value" id="notes-lineup-tov">0.0</div>
+          <div class="feature-note">Combined season turnovers</div>
+        </div>
+        <div class="feature">
+          <div class="feature-title">Stocks</div>
+          <div class="feature-value" id="notes-lineup-stocks">0.0</div>
+          <div class="feature-note">Steals plus blocks combined</div>
+        </div>
+      </div>
+    </div>
 
-  <div class="benchTitle">BENCH</div>
-  <div class="bench" id="bench"></div>
-
+    <div class="bench-section">
+      <div class="bench-header">
+        <div class="bench-title">Bench Unit</div>
+        <div class="bench-count" id="bench-count">0 available</div>
+      </div>
+      <div class="bench-grid" id="bench"></div>
+    </div>
+  </div>
 </div>
-
 
 <script>
 let lastSeq = -1;
+const profileCache = new Map();
+
+function normalizeProfile(profile){
+  const stats = profile?.stats || {};
+  return {
+    ...profile,
+    stats: {
+      gp: num(stats.gp),
+      ppg: num(stats.ppg),
+      rpg: num(stats.rpg),
+      apg: num(stats.apg),
+      tov: num(stats.tov),
+      spg: num(stats.spg),
+      bpg: num(stats.bpg),
+      fg_pct: num(stats.fg_pct),
+    }
+  };
+}
 
 async function getProfile(name){
+  const cached = profileCache.get(name);
+  if (cached && cached.stats && Number.isFinite(cached.stats.tov)) return cached;
   const r = await fetch(`http://127.0.0.1:5001/api/player_profile?name=${encodeURIComponent(name)}`);
-  return await r.json();
+  const json = normalizeProfile(await r.json());
+  profileCache.set(name, json);
+  return json;
+}
+
+function num(value) {
+  const parsed = Number(value || 0);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function formatOne(value) {
+  return num(value).toFixed(1);
+}
+
+function formatWhole(value) {
+  return String(Math.round(num(value)));
+}
+
+function buildStarterCard(player, prof, index){
+  const stats = prof.stats || {};
+  const div = document.createElement("div");
+  const topRow = index < 3;
+  div.className = `starter-card ${topRow ? "top" : "bottom"} slot-${index + 1}`;
+  div.innerHTML = `
+    <img class="starter-photo" src="${player.photo}" alt="${player.name}" onerror="this.style.visibility='hidden'">
+    <div class="starter-info">
+      <div class="starter-head">
+        <div class="starter-slot">Starter ${index + 1}</div>
+        <div class="starter-name">${player.name}</div>
+        <div class="starter-meta">${prof.position || "Rotation"}${prof.height ? ` • ${prof.height}` : ""}</div>
+      </div>
+      <div class="starter-metrics">
+        <div class="lead-metric">
+          <div class="lead-metric-label">PPG</div>
+          <div class="lead-metric-value">${formatOne(stats.ppg)}</div>
+        </div>
+        <div class="support-metrics">
+          <div class="support-metric">
+            <div class="support-label">RPG</div>
+            <div class="support-value">${formatOne(stats.rpg)}</div>
+          </div>
+          <div class="support-metric">
+            <div class="support-label">APG</div>
+            <div class="support-value">${formatOne(stats.apg)}</div>
+          </div>
+          <div class="support-metric">
+            <div class="support-label">FG</div>
+            <div class="support-value">${formatOne(stats.fg_pct)}%</div>
+          </div>
+        </div>
+      </div>
+      <div class="starter-footer">
+        <div class="chip">${formatWhole(stats.gp)} GP</div>
+      </div>
+    </div>
+  `;
+  return div;
+}
+
+function buildBenchCard(player, prof){
+  const stats = prof.stats || {};
+  const div = document.createElement("div");
+  div.className = "bench-card";
+  div.innerHTML = `
+    <img class="bench-photo" src="${player.photo}" alt="${player.name}" onerror="this.style.visibility='hidden'">
+    <div class="bench-copy">
+      <div class="bench-name">${player.name}</div>
+      <div class="bench-meta">${prof.position || "Bench"}${prof.height ? ` • ${prof.height}` : ""}</div>
+      <div class="bench-line">${formatOne(stats.ppg)} PPG • ${formatOne(stats.rpg)} RPG • ${formatOne(stats.apg)} APG</div>
+    </div>
+  `;
+  return div;
+}
+
+function updateSummary(profiles, state){
+  const starters = profiles.slice(0, 5);
+  const totalPpg = starters.reduce((sum, prof) => sum + num(prof.stats?.ppg), 0);
+  const totalRpg = starters.reduce((sum, prof) => sum + num(prof.stats?.rpg), 0);
+  const totalApg = starters.reduce((sum, prof) => sum + num(prof.stats?.apg), 0);
+  const totalTov = starters.reduce((sum, prof) => sum + num(prof.stats?.tov), 0);
+  const totalStocks = starters.reduce((sum, prof) => sum + num(prof.stats?.spg) + num(prof.stats?.bpg), 0);
+  const avgFg = starters.length
+    ? starters.reduce((sum, prof) => sum + num(prof.stats?.fg_pct), 0) / starters.length
+    : 0;
+  const avgGp = starters.length
+    ? starters.reduce((sum, prof) => sum + num(prof.stats?.gp), 0) / starters.length
+    : 0;
+  const rotationDepth = String((state.starters || []).length + (state.bench || []).length);
+
+  document.getElementById("notes-lineup-ppg").textContent = formatOne(totalPpg);
+  document.getElementById("notes-lineup-apg").textContent = formatOne(totalApg);
+  document.getElementById("notes-lineup-fg").textContent = `${formatOne(avgFg)}%`;
+  document.getElementById("lineup-rpg").textContent = formatOne(totalRpg);
+  document.getElementById("notes-lineup-tov").textContent = formatOne(totalTov);
+  document.getElementById("notes-lineup-stocks").textContent = formatOne(totalStocks);
+  document.getElementById("summary-gp").textContent = formatWhole(avgGp);
+  document.getElementById("summary-depth").textContent = rotationDepth;
+  document.getElementById("bench-count").textContent = `${(state.bench || []).length} available`;
 }
 
 async function load(){
-  const res = await fetch("http://127.0.0.1:5001/api/lineup_state?ts="+Date.now());
-  const j = await res.json();
-  if (!j.ok) return;
+  const res = await fetch(`http://127.0.0.1:5001/api/lineup_state?ts=${Date.now()}`);
+  const payload = await res.json();
+  if (!payload.ok) return;
+  if (payload.seq === lastSeq) return;
+  lastSeq = payload.seq;
 
-  if (j.seq === lastSeq) return;
-  lastSeq = j.seq;
-
-  const s = j.state || { starters:[], bench:[] };
-
+  const state = payload.state || { starters: [], bench: [] };
   const startersEl = document.getElementById("starters");
   const benchEl = document.getElementById("bench");
-
   startersEl.innerHTML = "";
   benchEl.innerHTML = "";
 
-  // STARTERS
-  for (const p of s.starters){
-    const prof = await getProfile(p.name);
+  const starterProfiles = await Promise.all((state.starters || []).map((player) => getProfile(player.name)));
+  const benchProfiles = await Promise.all((state.bench || []).map((player) => getProfile(player.name)));
 
-    const div = document.createElement("div");
-    div.className = "card";
-div.innerHTML = `
-  <img src="${p.photo}">
-  <div class="name">${p.name}</div>
-  <div class="meta">${prof.position || ""} • ${prof.height || ""}</div>
-  <div class="stats">
-    ${prof.stats.ppg || 0} PPG •
-    ${prof.stats.rpg || 0} RPG •
-    ${prof.stats.apg || 0} APG
-  </div>
-  <div class="statsSmall">
-    ${prof.stats.fg_pct || 0}% FG • ${prof.stats.gp || 0} GP
-  </div>
-`;
+  starterProfiles.forEach((prof, index) => {
+    startersEl.appendChild(buildStarterCard(state.starters[index], prof, index));
+  });
 
-    startersEl.appendChild(div);
+  while (startersEl.children.length < 5) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Waiting For Starter";
+    startersEl.appendChild(empty);
   }
 
-  // BENCH (with images now)
-  for (const p of s.bench){
-    const prof = await getProfile(p.name);
+  benchProfiles.forEach((prof, index) => {
+    benchEl.appendChild(buildBenchCard(state.bench[index], prof));
+  });
 
-    const div = document.createElement("div");
-    div.className = "card";
-    div.style.opacity = "0.8";
-div.innerHTML = `
-  <img src="${p.photo}">
-  <div class="name">${p.name}</div>
-  <div class="meta">${prof.position || ""} • ${prof.height || ""}</div>
-  <div class="statsSmall">
-    ${prof.stats.ppg || 0} PPG •
-    ${prof.stats.rpg || 0} RPG •
-    ${prof.stats.apg || 0} APG
-  </div>
-`;
-
-
-    benchEl.appendChild(div);
+  if (!benchEl.children.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.style.gridColumn = "1 / -1";
+    empty.textContent = "No Bench Players Pushed";
+    benchEl.appendChild(empty);
   }
+
+  updateSummary(starterProfiles, state);
 }
 
 setInterval(load, 1000);
 load();
-
 </script>
 </body>
 </html>

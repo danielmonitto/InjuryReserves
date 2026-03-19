@@ -159,7 +159,11 @@ function el(tag, attrs = {}, children = []) {
 
 function setActiveTab() {
   document.querySelectorAll("#tabs button").forEach(b => {
-    b.classList.toggle("active", b.dataset.page === state.page);
+    const isActive = b.dataset.page === state.page;
+    b.classList.toggle("active", isActive);
+    if (isActive) {
+      b.scrollIntoView({ block: "nearest", inline: "center" });
+    }
   });
 }
 
