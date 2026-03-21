@@ -933,15 +933,19 @@ tbody tr:hover td{
   .tabs{
     display:grid;
     grid-auto-flow:column;
-    grid-auto-columns:minmax(136px, 72%);
+    grid-auto-columns:max-content;
     grid-template-columns:none;
     gap:8px;
     overflow-x:auto;
     overflow-y:hidden;
     padding-bottom:4px;
-    margin-inline:-2px;
+    padding-inline:8px;
+    margin-inline:0;
     scroll-snap-type:x proximity;
     -webkit-overflow-scrolling:touch;
+    padding-left: 12px;
+    padding-right: 12px;
+    scroll-padding-left: 12px;
   }
 
   .tabs::-webkit-scrollbar{
@@ -951,7 +955,7 @@ tbody tr:hover td{
   .tabs button{
     min-height:48px;
     padding:10px 12px;
-    scroll-snap-align:start;
+    scroll-snap-align:center;
   }
 
   .page-intro{

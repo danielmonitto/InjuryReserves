@@ -157,12 +157,17 @@ function el(tag, attrs = {}, children = []) {
   return n;
 }
 
-function setActiveTab() {
+function setActiveTab(scroll = false) {
   document.querySelectorAll("#tabs button").forEach(b => {
     const isActive = b.dataset.page === state.page;
     b.classList.toggle("active", isActive);
-    if (isActive) {
-      b.scrollIntoView({ block: "nearest", inline: "center" });
+
+    if (isActive && scroll) {
+      b.scrollIntoView({
+        block: "nearest",
+        inline: "center",
+        behavior: "smooth"
+      });
     }
   });
 }
