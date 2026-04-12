@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "ASSISTER": "Daniel Monitto",
+    "SCORER": "Adrian Monitto",
+    "AST": 2,
+    "rowColor": "#ebc026"
+  },
+  {
+    "ASSISTER": "Lachlan Farley",
+    "SCORER": "Austin Thorneycroft",
+    "AST": 2,
+    "rowColor": "#59dea2"
+  },
+  {
+    "ASSISTER": "Lachlan Farley",
+    "SCORER": "Jack Groves",
+    "AST": 2,
+    "rowColor": "#59dea2"
+  },
+  {
+    "ASSISTER": "Austin Thorneycroft",
+    "SCORER": "Daniel Monitto",
+    "AST": 1,
+    "rowColor": "#8858e8"
+  },
+  {
+    "ASSISTER": "Austin Thorneycroft",
+    "SCORER": "Jack Groves",
+    "AST": 1,
+    "rowColor": "#8858e8"
+  },
+  {
+    "ASSISTER": "Austin Thorneycroft",
+    "SCORER": "Lachlan Farley",
+    "AST": 1,
+    "rowColor": "#8858e8"
+  },
+  {
+    "ASSISTER": "Jack Groves",
+    "SCORER": "Austin Thorneycroft",
+    "AST": 1,
+    "rowColor": "#FF99CC"
+  },
+  {
+    "ASSISTER": "Jack Groves",
+    "SCORER": "Daniel Monitto",
+    "AST": 1,
+    "rowColor": "#FF99CC"
+  },
+  {
+    "ASSISTER": "Jack Groves",
+    "SCORER": "Lachlan Farley",
+    "AST": 1,
+    "rowColor": "#FF99CC"
+  },
+  {
+    "ASSISTER": "James Norrish",
+    "SCORER": "Jack Groves",
+    "AST": 1,
+    "rowColor": "#fc9219"
+  },
+  {
+    "ASSISTER": "Lachlan Farley",
+    "SCORER": "Daniel Monitto",
+    "AST": 1,
+    "rowColor": "#59dea2"
+  }
+]

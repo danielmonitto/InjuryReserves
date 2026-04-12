@@ -7,6 +7,7 @@
   ],
   "seasonGames": {
     "4": [
+      7,
       2,
       1,
       -1,
@@ -59,7 +60,8 @@
   "seasonTeams": {
     "4": [
       "B Grade MIsfits",
-      "Bundy Bears"
+      "Bundy Bears",
+      "Superroos"
     ],
     "3": [
       "Disciples",
@@ -116,7 +118,8 @@
     "Billboard Bruisers": "#000000",
     "BackyardBallerz": "#000000",
     "Bundy Bears": "#cfc33a",
-    "B Grade MIsfits": "#af2bd4"
+    "B Grade MIsfits": "#af2bd4",
+    "Superroos": "#006aff"
   },
   "defaultOppColor": "#6C757D",
   "rowColors": {
