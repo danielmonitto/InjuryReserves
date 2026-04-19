@@ -1,5 +1,41 @@
 [
   {
+    "ASSISTER": "Austin Thorneycroft",
+    "SCORER": "Lachlan Farley",
+    "AST": 4,
+    "rowColor": "#8858e8"
+  },
+  {
+    "ASSISTER": "Daniel Monitto",
+    "SCORER": "Lachlan Farley",
+    "AST": 4,
+    "rowColor": "#ebc026"
+  },
+  {
+    "ASSISTER": "Austin Thorneycroft",
+    "SCORER": "Daniel Monitto",
+    "AST": 3,
+    "rowColor": "#8858e8"
+  },
+  {
+    "ASSISTER": "Lachlan Farley",
+    "SCORER": "Austin Thorneycroft",
+    "AST": 3,
+    "rowColor": "#59dea2"
+  },
+  {
+    "ASSISTER": "Austin Thorneycroft",
+    "SCORER": "Vince Tomasello",
+    "AST": 2,
+    "rowColor": "#8858e8"
+  },
+  {
+    "ASSISTER": "Brooklyn Bulmer",
+    "SCORER": "Daniel Monitto",
+    "AST": 2,
+    "rowColor": "#5f99f5"
+  },
+  {
     "ASSISTER": "Daniel Monitto",
     "SCORER": "Adrian Monitto",
     "AST": 2,
@@ -7,7 +43,7 @@
   },
   {
     "ASSISTER": "Lachlan Farley",
-    "SCORER": "Austin Thorneycroft",
+    "SCORER": "Daniel Monitto",
     "AST": 2,
     "rowColor": "#59dea2"
   },
@@ -19,21 +55,21 @@
   },
   {
     "ASSISTER": "Austin Thorneycroft",
-    "SCORER": "Daniel Monitto",
-    "AST": 1,
-    "rowColor": "#8858e8"
-  },
-  {
-    "ASSISTER": "Austin Thorneycroft",
     "SCORER": "Jack Groves",
     "AST": 1,
     "rowColor": "#8858e8"
   },
   {
-    "ASSISTER": "Austin Thorneycroft",
-    "SCORER": "Lachlan Farley",
+    "ASSISTER": "Brooklyn Bulmer",
+    "SCORER": "Vince Tomasello",
     "AST": 1,
-    "rowColor": "#8858e8"
+    "rowColor": "#5f99f5"
+  },
+  {
+    "ASSISTER": "Daniel Monitto",
+    "SCORER": "Brooklyn Bulmer",
+    "AST": 1,
+    "rowColor": "#ebc026"
   },
   {
     "ASSISTER": "Jack Groves",
@@ -60,9 +96,15 @@
     "rowColor": "#fc9219"
   },
   {
-    "ASSISTER": "Lachlan Farley",
-    "SCORER": "Daniel Monitto",
+    "ASSISTER": "Vince Tomasello",
+    "SCORER": "Austin Thorneycroft",
     "AST": 1,
-    "rowColor": "#59dea2"
+    "rowColor": "#63b010"
+  },
+  {
+    "ASSISTER": "Vince Tomasello",
+    "SCORER": "Lachlan Farley",
+    "AST": 1,
+    "rowColor": "#63b010"
   }
 ]
