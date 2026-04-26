@@ -7,6 +7,7 @@
   ],
   "seasonGames": {
     "4": [
+      9,
       8,
       7,
       2,
@@ -62,6 +63,7 @@
     "4": [
       "B Grade MIsfits",
       "Bundy Bears",
+      "Disciples",
       "Kuranjang Kings",
       "Superroos"
     ],
@@ -105,7 +107,7 @@
     "Smoove Movers": "#3498eb",
     "The Warriors": "#000000",
     "Wolves": "#9638c2",
-    "Disciples": "#000000",
+    "Disciples": "#71d4fe",
     "Konoha": "#fc9803",
     "Mickeylads": "#000000",
     "Jim Ballers 2": "#6203fc",

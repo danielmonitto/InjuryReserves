@@ -72,6 +72,18 @@
     "rowColor": "#ebc026"
   },
   {
+    "ASSISTER": "Daniel Monitto",
+    "SCORER": "Issac Toms",
+    "AST": 1,
+    "rowColor": "#ebc026"
+  },
+  {
+    "ASSISTER": "Issac Toms",
+    "SCORER": "Daniel Monitto",
+    "AST": 1,
+    "rowColor": "#A6C9EC"
+  },
+  {
     "ASSISTER": "Jack Groves",
     "SCORER": "Austin Thorneycroft",
     "AST": 1,
@@ -91,7 +103,19 @@
   },
   {
     "ASSISTER": "James Norrish",
+    "SCORER": "Austin Thorneycroft",
+    "AST": 1,
+    "rowColor": "#fc9219"
+  },
+  {
+    "ASSISTER": "James Norrish",
     "SCORER": "Jack Groves",
+    "AST": 1,
+    "rowColor": "#fc9219"
+  },
+  {
+    "ASSISTER": "James Norrish",
+    "SCORER": "Lachlan Farley",
     "AST": 1,
     "rowColor": "#fc9219"
   },

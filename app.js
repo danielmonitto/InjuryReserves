@@ -127,7 +127,7 @@ const GAME_VIDEOS = {
   "4_6": { highlights: "", full: "" },
   "4_7": { highlights: "https://youtu.be/BN0H8gIA9aQ", full: "https://youtu.be/7yngkGXZH5o" },
   "4_8": { highlights: "https://youtu.be/twLG1McLIQg", full: "https://youtu.be/kRq9yIn1_UY" },
-  "4_9": { highlights: "", full: "" },
+  "4_9": { highlights: "", full: "https://youtu.be/qzpghVnK2NA" },
   "4_10": { highlights: "", full: "" },
   "4_11": { highlights: "", full: "" },
   "4_12": { highlights: "", full: "" },
