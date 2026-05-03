@@ -2,14 +2,20 @@
   {
     "ASSISTER": "Austin Thorneycroft",
     "SCORER": "Lachlan Farley",
-    "AST": 4,
+    "AST": 6,
     "rowColor": "#8858e8"
   },
   {
     "ASSISTER": "Daniel Monitto",
     "SCORER": "Lachlan Farley",
-    "AST": 4,
+    "AST": 5,
     "rowColor": "#ebc026"
+  },
+  {
+    "ASSISTER": "Lachlan Farley",
+    "SCORER": "Austin Thorneycroft",
+    "AST": 4,
+    "rowColor": "#59dea2"
   },
   {
     "ASSISTER": "Austin Thorneycroft",
@@ -19,7 +25,7 @@
   },
   {
     "ASSISTER": "Lachlan Farley",
-    "SCORER": "Austin Thorneycroft",
+    "SCORER": "Daniel Monitto",
     "AST": 3,
     "rowColor": "#59dea2"
   },
@@ -42,22 +48,34 @@
     "rowColor": "#ebc026"
   },
   {
-    "ASSISTER": "Lachlan Farley",
-    "SCORER": "Daniel Monitto",
+    "ASSISTER": "James Norrish",
+    "SCORER": "Lachlan Farley",
     "AST": 2,
-    "rowColor": "#59dea2"
+    "rowColor": "#fc9219"
   },
   {
     "ASSISTER": "Lachlan Farley",
     "SCORER": "Jack Groves",
     "AST": 2,
     "rowColor": "#59dea2"
+  },
+  {
+    "ASSISTER": "Vince Tomasello",
+    "SCORER": "Lachlan Farley",
+    "AST": 2,
+    "rowColor": "#63b010"
   },
   {
     "ASSISTER": "Austin Thorneycroft",
     "SCORER": "Jack Groves",
     "AST": 1,
     "rowColor": "#8858e8"
+  },
+  {
+    "ASSISTER": "Brooklyn Bulmer",
+    "SCORER": "Lachlan Farley",
+    "AST": 1,
+    "rowColor": "#5f99f5"
   },
   {
     "ASSISTER": "Brooklyn Bulmer",
@@ -74,6 +92,12 @@
   {
     "ASSISTER": "Daniel Monitto",
     "SCORER": "Issac Toms",
+    "AST": 1,
+    "rowColor": "#ebc026"
+  },
+  {
+    "ASSISTER": "Daniel Monitto",
+    "SCORER": "James Norrish",
     "AST": 1,
     "rowColor": "#ebc026"
   },
@@ -114,20 +138,8 @@
     "rowColor": "#fc9219"
   },
   {
-    "ASSISTER": "James Norrish",
-    "SCORER": "Lachlan Farley",
-    "AST": 1,
-    "rowColor": "#fc9219"
-  },
-  {
     "ASSISTER": "Vince Tomasello",
     "SCORER": "Austin Thorneycroft",
-    "AST": 1,
-    "rowColor": "#63b010"
-  },
-  {
-    "ASSISTER": "Vince Tomasello",
-    "SCORER": "Lachlan Farley",
     "AST": 1,
     "rowColor": "#63b010"
   }

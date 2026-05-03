@@ -476,6 +476,31 @@ body{
   font-weight:700;
 }
 
+.coach-wrap{
+  position:absolute;
+  right:510px;
+  top:56px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.coach-label{
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.coach-photo{
+  width:140px;
+  height:140px;
+  border-radius:20px;
+  border:2px solid rgba(243,201,105,0.7);
+  object-fit:cover;
+}
+
 .empty{
   border-radius:24px;
   border:1px dashed rgba(255,255,255,0.12);
@@ -499,6 +524,12 @@ body{
       <div class="title">Starting Five</div>
       <div class="subtitle">Pre-tip slate built for stream, venue, and intro graphics.</div>
     </div>
+
+    <div class="coach-wrap">
+      <span class="coach-label">Coach:</span>
+      <img src="/static/photos/coach.jpg" alt="Coach" class="coach-photo">
+    </div>
+
     <div class="summary-panel">
       <div class="summary-card">
         <div class="summary-label">Depth</div>

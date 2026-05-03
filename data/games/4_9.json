@@ -31,7 +31,7 @@
       "2P%": 0.6,
       "3P%": 0.0,
       "GSC": 3.3,
-      "MIN": 1546.0,
+      "MIN": 2220.0,
       "PM": -2.0,
       "rowColor": "#ebc026",
       "FG%_display": "37.50%",
@@ -57,7 +57,7 @@
       "TOV_display": "2",
       "FLS_display": "2",
       "GSC_display": "3.30",
-      "MIN_display": "25:46",
+      "MIN_display": "37:00",
       "PM_display": "-2"
     },
     {
@@ -85,7 +85,7 @@
       "2P%": 0.5714285714285714,
       "3P%": 0.0,
       "GSC": 8.9,
-      "MIN": 1530.0,
+      "MIN": 2220.0,
       "PM": -9.0,
       "rowColor": "#59dea2",
       "FG%_display": "44.44%",
@@ -111,7 +111,7 @@
       "TOV_display": "2",
       "FLS_display": "1",
       "GSC_display": "8.90",
-      "MIN_display": "25:30",
+      "MIN_display": "37:00",
       "PM_display": "-9"
     },
     {
@@ -139,7 +139,7 @@
       "2P%": 0.5,
       "3P%": 0.0,
       "GSC": 4.5,
-      "MIN": 1642.0,
+      "MIN": 2224.0,
       "PM": -11.0,
       "rowColor": "#fc9219",
       "FG%_display": "40.00%",
@@ -165,7 +165,7 @@
       "TOV_display": "1",
       "FLS_display": "3",
       "GSC_display": "4.50",
-      "MIN_display": "27:22",
+      "MIN_display": "37:04",
       "PM_display": "-11"
     },
     {
@@ -193,7 +193,7 @@
       "2P%": 0.3333333333333333,
       "3P%": 0.0,
       "GSC": 1.0,
-      "MIN": 1611.0,
+      "MIN": 2047.0,
       "PM": -6.0,
       "rowColor": "#8858e8",
       "FG%_display": "25.00%",
@@ -219,7 +219,7 @@
       "TOV_display": "4",
       "FLS_display": "3",
       "GSC_display": "1.00",
-      "MIN_display": "26:51",
+      "MIN_display": "34:07",
       "PM_display": "-6"
     },
     {
@@ -247,7 +247,7 @@
       "2P%": 0.0,
       "3P%": 0.0,
       "GSC": -1.6,
-      "MIN": 927.0,
+      "MIN": 1612.0,
       "PM": -13.0,
       "rowColor": "#5f99f5",
       "FG%_display": "0.00%",
@@ -273,7 +273,7 @@
       "TOV_display": "0",
       "FLS_display": "2",
       "GSC_display": "-1.60",
-      "MIN_display": "15:27",
+      "MIN_display": "26:52",
       "PM_display": "-13"
     },
     {
@@ -301,7 +301,7 @@
       "2P%": 0.5,
       "3P%": 0.0,
       "GSC": -2.2,
-      "MIN": 1604.0,
+      "MIN": 1680.0,
       "PM": -9.0,
       "rowColor": "#A6C9EC",
       "FG%_display": "40.00%",
@@ -327,7 +327,7 @@
       "TOV_display": "3",
       "FLS_display": "4",
       "GSC_display": "-2.20",
-      "MIN_display": "26:44",
+      "MIN_display": "28:00",
       "PM_display": "-9"
     },
     {
@@ -355,7 +355,7 @@
       "2P%": 0.5,
       "3P%": 0.0,
       "GSC": 2.3166666666666664,
-      "MIN": 1642.0,
+      "MIN": 2224.0,
       "PM": -10.0,
       "rowColor": "#DB2E2E",
       "FG%_display": "34.21%",
@@ -381,7 +381,7 @@
       "TOV_display": "12",
       "FLS_display": "15",
       "GSC_display": "2.32",
-      "MIN_display": "27:22",
+      "MIN_display": "37:04",
       "PM_display": "-10"
     }
   ],
