@@ -2,20 +2,26 @@
   {
     "ASSISTER": "Austin Thorneycroft",
     "SCORER": "Lachlan Farley",
-    "AST": 7,
+    "AST": 12,
     "rowColor": "#8858e8"
   },
   {
     "ASSISTER": "Daniel Monitto",
     "SCORER": "Lachlan Farley",
-    "AST": 6,
+    "AST": 8,
     "rowColor": "#ebc026"
   },
   {
     "ASSISTER": "Lachlan Farley",
     "SCORER": "Austin Thorneycroft",
-    "AST": 6,
+    "AST": 7,
     "rowColor": "#59dea2"
+  },
+  {
+    "ASSISTER": "Daniel Monitto",
+    "SCORER": "Austin Thorneycroft",
+    "AST": 5,
+    "rowColor": "#ebc026"
   },
   {
     "ASSISTER": "James Norrish",
@@ -26,6 +32,18 @@
   {
     "ASSISTER": "Austin Thorneycroft",
     "SCORER": "Daniel Monitto",
+    "AST": 4,
+    "rowColor": "#8858e8"
+  },
+  {
+    "ASSISTER": "Brooklyn Bulmer",
+    "SCORER": "Daniel Monitto",
+    "AST": 4,
+    "rowColor": "#5f99f5"
+  },
+  {
+    "ASSISTER": "Austin Thorneycroft",
+    "SCORER": "Vince Tomasello",
     "AST": 3,
     "rowColor": "#8858e8"
   },
@@ -36,26 +54,26 @@
     "rowColor": "#59dea2"
   },
   {
-    "ASSISTER": "Austin Thorneycroft",
-    "SCORER": "Vince Tomasello",
-    "AST": 2,
-    "rowColor": "#8858e8"
+    "ASSISTER": "Vince Tomasello",
+    "SCORER": "Austin Thorneycroft",
+    "AST": 3,
+    "rowColor": "#63b010"
+  },
+  {
+    "ASSISTER": "Vince Tomasello",
+    "SCORER": "Daniel Monitto",
+    "AST": 3,
+    "rowColor": "#63b010"
   },
   {
     "ASSISTER": "Brooklyn Bulmer",
-    "SCORER": "Daniel Monitto",
+    "SCORER": "Lachlan Farley",
     "AST": 2,
     "rowColor": "#5f99f5"
   },
   {
     "ASSISTER": "Daniel Monitto",
     "SCORER": "Adrian Monitto",
-    "AST": 2,
-    "rowColor": "#ebc026"
-  },
-  {
-    "ASSISTER": "Daniel Monitto",
-    "SCORER": "Austin Thorneycroft",
     "AST": 2,
     "rowColor": "#ebc026"
   },
@@ -97,12 +115,6 @@
   },
   {
     "ASSISTER": "Brooklyn Bulmer",
-    "SCORER": "Lachlan Farley",
-    "AST": 1,
-    "rowColor": "#5f99f5"
-  },
-  {
-    "ASSISTER": "Brooklyn Bulmer",
     "SCORER": "Vince Tomasello",
     "AST": 1,
     "rowColor": "#5f99f5"
@@ -116,6 +128,12 @@
   {
     "ASSISTER": "Daniel Monitto",
     "SCORER": "Issac Toms",
+    "AST": 1,
+    "rowColor": "#ebc026"
+  },
+  {
+    "ASSISTER": "Daniel Monitto",
+    "SCORER": "Vince Tomasello",
     "AST": 1,
     "rowColor": "#ebc026"
   },
@@ -156,8 +174,14 @@
     "rowColor": "#59dea2"
   },
   {
+    "ASSISTER": "Lachlan Farley",
+    "SCORER": "Vince Tomasello",
+    "AST": 1,
+    "rowColor": "#59dea2"
+  },
+  {
     "ASSISTER": "Vince Tomasello",
-    "SCORER": "Austin Thorneycroft",
+    "SCORER": "Brooklyn Bulmer",
     "AST": 1,
     "rowColor": "#63b010"
   }

@@ -1,0 +1,1869 @@
+{
+  "season": 4,
+  "game": 13,
+  "opponent": "Superroos",
+  "opponentColor": "#006aff",
+  "teamScore": 72.0,
+  "opponentScore": 63.0,
+  "players": [
+    {
+      "NAMES": "Daniel Monitto",
+      "2PM": 4.0,
+      "2PA": 8.0,
+      "3PM": 4.0,
+      "3PA": 15.0,
+      "FGM": 8.0,
+      "FGA": 23.0,
+      "FTM": 0.0,
+      "FTA": 0.0,
+      "O REB": 1.0,
+      "D REB": 7.0,
+      "PTS": 20.0,
+      "REB": 8.0,
+      "AST": 6.0,
+      "BLK": 1.0,
+      "STL": 3.0,
+      "TOV": 0.0,
+      "FLS": 1.0,
+      "FG%": 0.34782608695652173,
+      "TS%": 0.43478260869565216,
+      "FT%": 0.0,
+      "2P%": 0.5,
+      "3P%": 0.26666666666666666,
+      "GSC": 17.4,
+      "MIN": 2400.0,
+      "PM": 9.0,
+      "rowColor": "#ebc026",
+      "FG%_display": "34.78%",
+      "TS%_display": "43.48%",
+      "2P%_display": "50.00%",
+      "3P%_display": "26.67%",
+      "FT%_display": "0.00%",
+      "2PM_display": "4",
+      "2PA_display": "8",
+      "3PM_display": "4",
+      "3PA_display": "15",
+      "FGM_display": "8",
+      "FGA_display": "23",
+      "FTM_display": "0",
+      "FTA_display": "0",
+      "O REB_display": "1",
+      "D REB_display": "7",
+      "PTS_display": "20",
+      "REB_display": "8",
+      "AST_display": "6",
+      "BLK_display": "1",
+      "STL_display": "3",
+      "TOV_display": "0",
+      "FLS_display": "1",
+      "GSC_display": "17.40",
+      "MIN_display": "40:00",
+      "PM_display": "9"
+    },
+    {
+      "NAMES": "Lachlan Farley",
+      "2PM": 11.0,
+      "2PA": 15.0,
+      "3PM": 0.0,
+      "3PA": 5.0,
+      "FGM": 11.0,
+      "FGA": 20.0,
+      "FTM": 0.0,
+      "FTA": 0.0,
+      "O REB": 4.0,
+      "D REB": 0.0,
+      "PTS": 22.0,
+      "REB": 4.0,
+      "AST": 2.0,
+      "BLK": 0.0,
+      "STL": 0.0,
+      "TOV": 0.0,
+      "FLS": 1.0,
+      "FG%": 0.55,
+      "TS%": 0.55,
+      "FT%": 0.0,
+      "2P%": 0.7333333333333333,
+      "3P%": 0.0,
+      "GSC": 16.2,
+      "MIN": 1710.0,
+      "PM": 2.0,
+      "rowColor": "#59dea2",
+      "FG%_display": "55.00%",
+      "TS%_display": "55.00%",
+      "2P%_display": "73.33%",
+      "3P%_display": "0.00%",
+      "FT%_display": "0.00%",
+      "2PM_display": "11",
+      "2PA_display": "15",
+      "3PM_display": "0",
+      "3PA_display": "5",
+      "FGM_display": "11",
+      "FGA_display": "20",
+      "FTM_display": "0",
+      "FTA_display": "0",
+      "O REB_display": "4",
+      "D REB_display": "0",
+      "PTS_display": "22",
+      "REB_display": "4",
+      "AST_display": "2",
+      "BLK_display": "0",
+      "STL_display": "0",
+      "TOV_display": "0",
+      "FLS_display": "1",
+      "GSC_display": "16.20",
+      "MIN_display": "28:30",
+      "PM_display": "2"
+    },
+    {
+      "NAMES": "Vince Tomasello",
+      "2PM": 3.0,
+      "2PA": 8.0,
+      "3PM": 0.0,
+      "3PA": 6.0,
+      "FGM": 3.0,
+      "FGA": 14.0,
+      "FTM": 0.0,
+      "FTA": 0.0,
+      "O REB": 4.0,
+      "D REB": 5.0,
+      "PTS": 6.0,
+      "REB": 9.0,
+      "AST": 6.0,
+      "BLK": 0.0,
+      "STL": 1.0,
+      "TOV": 0.0,
+      "FLS": 1.0,
+      "FG%": 0.21428571428571427,
+      "TS%": 0.21428571428571427,
+      "FT%": 0.0,
+      "2P%": 0.375,
+      "3P%": 0.0,
+      "GSC": 6.5,
+      "MIN": 2400.0,
+      "PM": 9.0,
+      "rowColor": "#63b010",
+      "FG%_display": "21.43%",
+      "TS%_display": "21.43%",
+      "2P%_display": "37.50%",
+      "3P%_display": "0.00%",
+      "FT%_display": "0.00%",
+      "2PM_display": "3",
+      "2PA_display": "8",
+      "3PM_display": "0",
+      "3PA_display": "6",
+      "FGM_display": "3",
+      "FGA_display": "14",
+      "FTM_display": "0",
+      "FTA_display": "0",
+      "O REB_display": "4",
+      "D REB_display": "5",
+      "PTS_display": "6",
+      "REB_display": "9",
+      "AST_display": "6",
+      "BLK_display": "0",
+      "STL_display": "1",
+      "TOV_display": "0",
+      "FLS_display": "1",
+      "GSC_display": "6.50",
+      "MIN_display": "40:00",
+      "PM_display": "9"
+    },
+    {
+      "NAMES": "Austin Thorneycroft",
+      "2PM": 7.0,
+      "2PA": 13.0,
+      "3PM": 2.0,
+      "3PA": 8.0,
+      "FGM": 9.0,
+      "FGA": 21.0,
+      "FTM": 0.0,
+      "FTA": 3.0,
+      "O REB": 4.0,
+      "D REB": 11.0,
+      "PTS": 20.0,
+      "REB": 15.0,
+      "AST": 7.0,
+      "BLK": 0.0,
+      "STL": 1.0,
+      "TOV": 3.0,
+      "FLS": 3.0,
+      "FG%": 0.42857142857142855,
+      "TS%": 0.44802867383512546,
+      "FT%": 0.0,
+      "2P%": 0.5384615384615384,
+      "3P%": 0.25,
+      "GSC": 15.5,
+      "MIN": 2400.0,
+      "PM": 9.0,
+      "rowColor": "#8858e8",
+      "FG%_display": "42.86%",
+      "TS%_display": "44.80%",
+      "2P%_display": "53.85%",
+      "3P%_display": "25.00%",
+      "FT%_display": "0.00%",
+      "2PM_display": "7",
+      "2PA_display": "13",
+      "3PM_display": "2",
+      "3PA_display": "8",
+      "FGM_display": "9",
+      "FGA_display": "21",
+      "FTM_display": "0",
+      "FTA_display": "3",
+      "O REB_display": "4",
+      "D REB_display": "11",
+      "PTS_display": "20",
+      "REB_display": "15",
+      "AST_display": "7",
+      "BLK_display": "0",
+      "STL_display": "1",
+      "TOV_display": "3",
+      "FLS_display": "3",
+      "GSC_display": "15.50",
+      "MIN_display": "40:00",
+      "PM_display": "9"
+    },
+    {
+      "NAMES": "Brooklyn Bulmer",
+      "2PM": 0.0,
+      "2PA": 0.0,
+      "3PM": 1.0,
+      "3PA": 6.0,
+      "FGM": 1.0,
+      "FGA": 6.0,
+      "FTM": 1.0,
+      "FTA": 2.0,
+      "O REB": 3.0,
+      "D REB": 6.0,
+      "PTS": 4.0,
+      "REB": 9.0,
+      "AST": 3.0,
+      "BLK": 0.0,
+      "STL": 2.0,
+      "TOV": 1.0,
+      "FLS": 2.0,
+      "FG%": 0.16666666666666666,
+      "TS%": 0.29069767441860467,
+      "FT%": 0.5,
+      "2P%": 0.0,
+      "3P%": 0.16666666666666666,
+      "GSC": 6.0,
+      "MIN": 2400.0,
+      "PM": 9.0,
+      "rowColor": "#5f99f5",
+      "FG%_display": "16.67%",
+      "TS%_display": "29.07%",
+      "2P%_display": "0.00%",
+      "3P%_display": "16.67%",
+      "FT%_display": "50.00%",
+      "2PM_display": "0",
+      "2PA_display": "0",
+      "3PM_display": "1",
+      "3PA_display": "6",
+      "FGM_display": "1",
+      "FGA_display": "6",
+      "FTM_display": "1",
+      "FTA_display": "2",
+      "O REB_display": "3",
+      "D REB_display": "6",
+      "PTS_display": "4",
+      "REB_display": "9",
+      "AST_display": "3",
+      "BLK_display": "0",
+      "STL_display": "2",
+      "TOV_display": "1",
+      "FLS_display": "2",
+      "GSC_display": "6.00",
+      "MIN_display": "40:00",
+      "PM_display": "9"
+    },
+    {
+      "NAMES": "Injury Reserves",
+      "2PM": 25.0,
+      "2PA": 44.0,
+      "3PM": 7.0,
+      "3PA": 40.0,
+      "FGM": 32.0,
+      "FGA": 84.0,
+      "FTM": 1.0,
+      "FTA": 5.0,
+      "O REB": 16.0,
+      "D REB": 29.0,
+      "PTS": 72.0,
+      "REB": 45.0,
+      "AST": 24.0,
+      "BLK": 1.0,
+      "STL": 7.0,
+      "TOV": 4.0,
+      "FLS": 8.0,
+      "FG%": 0.38095238095238093,
+      "TS%": 0.4176334106728538,
+      "FT%": 0.2,
+      "2P%": 0.5681818181818182,
+      "3P%": 0.175,
+      "GSC": 12.319999999999999,
+      "MIN": 2400.0,
+      "PM": 9.0,
+      "rowColor": "#DB2E2E",
+      "FG%_display": "38.10%",
+      "TS%_display": "41.76%",
+      "2P%_display": "56.82%",
+      "3P%_display": "17.50%",
+      "FT%_display": "20.00%",
+      "2PM_display": "25",
+      "2PA_display": "44",
+      "3PM_display": "7",
+      "3PA_display": "40",
+      "FGM_display": "32",
+      "FGA_display": "84",
+      "FTM_display": "1",
+      "FTA_display": "5",
+      "O REB_display": "16",
+      "D REB_display": "29",
+      "PTS_display": "72",
+      "REB_display": "45",
+      "AST_display": "24",
+      "BLK_display": "1",
+      "STL_display": "7",
+      "TOV_display": "4",
+      "FLS_display": "8",
+      "GSC_display": "12.32",
+      "MIN_display": "40:00",
+      "PM_display": "9"
+    }
+  ],
+  "playByPlay": [
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "0:00",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "0:24",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "0:36",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "assist to Vince Tomasello",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "0:36",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "made 2",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "1:07",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "foul",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "1:11",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "1:29",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "assist to Austin Thorneycroft",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "1:29",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "made 3",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "1:51",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "2:00",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 3",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "2:21",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "2:29",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "2:41",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "2:50",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "missed 3",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "2:56",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "offensive rebound",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "2:58",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 3",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "3:36",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 3",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "3:49",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "3:56",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "4:14",
+      "PLAYER": "superroos",
+      "PLAY": "free throw",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "4:19",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "4:21",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "foul",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "4:58",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "turnover",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "5:10",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed ft",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "5:40",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "5:52",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "5:54",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "offensive rebound",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "5:56",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 2",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "6:04",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "6:20",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "assist to Lachlan Farley",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "6:20",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "6:28",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "6:38",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "assist to Austin Thorneycroft",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "6:38",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "made 3",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "6:54",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "7:02",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "7:12",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "defensive rebound",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "7:23",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 3",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "7:50",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "assist to Lachlan Farley",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "7:50",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "8:00",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "defensive rebound",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "8:08",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "assist to Lachlan Farley",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "8:08",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "8:14",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "defensive rebound",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "8:23",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "8:37",
+      "PLAYER": "superroos",
+      "PLAY": "three ball",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "8:50",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "assist to Vince Tomasello",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "8:50",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "made 2",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "8:59",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "9:12",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "9:22",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "9:39",
+      "PLAYER": "superroos",
+      "PLAY": "free throw",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "9:57",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "foul",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "10:12",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 3",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "10:25",
+      "PLAYER": "superroos",
+      "PLAY": "three ball",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "10:35",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "assist to Lachlan Farley",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "10:35",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "10:41",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "defensive rebound",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "10:56",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "10:58",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "offensive rebound",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "10:59",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "missed 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "11:06",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "steal",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "11:16",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "foul",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "11:39",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "assist to Lachlan Farley",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "11:39",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "11:45",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "steal",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "12:04",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 3",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "12:19",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "12:29",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "assist to Austin Thorneycroft",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "12:29",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "made 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "12:31",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "offensive rebound",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "12:36",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "missed 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "12:48",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "defensive rebound",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:00",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "assist to Lachlan Farley",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:00",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:26",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "made 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:27",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "offensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:28",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:29",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "offensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:30",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:33",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "offensive rebound",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:35",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "missed 3",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "13:50",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 2",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "14:02",
+      "PLAYER": "superroos",
+      "PLAY": "three ball",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "14:13",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "14:50",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "assist to Vince Tomasello",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "14:50",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "made 2",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "15:00",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "15:13",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "turnover",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "15:16",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "offensive rebound",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "15:24",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "15:24",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "offensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "15:29",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 2",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "15:37",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "defensive rebound",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "15:49",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "turnover",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "15:52",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "steal",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "16:03",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "assist to Lachlan Farley",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "16:03",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "16:10",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "16:29",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 3",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "16:43",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "16:54",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "foul",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "17:11",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "missed 3",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "17:24",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "17:40",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "18:38",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "foul",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "18:48",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "missed 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "18:57",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "defensive rebound",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "19:15",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "assist to Daniel Monitto",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "19:15",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "made 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "19:31",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "19:42",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "missed 3",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "19:43",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "offensive rebound",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "19:45",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "2ND",
+      "CLOCK": "19:58",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "subbed in",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "20:15",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "assist to Daniel Monitto",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "20:15",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "made 2",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "20:41",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "20:47",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "20:56",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "defensive rebound",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "21:05",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "missed ft",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "21:14",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "made ft",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "21:45",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "steal",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "21:48",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "assist to Austin Thorneycroft",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "21:48",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "made 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "21:58",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "defensive rebound",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "22:17",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "missed 3",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "22:32",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "22:46",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "assist to Daniel Monitto",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "22:46",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "made 2",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "22:51",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "steal",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "23:05",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "assist to Daniel Monitto",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "23:05",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "made 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "23:23",
+      "PLAYER": "superroos",
+      "PLAY": "free throw",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "23:35",
+      "PLAYER": "superroos",
+      "PLAY": "free throw",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "23:58",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "foul",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "24:18",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "made 2",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "24:24",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "steal",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "24:31",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 2",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "24:47",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "25:02",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "assist to Austin Thorneycroft",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "25:02",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "made 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "25:24",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "25:28",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 3",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "25:38",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "defensive rebound",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "25:56",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "26:11",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "26:24",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "subbed out",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "26:35",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 3",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "26:48",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "26:56",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "missed 3",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "27:13",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "subbed in",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "27:17",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "defensive rebound",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "27:26",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 2",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "27:36",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "27:50",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "28:05",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "28:22",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "made 2",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "28:27",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "steal",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "28:44",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "made 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "28:52",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:03",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "assist to Brooklyn Bulmer",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:03",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "made 3",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:08",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "offensive rebound",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:09",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 2",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:12",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "offensive rebound",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:13",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 2",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:17",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "defensive rebound",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:33",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "made 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:34",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "offensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:35",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "29:47",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "30:00",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed ft",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "30:11",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed ft",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "31:12",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "defensive rebound",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "31:26",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 2",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "31:41",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 2",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "32:17",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "subbed out",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "33:36",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "defensive rebound",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "33:52",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "missed 3",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "33:52",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "offensive rebound",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "33:56",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "missed 3",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "34:07",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "34:25",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "foul",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "34:31",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 3",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "34:45",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "missed 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "34:46",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "offensive rebound",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "34:53",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "34:57",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "defensive rebound",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "35:21",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "missed 3",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "35:35",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "35:46",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "missed 3",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "36:03",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "36:25",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "36:26",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "offensive rebound",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "36:29",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "missed 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "36:43",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "36:59",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "assist to Austin Thorneycroft",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "36:59",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "made 2",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "37:06",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "defensive rebound",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "37:20",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "assist to Daniel Monitto",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "37:20",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "made 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "37:33",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "block",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "37:40",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "assist to Daniel Monitto",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "37:40",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "made 3",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "37:49",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "defensive rebound",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "37:53",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "turnover",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "38:02",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "defensive rebound",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "38:22",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "assist to Lachlan Farley",
+      "rowColor": "#ebc026"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "38:22",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "made 2",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "38:34",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "defensive rebound",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "38:48",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "missed 3",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "38:58",
+      "PLAYER": "superroos",
+      "PLAY": "field goal",
+      "rowColor": "#006aff"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "39:14",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "missed 3",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "40:00",
+      "PLAYER": "Brooklyn Bulmer",
+      "PLAY": "subbed in",
+      "rowColor": "#5f99f5"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "40:00",
+      "PLAYER": "Austin Thorneycroft",
+      "PLAY": "subbed in",
+      "rowColor": "#8858e8"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "40:00",
+      "PLAYER": "Vince Tomasello",
+      "PLAY": "subbed in",
+      "rowColor": "#63b010"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "40:00",
+      "PLAYER": "Lachlan Farley",
+      "PLAY": "subbed in",
+      "rowColor": "#59dea2"
+    },
+    {
+      "PERIOD": "1ST",
+      "CLOCK": "40:00",
+      "PLAYER": "Daniel Monitto",
+      "PLAY": "subbed in",
+      "rowColor": "#ebc026"
+    }
+  ]
+}
