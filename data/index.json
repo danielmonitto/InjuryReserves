@@ -7,6 +7,7 @@
   ],
   "seasonGames": {
     "4": [
+      14,
       13,
       12,
       10,
@@ -64,6 +65,7 @@
   },
   "seasonTeams": {
     "4": [
+      "Ace",
       "B Grade MIsfits",
       "Bundy Bears",
       "Disciples",
@@ -127,7 +129,8 @@
     "Bundy Bears": "#f1e23b",
     "B Grade MIsfits": "#af2bd4",
     "Superroos": "#006aff",
-    "Kuranjang Kings": "#000000"
+    "Kuranjang Kings": "#000000",
+    "Ace": "#3a21f2"
   },
   "defaultOppColor": "#6C757D",
   "rowColors": {

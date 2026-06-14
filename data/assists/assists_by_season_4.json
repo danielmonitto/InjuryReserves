@@ -2,20 +2,26 @@
   {
     "ASSISTER": "Austin Thorneycroft",
     "SCORER": "Lachlan Farley",
-    "AST": 12,
+    "AST": 13,
     "rowColor": "#8858e8"
   },
   {
     "ASSISTER": "Daniel Monitto",
     "SCORER": "Lachlan Farley",
-    "AST": 8,
+    "AST": 10,
     "rowColor": "#ebc026"
   },
   {
     "ASSISTER": "Lachlan Farley",
     "SCORER": "Austin Thorneycroft",
-    "AST": 7,
+    "AST": 8,
     "rowColor": "#59dea2"
+  },
+  {
+    "ASSISTER": "Austin Thorneycroft",
+    "SCORER": "Daniel Monitto",
+    "AST": 7,
+    "rowColor": "#8858e8"
   },
   {
     "ASSISTER": "Daniel Monitto",
@@ -30,10 +36,16 @@
     "rowColor": "#fc9219"
   },
   {
-    "ASSISTER": "Austin Thorneycroft",
+    "ASSISTER": "Lachlan Farley",
     "SCORER": "Daniel Monitto",
-    "AST": 4,
-    "rowColor": "#8858e8"
+    "AST": 5,
+    "rowColor": "#59dea2"
+  },
+  {
+    "ASSISTER": "Vince Tomasello",
+    "SCORER": "Daniel Monitto",
+    "AST": 5,
+    "rowColor": "#63b010"
   },
   {
     "ASSISTER": "Brooklyn Bulmer",
@@ -42,28 +54,22 @@
     "rowColor": "#5f99f5"
   },
   {
+    "ASSISTER": "Vince Tomasello",
+    "SCORER": "Austin Thorneycroft",
+    "AST": 4,
+    "rowColor": "#63b010"
+  },
+  {
+    "ASSISTER": "Vince Tomasello",
+    "SCORER": "Lachlan Farley",
+    "AST": 4,
+    "rowColor": "#63b010"
+  },
+  {
     "ASSISTER": "Austin Thorneycroft",
     "SCORER": "Vince Tomasello",
     "AST": 3,
     "rowColor": "#8858e8"
-  },
-  {
-    "ASSISTER": "Lachlan Farley",
-    "SCORER": "Daniel Monitto",
-    "AST": 3,
-    "rowColor": "#59dea2"
-  },
-  {
-    "ASSISTER": "Vince Tomasello",
-    "SCORER": "Austin Thorneycroft",
-    "AST": 3,
-    "rowColor": "#63b010"
-  },
-  {
-    "ASSISTER": "Vince Tomasello",
-    "SCORER": "Daniel Monitto",
-    "AST": 3,
-    "rowColor": "#63b010"
   },
   {
     "ASSISTER": "Brooklyn Bulmer",
@@ -94,12 +100,6 @@
     "SCORER": "Jack Groves",
     "AST": 2,
     "rowColor": "#59dea2"
-  },
-  {
-    "ASSISTER": "Vince Tomasello",
-    "SCORER": "Lachlan Farley",
-    "AST": 2,
-    "rowColor": "#63b010"
   },
   {
     "ASSISTER": "Austin Thorneycroft",
