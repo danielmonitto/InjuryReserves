@@ -102,6 +102,12 @@
     "rowColor": "#59dea2"
   },
   {
+    "ASSISTER": "Lachlan Farley",
+    "SCORER": "Vince Tomasello",
+    "AST": 2,
+    "rowColor": "#59dea2"
+  },
+  {
     "ASSISTER": "Austin Thorneycroft",
     "SCORER": "Jack Groves",
     "AST": 1,
@@ -170,12 +176,6 @@
   {
     "ASSISTER": "Lachlan Farley",
     "SCORER": "James Norrish",
-    "AST": 1,
-    "rowColor": "#59dea2"
-  },
-  {
-    "ASSISTER": "Lachlan Farley",
-    "SCORER": "Vince Tomasello",
     "AST": 1,
     "rowColor": "#59dea2"
   },
